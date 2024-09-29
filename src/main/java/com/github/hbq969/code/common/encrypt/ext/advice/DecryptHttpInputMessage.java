@@ -1,9 +1,8 @@
 package com.github.hbq969.code.common.encrypt.ext.advice;
 
-import com.github.hbq969.code.common.encrypt.ext.config.AESConfig;
+import com.github.hbq969.code.common.config.EncryptProperties;
 import com.github.hbq969.code.common.encrypt.ext.config.Algorithm;
 import com.github.hbq969.code.common.encrypt.ext.config.Decrypt;
-import com.github.hbq969.code.common.encrypt.ext.config.RSAConfig;
 import com.github.hbq969.code.common.encrypt.ext.exception.EncryptRequestException;
 import com.github.hbq969.code.common.encrypt.ext.utils.AESUtil;
 import com.github.hbq969.code.common.encrypt.ext.utils.Base64Util;
@@ -30,23 +29,23 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
     private InputStream body;
 
 
-    public DecryptHttpInputMessage(HttpInputMessage inputMessage, RSAConfig rsaConfig, AESConfig aesConfig, Decrypt decrypt) throws Exception {
+    public DecryptHttpInputMessage(HttpInputMessage inputMessage, EncryptProperties conf, Decrypt decrypt) throws Exception {
 
-        if (aesConfig.isEnabled() && decrypt.algorithm() == Algorithm.AES) {
-            decryptWithAES(inputMessage, aesConfig);
+        if (decrypt.algorithm() == Algorithm.AES) {
+            decryptWithAES(inputMessage, conf);
         }
 
-        if (rsaConfig.isEnabled() && decrypt.algorithm() == Algorithm.RSA) {
-            decryptWithRSA(inputMessage, rsaConfig, decrypt);
+        if (decrypt.algorithm() == Algorithm.RSA) {
+            decryptWithRSA(inputMessage, conf, decrypt);
         }
 
     }
 
-    private void decryptWithRSA(HttpInputMessage inputMessage, RSAConfig rsaConfig, Decrypt decrypt) throws Exception {
-        String privateKey = rsaConfig.getPrivateKey();
-        String charset = rsaConfig.getCharset();
-        boolean showLog = rsaConfig.isShowLog();
-        boolean timestampCheck = rsaConfig.isTimestampCheck();
+    private void decryptWithRSA(HttpInputMessage inputMessage, EncryptProperties conf, Decrypt decrypt) throws Exception {
+        String privateKey = conf.getRestful().getRsa().getPrivateKey();
+        String charset = conf.getRestful().getRsa().getCharset();
+        boolean showLog = conf.getRestful().getRsa().isShowLog();
+        boolean timestampCheck = conf.getRestful().getRsa().isTimestampCheck();
 
         if (StringUtils.isEmpty(privateKey)) {
             throw new IllegalArgumentException("rsa私钥为空");
@@ -99,10 +98,10 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
         this.body = new ByteArrayInputStream(decryptBody.getBytes());
     }
 
-    private void decryptWithAES(HttpInputMessage inputMessage, AESConfig aesConfig) throws IOException {
-        String key = aesConfig.getKey();
-        String charset = aesConfig.getCharset();
-        boolean showLog = aesConfig.isShowLog();
+    private void decryptWithAES(HttpInputMessage inputMessage, EncryptProperties conf) throws IOException {
+        String key = conf.getRestful().getAes().getKey();
+        String charset = conf.getRestful().getAes().getCharset();
+        boolean showLog = conf.getRestful().getAes().isShowLog();
 
         if (StringUtils.isBlank(key)) {
             throw new IllegalArgumentException("aes加密私钥为空");

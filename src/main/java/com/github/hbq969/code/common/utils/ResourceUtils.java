@@ -34,6 +34,9 @@ public class ResourceUtils {
     public static final String BIN_DOCKER = "/bin/docker";
 
     public static InputStream read(String dir, String file, String profile) {
+        if (dir == null) {
+            dir = "/";
+        }
         dir = (dir.endsWith("/") ? dir : String.join("", dir, "/"));
         String path;
         if (StringUtils.isEmpty(profile) || PROFILE_DEFAULT.equals(profile)) {

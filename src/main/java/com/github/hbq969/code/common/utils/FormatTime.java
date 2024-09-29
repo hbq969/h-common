@@ -512,6 +512,8 @@ public enum FormatTime {
     long t = dt.dayOfWeek().setCopy(7).getMillis();
     System.out.println(FormatTime.YYYYMMDDHHMISS.withMills(t));
     System.out.println(DateFormatUtils.format(t,"yyyyMM_ww"));
+    long d=FormatTime.YYYYMMDDHHMISS.toMills("2023-01-8 0:1:3");
+    System.out.println(FormatTime.YYYYMMDDHHMISS.withMills(d));
   }
 
 }

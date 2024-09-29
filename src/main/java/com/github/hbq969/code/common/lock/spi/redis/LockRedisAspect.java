@@ -26,7 +26,7 @@ import java.util.Objects;
 @Slf4j
 public class LockRedisAspect {
 
-    @Qualifier("bc-lock-facade")
+    @Qualifier("lock-facade")
     @Autowired
     private LockProvider facade;
 

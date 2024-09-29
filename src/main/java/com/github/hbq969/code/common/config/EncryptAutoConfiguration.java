@@ -2,8 +2,6 @@ package com.github.hbq969.code.common.config;
 
 import com.github.hbq969.code.common.encrypt.ext.advice.EncryptRequestBodyAdvice;
 import com.github.hbq969.code.common.encrypt.ext.advice.EncryptResponseBodyAdvice;
-import com.github.hbq969.code.common.encrypt.ext.config.AESConfig;
-import com.github.hbq969.code.common.encrypt.ext.config.RSAConfig;
 import com.github.hbq969.code.common.encrypt.web.AESControl;
 import com.github.hbq969.code.common.encrypt.web.ConfigControl;
 import com.github.hbq969.code.common.encrypt.web.RSAControl;
@@ -32,7 +30,12 @@ public class EncryptAutoConfiguration implements EnvironmentAware {
         this.environment = environment;
     }
 
-    @ConditionalOnExpression("${encrypt.config.enabled:false}")
+    @Bean("common-EncryptProperties")
+    EncryptProperties encryptProperties() {
+        return new EncryptProperties();
+    }
+
+    @ConditionalOnExpression("${encrypt.config.enabled:true}")
     @Bean("common-encrypt-config-SpringConfigEncryptCtrl")
     ConfigControl configControl() {
         return new ConfigControl();
@@ -57,37 +60,27 @@ public class EncryptAutoConfiguration implements EnvironmentAware {
         return encryptor;
     }
 
-    @ConditionalOnExpression("${encrypt.restful.aes.enabled:false}")
+    @ConditionalOnExpression("${encrypt.restful.enabled:false}")
     @Bean("common-restful-AESCtrl")
     AESControl aesControl() {
         return new AESControl();
     }
 
-    @ConditionalOnExpression("${encrypt.restful.rsa.enabled:false}")
+    @ConditionalOnExpression("${encrypt.restful.enabled:false}")
     @Bean("common-restful-RSACtrl")
     RSAControl rsaControl() {
         return new RSAControl();
     }
 
-    @Bean("common-spring-encrypt-aesConfig")
-    public AESConfig aesConfig() {
-        return new AESConfig();
-    }
-
-    @Bean("common-spring-encrypt-rsaConfig")
-    public RSAConfig rsaConfig() {
-        return new RSAConfig();
-    }
-
     @Bean("common-spring-encrypt-encryptRequestBodyAdvice")
-    @ConditionalOnExpression("${encrypt.restful.aes.enabled:false}")
+    @ConditionalOnExpression("${encrypt.restful.enabled:false}")
     public EncryptRequestBodyAdvice encryptRequestBodyAdvice() {
         log.info("启用restful接口对称加密");
         return new EncryptRequestBodyAdvice();
     }
 
     @Bean("common-spring-encrypt-encryptResponseBodyAdvice")
-    @ConditionalOnExpression("${encrypt.restful.rsa.enabled:false}")
+    @ConditionalOnExpression("${encrypt.restful.enabled:false}")
     public EncryptResponseBodyAdvice encryptResponseBodyAdvice() {
         log.info("启用restful接口非对称加密");
         return new EncryptResponseBodyAdvice();

@@ -1,7 +1,9 @@
 package com.github.hbq969.code.common.utils;
 
+import com.google.common.collect.Lists;
 import lombok.Data;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,5 +31,34 @@ public class SubList<T> {
 
     public long getEndLongValue() {
         return offset.getEndLongValue();
+    }
+
+    public static <T> List<T> subListWithOneFirst(List<T> parent, int page, int size) {
+        int s = (page - 1) * size;
+        if (s > parent.size()) {
+            return Collections.emptyList();
+        }
+        int e = page * size;
+        if (e > parent.size()) {
+            e = parent.size();
+        }
+        return parent.subList(s, e);
+    }
+
+    public static <T> List<T> subListWithZeroFirst(List<T> parent, int page, int size) {
+        int s = page * size;
+        if (s > parent.size()) {
+            return Collections.emptyList();
+        }
+        int e = (page + 1) * size;
+        if (e > parent.size()) {
+            e = parent.size();
+        }
+        return parent.subList(s, e);
+    }
+
+    public static void main(String[] args) {
+        List<String> list = Lists.newArrayList("foo", "nar");
+        System.out.println(subListWithZeroFirst(list, 1, 2));
     }
 }

@@ -1,8 +1,7 @@
 package com.github.hbq969.code.common.encrypt.ext.advice;
 
-import com.github.hbq969.code.common.encrypt.ext.config.AESConfig;
+import com.github.hbq969.code.common.config.EncryptProperties;
 import com.github.hbq969.code.common.encrypt.ext.config.Decrypt;
-import com.github.hbq969.code.common.encrypt.ext.config.RSAConfig;
 import com.github.hbq969.code.common.encrypt.ext.exception.EncryptRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +22,12 @@ import java.lang.reflect.Type;
 public class EncryptRequestBodyAdvice implements RequestBodyAdvice {
 
     @Autowired
-    private RSAConfig rsaConfig;
-
-    @Autowired
-    private AESConfig aesConfig;
-
+    private EncryptProperties conf;
 
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
         Method method = methodParameter.getMethod();
-        boolean hasDecrypt = method.isAnnotationPresent(Decrypt.class);
-        Decrypt decrypt = method.getAnnotation(Decrypt.class);
-        return (rsaConfig.isEnabled() || aesConfig.isEnabled()) && hasDecrypt && decrypt.required();
+        return method.isAnnotationPresent(Decrypt.class);
     }
 
     @Override
@@ -47,7 +40,11 @@ public class EncryptRequestBodyAdvice implements RequestBodyAdvice {
     public HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType,
                                            Class<? extends HttpMessageConverter<?>> converterType) {
         try {
-            return new DecryptHttpInputMessage(inputMessage, rsaConfig, aesConfig, parameter.getMethod().getAnnotation(Decrypt.class));
+            // 检查请求体是否已经被处理
+            if (inputMessage instanceof DecryptHttpInputMessage) {
+                return inputMessage;
+            }
+            return new DecryptHttpInputMessage(inputMessage, conf, parameter.getMethod().getAnnotation(Decrypt.class));
         } catch (EncryptRequestException e) {
             throw e;
         } catch (Exception e) {

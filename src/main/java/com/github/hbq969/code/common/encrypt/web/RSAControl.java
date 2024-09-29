@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @RequestMapping(path = "/common/encrypt/restful/rsa")
 @Slf4j
-@Api(description = "接口rsa非对称加解密", tags = "接口rsa非对称加解密")
+@Api(description = "接口rsa非对称加解密", tags = "维护使用-RSA加解密")
 public class RSAControl implements ICommonControl {
 
     @ApiOperation("获取密钥对")

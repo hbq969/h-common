@@ -26,20 +26,14 @@ import java.text.MessageFormat;
 @Slf4j
 public class LogAdvice {
 
-    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping) "
-            + "|| @annotation(org.springframework.web.bind.annotation.GetMapping) "
-            + "|| @annotation(org.springframework.web.bind.annotation.PostMapping) "
-            + "|| @annotation(org.springframework.web.bind.annotation.DeleteMapping) "
-            + "|| @annotation(org.springframework.web.bind.annotation.PutMapping) "
-            + "|| @annotation(org.springframework.web.bind.annotation.PatchMapping)")
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping) " + "|| @annotation(org.springframework.web.bind.annotation.GetMapping) " + "|| @annotation(org.springframework.web.bind.annotation.PostMapping) " + "|| @annotation(org.springframework.web.bind.annotation.DeleteMapping) " + "|| @annotation(org.springframework.web.bind.annotation.PutMapping) " + "|| @annotation(org.springframework.web.bind.annotation.PatchMapping)")
     public void restfulLogPointCut() {
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     @Around("restfulLogPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
-        RestController rc = AnnotationUtils.findAnnotation(point.getTarget().getClass(),
-                RestController.class);
+        RestController rc = AnnotationUtils.findAnnotation(point.getTarget().getClass(), RestController.class);
         // 非RestControl类不拦截s
         if (rc == null) {
             return point.proceed();
@@ -69,8 +63,10 @@ public class LogAdvice {
             t = FormatTime.nowMills() - t;
             log.info("调用异常, [{}], 耗时: {} ms", ms.getName(), t);
             String errMsg = ex.getMessage();
-            return Validator.hasChinese(errMsg) ? ReturnMessage.fail(errMsg) :
-                    ReturnMessage.fail("后端接口异常");
+            if (errMsg == null) {
+                return ReturnMessage.fail("后端接口异常");
+            }
+            return Validator.hasChinese(errMsg) ? ReturnMessage.fail(errMsg) : ReturnMessage.fail("后端接口异常");
         }
     }
 

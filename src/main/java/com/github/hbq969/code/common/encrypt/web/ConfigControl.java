@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @RequestMapping(path = "/common/encrypt/config")
 @Slf4j
-@Api(description = "spring配置属性加解密", tags = "spring配置属性加解密")
+@Api(description = "spring配置属性加解密", tags = "维护使用-spring配置属性加解密接口")
 public class ConfigControl implements ICommonControl {
 
   @ApiOperation("Spring配置加密")
   @RequestMapping(path = "/encrypt", method = RequestMethod.POST)
   @ResponseBody
-  public ReturnMessage<?> encrypt(@RequestBody EncryptInfo info) {
+  public ReturnMessage<String> encrypt(@RequestBody EncryptInfo info) {
     log.info("配置加密: {}", info);
     try {
       StringEncryptor enc = createEncrypt(info);
@@ -42,7 +42,7 @@ public class ConfigControl implements ICommonControl {
   @ApiOperation("Spring配置解密")
   @RequestMapping(path = "/decrypt", method = RequestMethod.POST)
   @ResponseBody
-  public ReturnMessage<?> decrypt(@RequestBody EncryptInfo info) {
+  public ReturnMessage<String> decrypt(@RequestBody EncryptInfo info) {
     log.info("Spring配置解密: {}", info);
     try {
       StringEncryptor enc = createEncrypt(info);

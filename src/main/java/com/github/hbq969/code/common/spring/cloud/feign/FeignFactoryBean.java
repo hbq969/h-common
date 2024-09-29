@@ -5,9 +5,9 @@ import feign.Feign.Builder;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
+import feign.httpclient.ApacheHttpClient;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
-import feign.okhttp.OkHttpClient;
 import feign.slf4j.Slf4jLogger;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.FactoryBean;
@@ -17,6 +17,7 @@ import org.springframework.util.Assert;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -33,21 +34,20 @@ public class FeignFactoryBean<T> implements FactoryBean<T>, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Assert.notNull(inter, "Please set inter class");
+        Assert.notNull(getObjectType(), "请配置feign代理接口");
     }
 
     @Override
     public T getObject() throws Exception {
         Builder builder = Feign.builder();
-        builder.client(client()).retryer(feignRetry()).options(options()).contract(contract())
-                .encoder(encoder()).decoder(decoder()).errorDecoder(errorDecoder());
+        builder.client(client()).retryer(feignRetry()).options(options()).contract(contract()).encoder(encoder()).decoder(decoder()).errorDecoder(errorDecoder());
         List<RequestInterceptor> ins = interceptors();
         if (CollectionUtils.isNotEmpty(ins)) {
             builder.requestInterceptors(ins);
         }
         builder.logger(new Slf4jLogger()).logLevel(level());
         apply(builder);
-        T t = builder.target(getObjectType(), url);
+        T t = builder.target(getObjectType(), getUrl());
         return t;
     }
 
@@ -64,8 +64,12 @@ public class FeignFactoryBean<T> implements FactoryBean<T>, InitializingBean {
         this.url = url;
     }
 
+    public String getUrl() {
+        return this.url;
+    }
+
     protected Client client() {
-        return new OkHttpClient();
+        return new ApacheHttpClient();
     }
 
     /**
@@ -78,7 +82,7 @@ public class FeignFactoryBean<T> implements FactoryBean<T>, InitializingBean {
     }
 
     protected Request.Options options() {
-        return new Request.Options(60 * 1000, 30 * 1000, true);
+        return new Request.Options(1, TimeUnit.MINUTES, 30, SECONDS, true);
     }
 
     protected Contract contract() {

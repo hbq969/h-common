@@ -1,7 +1,10 @@
 package com.github.hbq969.code.common.decorde;
 
 import java.text.MessageFormat;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author : hbq969@gmail.com
@@ -42,8 +45,7 @@ public interface OptionalFacade<KEY, SERVICE> {
      * @return
      */
     default SERVICE getService(KEY key) {
-        return query(key).orElseThrow(
-                () -> new UnsupportedOperationException(MessageFormat.format("不支持的类型[{0}]", key)));
+        return query(key).orElseThrow(() -> new UnsupportedOperationException(MessageFormat.format("不支持的类型[{0}]", key)));
     }
 
     /**
@@ -54,4 +56,10 @@ public interface OptionalFacade<KEY, SERVICE> {
     default SERVICE getService() {
         return query().orElseThrow(() -> new UnsupportedOperationException("不支持的类型"));
     }
+
+    Map<KEY, SERVICE> getRegisterServices();
+
+    Set<KEY> getKeys();
+
+    Collection<SERVICE> getServiceInstances();
 }

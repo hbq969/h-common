@@ -1,22 +1,25 @@
 package com.github.hbq969.code.common.config;
 
-import com.github.hbq969.code.common.restful.ApiInfoProperties;
+import com.github.hbq969.code.common.filter.SwaggerFilter;
 import com.github.hbq969.code.common.restful.HealthControl;
 import com.github.hbq969.code.common.restful.version.VersionRegistrations;
+import com.github.hbq969.code.common.spring.advice.conf.AdviceProperties;
+import com.github.hbq969.code.common.spring.advice.ex.GlobalExceptionHandler;
 import com.github.hbq969.code.common.spring.advice.limit.RestfulLimitAdvice;
 import com.github.hbq969.code.common.spring.advice.log.LogAdvice;
 import com.github.hbq969.code.common.spring.context.SpringContext;
 import com.github.hbq969.code.common.spring.context.SpringEnv;
 import com.github.hbq969.code.common.spring.context.SpringEnvImpl;
 import com.github.hbq969.code.common.spring.interceptor.*;
-import com.github.hbq969.code.common.spring.mvc.MvcResourceHandlersProperties;
 import com.github.hbq969.code.common.utils.GsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
@@ -55,29 +58,36 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
         this.environment = environment;
     }
 
+    @Bean("common-SpringContextProperties")
+    public SpringContextProperties springContextProperties() {
+        return new SpringContextProperties();
+    }
+
     @Bean("common-HealthControl")
     public HealthControl healthControl() {
         return new HealthControl();
     }
 
-    @Bean("common-apiInfoProperties")
-    public ApiInfoProperties apiInfoProperties() {
-        return new ApiInfoProperties();
+    @Bean("common-SwaggerProperties")
+    public SwaggerProperties swaggerProperties() {
+        return new SwaggerProperties();
     }
 
     @Bean("common-docket")
     @Primary
-    @ConditionalOnExpression("${swagger.api-info.enable:true}")
-    public Docket docket(ApiInfoProperties apiInfo) {
-        String defaultBasePackage = environment.getProperty("swagger.base-package", "com.github.hbq969");
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo(apiInfo)).select().apis(RequestHandlerSelectors.basePackage(defaultBasePackage)).build();
+    public Docket docket(SwaggerProperties conf) {
+        log.info("启用swagger功能");
+        Docket docket = new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo(conf)).select().apis(RequestHandlerSelectors.basePackage(conf.getBasePackage())).build();
+        if (conf.getApiInfo().isPathMapping()) {
+            docket.pathMapping(environment.getProperty("server.servlet.context-path", "/"));
+        }
+        return docket;
     }
 
-    private ApiInfo apiInfo(ApiInfoProperties apiInfo) {
-        return new ApiInfoBuilder().title(apiInfo.getTitle()).description(apiInfo.getDescription()).version(apiInfo.getVersion()).license(apiInfo.getLicense()).licenseUrl(apiInfo.getLicenseUrl()).build();
+    private ApiInfo apiInfo(SwaggerProperties conf) {
+        return new ApiInfoBuilder().title(conf.getApiInfo().getTitle()).description(conf.getApiInfo().getDescription()).version(conf.getApiInfo().getVersion()).license(conf.getApiInfo().getLicense()).licenseUrl(conf.getApiInfo().getLicenseUrl()).build();
     }
 
-    @ConditionalOnExpression("${swagger.api-info.version.enable:true}")
     @Bean("common-WebMvcRegistrations")
     WebMvcRegistrations registrations() {
         return new VersionRegistrations();
@@ -93,11 +103,22 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
         return new SpringContext(context, environment);
     }
 
+    @Bean("common-AdviceProperties")
+    AdviceProperties adviceProperties() {
+        return new AdviceProperties();
+    }
+
     @ConditionalOnExpression("${advice.log.enabled:true}")
     @Bean("common-logAdvice")
     LogAdvice logAdvice() {
         log.info("初始化restful接口日志记录aop组件");
         return new LogAdvice();
+    }
+
+    @ConditionalOnExpression("${advice.ex.enabled:true}")
+    @Bean("common-GlobalExceptionHandler")
+    GlobalExceptionHandler globalExceptionHandler() {
+        return new GlobalExceptionHandler();
     }
 
     @ConditionalOnExpression("${advice.restful-limit.enabled:false}")
@@ -107,33 +128,39 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
         return new RestfulLimitAdvice();
     }
 
-    @ConditionalOnExpression("${spring.mvc.adapter.interceptor.info.enable:false}")
+    @Bean("common-InterceptorProperties")
+    SpringInterceptorProperties interceptorProperties() {
+        return new SpringInterceptorProperties();
+    }
+
+    @ConditionalOnExpression("${spring.mvc.interceptors.info.enabled:false}")
     @Bean("common-webmvc-handler-mdcHandlerInterceptor")
     InfoHandlerInterceptor infoHandlerInterceptor() {
         return new InfoHandlerInterceptor();
     }
 
+    @ConditionalOnExpression("${spring.mvc.interceptors.mdc.enabled:true}")
     @Bean("common-webmvc-handler-mdcHandlerInterceptor")
     MDCHandlerInterceptor mdcHandlerInterceptor() {
         return new MDCHandlerInterceptor();
     }
 
-    @ConditionalOnExpression("${spring.mvc.adapter.interceptor.header.enable:false}")
+    @ConditionalOnExpression("${spring.mvc.interceptors.header.enabled:false}")
     @Bean("common-webmvc-handler-headerHandlerInterceptor")
     HeaderHandlerInterceptor headerHandlerInterceptor() {
         return new HeaderHandlerInterceptor();
     }
 
-    @Bean("common-MvcResourceHandlersProperties")
-    @ConditionalOnExpression("${spring.mvc.adapter.enable:true}")
-    MvcResourceHandlersProperties mvcResourceHandlersProperties() {
-        return new MvcResourceHandlersProperties();
+    @ConditionalOnExpression("${spring.mvc.interceptors.api-safe.enabled:false}")
+    @Bean("common-webmvc-handler-apiSecurityInterceptor")
+    ApiSecurityInterceptor apiSecurityInterceptor() {
+        return new ApiSecurityInterceptor();
     }
 
     @Bean("common-webMvcConfigurerAdapter")
-    @ConditionalOnExpression("${spring.mvc.adapter.enable:true}")
+    @ConditionalOnExpression("${spring.mvc.resource-handler-registry.enabled:true}")
     @Primary
-    public WebMvcConfigurerAdapter webMvcConfigurerAdapter(MvcResourceHandlersProperties conf) {
+    public WebMvcConfigurerAdapter webMvcConfigurerAdapter(SpringInterceptorProperties conf) {
         return new WebMvcConfigurerAdapter() {
 
             @Override
@@ -147,7 +174,7 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
 
                 registry.addResourceHandler("/ui/**").addResourceLocations("classpath:/static/ui/");
 
-                Optional.ofNullable(conf.getEntries()).ifPresent(entries -> {
+                Optional.ofNullable(conf.getResourceHandlerRegistry().getEntries()).ifPresent(entries -> {
                     entries.forEach(entry -> {
                         log.info("扩展的ResourceHandler, {}", GsonUtils.toJson(entry));
                         registry.addResourceHandler(entry.getHandlers()).addResourceLocations(entry.getLocations());
@@ -172,8 +199,7 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
                         return Integer.MAX_VALUE;
                     }
                 })).forEach(h -> {
-                    log.info("注册拦截器, {}, order: {}, includeUris: {}, excludeUris: {}",
-                            h.getClass().getName(), h.order(), h.getPathPatterns(), h.getExcludedPathPatterns());
+                    log.info("注册拦截器, {}, order: {}, includeUris: {}, excludeUris: {}", h.getClass().getName(), h.order(), h.getPathPatterns(), h.getExcludedPathPatterns());
                     InterceptorRegistration registration = registry.addInterceptor(h);
                     if (CollectionUtils.isNotEmpty(h.getPathPatterns())) {
                         registration.addPathPatterns(h.getPathPatterns());
@@ -184,5 +210,19 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
                 });
             }
         };
+    }
+
+    @ConditionalOnProperty(prefix = "spring.mvc.interceptors.api-safe", name = "enabled", havingValue = "true")
+    @Bean("common-swaggerFilter")
+    public FilterRegistrationBean<SwaggerFilter> swaggerFilterFilterRegistrationBean(SpringContext sc) {
+        log.info("开启/v2/api-docs禁用拦截器");
+        String apiSafeHeaderName = sc.getProperty("spring.mvc.interceptors.api-safe.header-name");
+        String apiSafeHeaderValue = sc.getProperty("spring.mvc.interceptors.api-safe.header-value-regex");
+        FilterRegistrationBean<SwaggerFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new SwaggerFilter(apiSafeHeaderName, apiSafeHeaderValue));
+        registration.addUrlPatterns("/*");
+        registration.setName("swaggerFilter");
+        registration.setOrder(0);
+        return registration;
     }
 }

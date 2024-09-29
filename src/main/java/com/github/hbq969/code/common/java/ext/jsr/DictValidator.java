@@ -18,52 +18,52 @@ import java.util.stream.Collectors;
  */
 public class DictValidator implements ConstraintValidator<Dict, Object> {
 
-  private Dict dict;
+    private Dict dict;
 
-  @Override
-  public boolean isValid(Object value, ConstraintValidatorContext context) {
-    if (value == null) {
-      return true;
-    }
-    Set<String> set = Splitter.on(Pattern.compile("[,;]")).splitToList(dict.expectValue()).stream()
-        .map(v -> v.toString()).collect(Collectors.toSet());
-    if (StringUtils.isEmpty(dict.expectValue())) {
-      return false;
-    }
-    if (value instanceof Number) {
-      if (!set.contains(String.valueOf(value))) {
-        return false;
-      }
-      return true;
-    } else if (value instanceof String) {
-      String valueStr = value.toString();
-      if (valueStr.contains(",") || valueStr.contains(";")) {
-        List<String> list = Splitter.on(Pattern.compile("[,;]")).splitToList(valueStr);
-        for (String singleDictValue : list) {
-          if (!set.contains(singleDictValue)) {
+    @Override
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+        if (value == null) {
+            return true;
+        }
+        Set<String> set = Splitter.on(Pattern.compile("[,;]")).splitToList(dict.expectValue()).stream()
+                .map(v -> v.toString()).collect(Collectors.toSet());
+        if (StringUtils.isEmpty(dict.expectValue())) {
             return false;
-          }
         }
-      } else if (!set.contains(valueStr)) {
-        return false;
-      }
-      return true;
-    } else if (value instanceof List) {
-      List list = (List) value;
-      for (Object singleDictValue : list) {
-        if (!set.contains(String.valueOf(singleDictValue))) {
-          return false;
+        if (value instanceof Number || value instanceof Boolean) {
+            if (!set.contains(String.valueOf(value))) {
+                return false;
+            }
+            return true;
+        } else if (value instanceof String) {
+            String valueStr = value.toString();
+            if (valueStr.contains(",") || valueStr.contains(";")) {
+                List<String> list = Splitter.on(Pattern.compile("[,;]")).splitToList(valueStr);
+                for (String singleDictValue : list) {
+                    if (!set.contains(singleDictValue)) {
+                        return false;
+                    }
+                }
+            } else if (!set.contains(valueStr)) {
+                return false;
+            }
+            return true;
+        } else if (value instanceof List) {
+            List list = (List) value;
+            for (Object singleDictValue : list) {
+                if (!set.contains(String.valueOf(singleDictValue))) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            throw new UnsupportedOperationException(
+                    MessageFormat.format("不支持的校验类型 {0}", value.getClass()));
         }
-      }
-      return true;
-    } else {
-      throw new UnsupportedOperationException(
-          MessageFormat.format("不支持的校验类型 {0}", value.getClass()));
     }
-  }
 
-  @Override
-  public void initialize(Dict dict) {
-    this.dict = dict;
-  }
+    @Override
+    public void initialize(Dict dict) {
+        this.dict = dict;
+    }
 }

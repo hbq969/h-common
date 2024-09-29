@@ -1,7 +1,6 @@
 package com.github.hbq969.code.common.config;
 
 import com.github.hbq969.code.common.cache.CacheConfig;
-import com.github.hbq969.code.common.cache.config.CacheProperties;
 import com.github.hbq969.code.common.cache.generator.ApiKeyGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -16,18 +15,13 @@ import org.springframework.context.annotation.Primary;
 @Slf4j
 public class CacheAutoConfiguration {
 
-    @Bean("common-cacheProperties")
-    CacheProperties cacheProperties() {
-        return new CacheProperties();
-    }
-
-    @ConditionalOnExpression("${spring.cache.ext.enable:true}")
+    @ConditionalOnExpression("${spring.cache.ext.enabled:true}")
     @Bean("common-cacheConfig")
     CacheConfig cacheConfig() {
         return new CacheConfig();
     }
 
-    @ConditionalOnExpression("${spring.cache.ext.enable:true}")
+    @ConditionalOnExpression("${spring.cache.ext.enabled:true}")
     @Bean("apiKeyGenerator")
     @Primary
     ApiKeyGenerator apiKeyGenerator() {

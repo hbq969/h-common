@@ -5,7 +5,6 @@ import cn.hutool.core.util.ArrayUtil;
 import com.github.hbq969.code.common.datasource.DynamicDataSource;
 import com.github.hbq969.code.common.datasource.DynamicDataSourceAspect;
 import com.github.hbq969.code.common.datasource.DynamicDataSourceBeanProcessor;
-import com.github.hbq969.code.common.datasource.DynamicDataSourceProperties;
 import com.github.hbq969.code.common.spring.context.SpringContext;
 import com.github.hbq969.code.common.utils.GsonUtils;
 import com.github.hbq969.code.common.utils.StrUtils;
@@ -44,11 +43,6 @@ public class DynamicDataSourceConfiguration {
 
     public static final String KEY_SPRING_DATASOURCE = "spring.datasource.";
 
-    @Bean("common-dynamicDataSourceProperties")
-    DynamicDataSourceProperties dynamicDataSourceProperties() {
-        return new DynamicDataSourceProperties();
-    }
-
     @ConditionalOnExpression("${spring.datasource.dynamic.enabled:false}")
     @Bean("common-dynamicdatasource-DynamicDataSourceBeanProcessor")
     DynamicDataSourceBeanProcessor dynamicDataSourceBeanProcessor() {
@@ -64,7 +58,7 @@ public class DynamicDataSourceConfiguration {
     @ConditionalOnExpression("${spring.datasource.dynamic.enabled:false}")
     @Bean("common-dynamicdatasource-DynamicDataSource")
     @Primary
-    DataSource dynamicDataSource(SpringContext context, DynamicDataSourceProperties properties) {
+    DataSource dynamicDataSource(SpringContext context, SpringContextProperties properties) {
         Set<String> pKeys = context.getEnvironmentPropertyKeys();
         Set<String> dbKeySet = pKeys.stream().filter(k -> {
             boolean r = (k.startsWith("spring.datasource.") && k.endsWith(".jdbc-url"));
@@ -81,7 +75,7 @@ public class DynamicDataSourceConfiguration {
         }
         Map<Object, Object> dataSourceMap = new HashMap<>(dbKeySet.size());
         dbKeySet.forEach(dbKey -> dataSourceMap.put(dbKey, createBasicDataSource(context, dbKey)));
-        String defaultLookupKey = properties.getDefaultLookupKey();
+        String defaultLookupKey = properties.getDatasource().getDynamic().getDefaultLookupKey();
         DynamicDataSource dynamicDataSource = new DynamicDataSource(defaultLookupKey);
         dynamicDataSource.setTargetDataSources(dataSourceMap);
         Object defaultDatasource = dataSourceMap.get(defaultLookupKey);

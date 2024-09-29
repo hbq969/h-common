@@ -13,7 +13,12 @@ import org.springframework.context.annotation.Bean;
  */
 public class LockAutoConfiguration {
 
-    @ConditionalOnExpression("${lock.spi.redis.enabled:false}")
+    @Bean("common-LockProperties")
+    LockProperties lockProperties() {
+        return new LockProperties();
+    }
+
+    @ConditionalOnExpression("${lock.redis.enabled:false}")
     @Bean("lock-provider-redis")
     LockRedisProvider lockRedisProvider() {
         return new LockRedisProvider();
@@ -24,7 +29,7 @@ public class LockAutoConfiguration {
         return new LockProviderFacade();
     }
 
-    @ConditionalOnExpression("${lock.spi.redis.enabled:false}")
+    @ConditionalOnExpression("${lock.redis.enabled:false}")
     @Bean("lock-aspect")
     LockRedisAspect lockRedisAspect() {
         return new LockRedisAspect();

@@ -6,6 +6,7 @@ import com.github.hbq969.code.common.rule.NodeInfo;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * @author hbq969@gmail.com
@@ -71,6 +72,8 @@ public interface Rule<T> {
      * @return
      */
     boolean accept(T msg);
+
+    void accept(T msg, Consumer<T> suc, Consumer<T> fail);
 
     /**
      * 任意一个key匹配即匹配

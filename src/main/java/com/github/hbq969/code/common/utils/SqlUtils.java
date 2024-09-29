@@ -224,6 +224,26 @@ public class SqlUtils {
      */
     public static void initDataSql(SpringContext context, JdbcTemplate jt, String dir, String file, String profile,
                                    Charset charset) {
+
+        initDataSql(context, jt, dir, file, profile, charset, null);
+    }
+
+    /**
+     * 初始化xx.sql脚本数据
+     *
+     * @param context spring上下文，可以为空
+     * @param jt      spring-jdbc模板，不能为空
+     * @param dir     在classpath下相对路径
+     * @param file    脚本文件名
+     * @param profile 环境信息
+     * @param charset 脚本文件编码
+     * @param r       执行结束回调接口
+     */
+    public static void initDataSql(SpringContext context, JdbcTemplate jt, String dir, String file, String profile,
+                                   Charset charset, Runnable r) {
+        if (context != null && jt == null) {
+            jt = context.getBean(JdbcTemplate.class);
+        }
         Assert.notNull(jt, "JdbcTemplate 不能为空");
         try (InputStream in = ResourceUtils.read(dir, file, profile)) {
             boolean execute = false;
@@ -251,6 +271,10 @@ public class SqlUtils {
 
         } catch (Exception e) {
             log.error(String.format("读取脚本文件[%]异常", file, e));
+        } finally {
+            if (r != null) {
+                r.run();
+            }
         }
     }
 

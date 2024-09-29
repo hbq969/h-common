@@ -1,8 +1,6 @@
 package com.github.hbq969.code.common.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.UUID;
+import cn.hutool.core.lang.UUID;
 
 /**
  * @author : hbq969@gmail.com
@@ -11,7 +9,7 @@ import java.util.UUID;
  */
 public class UuidUtil {
 
-  public static synchronized String uuid() {
-    return StringUtils.replace(UUID.randomUUID().toString(), "-", "");
-  }
+    public static synchronized String uuid() {
+        return UUID.randomUUID().toString(true);
+    }
 }

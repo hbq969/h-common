@@ -13,13 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @RequestMapping(path = "/common")
 @Slf4j
-@Api(description = "健康检查", tags = "健康检查接口")
+@Api(description = "健康检查", tags = "维护使用-健康检查接口")
 public class HealthControl implements ICommonControl {
 
     @ApiOperation("健康检查")
     @RequestMapping(path = "/health", method = RequestMethod.GET)
     public String health() {
-        log.debug("心跳。");
+        if (log.isDebugEnabled()) {
+            log.debug("心跳。");
+        }
         return "OK";
     }
 }

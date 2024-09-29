@@ -46,7 +46,7 @@ public class Result<T> {
 
     @Override
     public String toString() {
-        return GsonUtils.toJson(this);
+        return "Result(ver=" + this.ver + ", code=" + this.code + ", msg=" + msg + ", time=" + this.time + ")";
     }
 
     public String getVer() {

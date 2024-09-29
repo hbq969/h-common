@@ -22,7 +22,7 @@ public class LockProviderFacade extends DefaultOptionalFacade<String, LockProvid
 
     @Override
     public Optional<LockProvider> query() {
-        return super.query(context.getProperty("bc.common.lock.spi.type", "redis"));
+        return super.query(context.getProperty("lock.way", "redis"));
     }
 
     @Override

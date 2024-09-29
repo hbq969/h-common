@@ -1,10 +1,10 @@
 package com.github.hbq969.code.common.lock.spi.redis;
 
+import com.github.hbq969.code.common.config.LockProperties;
 import com.github.hbq969.code.common.decorde.OptionalFacade;
 import com.github.hbq969.code.common.decorde.OptionalFacadeAware;
 import com.github.hbq969.code.common.lock.LockProvider;
 import com.github.hbq969.code.common.lock.spi.LockProviderFacade;
-import com.github.hbq969.code.common.spring.context.SpringContext;
 import com.github.hbq969.code.common.utils.GsonUtils;
 import com.github.hbq969.code.common.utils.StrUtils;
 import com.google.common.base.Splitter;
@@ -35,17 +35,11 @@ public class LockRedisProvider implements LockProvider, OptionalFacadeAware<Stri
 
     public static final String UNLOCK_LUA;
 
-    public static final String REDIS_PWD = "bc.lock.spi.redis.password";
-
-    public static final String REDIS_POOL_TIMEOUT = "bc.lock.spi.redis.timeout";
-
-    public static final Charset UTF8 = Charset.forName("utf-8");
-
     @Autowired
     private LockProviderFacade facade;
 
     @Autowired
-    private SpringContext context;
+    private LockProperties conf;
 
     private volatile RedisTemplate<Object, Object> redis;
 
@@ -75,13 +69,11 @@ public class LockRedisProvider implements LockProvider, OptionalFacadeAware<Stri
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (context.getEnvironment().containsProperty("bc.lock.spi.redis.standard.host")) {
+        if (conf.getRedis().getStandard().isEnabled()) {
             initializeStandaloneRedis();
-        } else if (context.getEnvironment()
-                .containsProperty("bc.lock.spi.redis.sentinel.master")) {
+        } else if (conf.getRedis().getSentinel().isEnabled()) {
             initializeSentinelRedis();
-        } else if (context.getEnvironment()
-                .containsProperty("bc.lock.spi.redis.cluster.nodes")) {
+        } else if (conf.getRedis().getCluster().isEnabled()) {
             initializeClusterRedis();
         } else {
             throw new UnsupportedOperationException("未配置redis, 不能启用分布式锁特性");
@@ -198,17 +190,16 @@ public class LockRedisProvider implements LockProvider, OptionalFacadeAware<Stri
             LettuceConnectionFactory factory = null;
             GenericObjectPoolConfig genericObjectPoolConfig = initializeGenericObjectPoolConfig();
 
-            long readTimeout = Long.valueOf(context.getProperty(REDIS_POOL_TIMEOUT, "5"));
+            long readTimeout = conf.getRedis().getConnectTimeout();
             LettucePoolingClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder()
                     .commandTimeout(Duration.ofSeconds(readTimeout)).poolConfig(genericObjectPoolConfig)
                     .build();
 
-            String ip = context.getProperty("bc.lock.spi.redis.standard.host");
-            int port = Integer.valueOf(
-                    context.getProperty("bc.lock.spi.redis.standard.port", "6379"));
+            String ip = conf.getRedis().getStandard().getHost();
+            int port = conf.getRedis().getStandard().getPort();
             RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(
                     ip, port);
-            String pwd = context.getProperty(REDIS_PWD);
+            String pwd = conf.getRedis().getPassword();
             if (StrUtils.strNotEmpty(pwd)) {
                 redisStandaloneConfiguration.setPassword(RedisPassword.of(pwd.toCharArray()));
             }
@@ -228,20 +219,20 @@ public class LockRedisProvider implements LockProvider, OptionalFacadeAware<Stri
             LettuceConnectionFactory factory = null;
             GenericObjectPoolConfig genericObjectPoolConfig = initializeGenericObjectPoolConfig();
 
-            long readTimeout = Long.valueOf(context.getProperty(REDIS_POOL_TIMEOUT, "5"));
+            long readTimeout = conf.getRedis().getConnectTimeout();
             LettucePoolingClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder()
                     .commandTimeout(Duration.ofSeconds(readTimeout)).poolConfig(genericObjectPoolConfig)
                     .build();
 
             RedisSentinelConfiguration redisSentinelConfiguration = new RedisSentinelConfiguration();
-            String master = context.getProperty("bc.lock.spi.redis.sentinel.master", "mymaster");
+            String master = conf.getRedis().getSentinel().getMaster();
             redisSentinelConfiguration.setMaster(master);
-            String servers = context.getProperty("bc.lock.spi.redis.sentinel.nodes");
+            String servers = conf.getRedis().getSentinel().getNodes();
             List<RedisNode> nodes = getRedisNodes(servers);
             for (RedisNode node : nodes) {
                 redisSentinelConfiguration.addSentinel(node);
             }
-            String pwd = context.getProperty("bc.lock.spi.redis.sentinel.password");
+            String pwd = conf.getRedis().getPassword();
             if (StrUtils.strNotEmpty(pwd)) {
                 redisSentinelConfiguration.setPassword(RedisPassword.of(pwd.toCharArray()));
             }
@@ -258,14 +249,10 @@ public class LockRedisProvider implements LockProvider, OptionalFacadeAware<Stri
 
     private GenericObjectPoolConfig initializeGenericObjectPoolConfig() {
         GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
-        genericObjectPoolConfig.setMaxIdle(Integer.valueOf(
-                context.getProperty("bc.lock.spi.redis.lettuce.pool.max-idle", "8")));
-        genericObjectPoolConfig.setMinIdle(Integer.valueOf(
-                context.getProperty("bc.lock.spi.redis.lettuce.pool.min-idle", "0")));
-        genericObjectPoolConfig.setMaxTotal(Integer.valueOf(
-                context.getProperty("bc.lock.spi.redis.lettuce.pool.max-active", "20")));
-        genericObjectPoolConfig.setMaxWaitMillis(
-                Long.valueOf(context.getProperty("bc.lock.spi.redis.lettuce.pool.max-wait", "-1")));
+        genericObjectPoolConfig.setMaxIdle(conf.getRedis().getLettuce().getPool().getMaxIdle());
+        genericObjectPoolConfig.setMinIdle(conf.getRedis().getLettuce().getPool().getMinIdle());
+        genericObjectPoolConfig.setMaxTotal(conf.getRedis().getLettuce().getPool().getMaxActive());
+        genericObjectPoolConfig.setMaxWaitMillis(conf.getRedis().getLettuce().getPool().getMaxWait());
         return genericObjectPoolConfig;
     }
 
@@ -274,18 +261,18 @@ public class LockRedisProvider implements LockProvider, OptionalFacadeAware<Stri
             LettuceConnectionFactory factory = null;
             GenericObjectPoolConfig genericObjectPoolConfig = initializeGenericObjectPoolConfig();
 
-            long readTimeout = Long.valueOf(context.getProperty(REDIS_POOL_TIMEOUT, "5"));
+            long readTimeout = conf.getRedis().getConnectTimeout();
             LettucePoolingClientConfiguration lettuceClientConfiguration = LettucePoolingClientConfiguration.builder()
                     .commandTimeout(Duration.ofSeconds(readTimeout)).poolConfig(genericObjectPoolConfig)
                     .build();
 
             RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration();
-            String servers = context.getProperty("bc.lock.spi.redis.cluster.nodes");
-            List<RedisNode> nodes = getRedisNodes(servers);
-            for (RedisNode node : nodes) {
-                redisClusterConfiguration.addClusterNode(node);
+            List<LockProperties.Redis.Cluster.Node> nodes = conf.getRedis().getCluster().getNodes();
+            for (LockProperties.Redis.Cluster.Node node : nodes) {
+                RedisNode rn = new RedisNode(node.getIp(), node.getPort());
+                redisClusterConfiguration.addClusterNode(rn);
             }
-            String pwd = context.getProperty(REDIS_PWD);
+            String pwd = conf.getRedis().getPassword();
             if (StrUtils.strNotEmpty(pwd)) {
                 redisClusterConfiguration.setPassword(RedisPassword.of(pwd.toCharArray()));
             }

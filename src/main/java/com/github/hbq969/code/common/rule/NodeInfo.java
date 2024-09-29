@@ -8,75 +8,75 @@ import java.util.Map;
  */
 public class NodeInfo implements Cloneable {
 
-  /**
-   * 枚举KEY
-   */
-  private String nodeKey;
+    /**
+     * 枚举KEY
+     */
+    private String nodeKey;
 
-  /**
-   * 枚举Value
-   */
-  private String nodeValue;
+    /**
+     * 枚举Value
+     */
+    private String nodeValue;
 
-  /**
-   * 枚举操作符
-   */
-  private String operator;
+    /**
+     * 枚举操作符
+     */
+    private String operator;
 
-  /**
-   * 枚举是否配置
-   */
-  private boolean config = false;
+    /**
+     * 枚举是否配置
+     */
+    private boolean config = false;
 
-  public NodeInfo(String nodeKey, String nodeValue, String operator) {
-    this.nodeKey = nodeKey;
-    this.nodeValue = nodeValue;
-    this.operator = operator;
-  }
+    public NodeInfo(String nodeKey, String nodeValue, String operator) {
+        this.nodeKey = nodeKey;
+        this.nodeValue = nodeValue;
+        this.operator = operator;
+    }
 
-  public NodeInfo(String nodeKey, String nodeValue) {
-    this.nodeKey = nodeKey;
-    this.nodeValue = nodeValue;
-  }
+    public NodeInfo(String nodeKey, String nodeValue) {
+        this.nodeKey = nodeKey;
+        this.nodeValue = nodeValue;
+    }
 
-  public String getNodeKey() {
-    return nodeKey;
-  }
+    public String getNodeKey() {
+        return nodeKey;
+    }
 
-  public String getNodeValue() {
-    return nodeValue;
-  }
+    public String getNodeValue() {
+        return nodeValue;
+    }
 
-  public String getOperator() {
-    return operator;
-  }
+    public String getOperator() {
+        return operator;
+    }
 
-  public void setOperator(String operator) {
-    this.operator = operator;
-  }
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
 
-  public void config() {
-    this.config = true;
-  }
+    public void config() {
+        this.config = true;
+    }
 
-  public boolean isConfig() {
-    return config;
-  }
+    public boolean isConfig() {
+        return config;
+    }
 
-  public Map treeMap() {
-    Map map = new HashMap();
-    map.put("is_conf", config ? 1 : 0);
-    map.put("node_k", nodeKey);
-    map.put("node_v", nodeValue);
-    map.put("node_oper", operator);
-    return map;
-  }
+    public Map treeMap() {
+        Map map = new HashMap();
+        map.put("is_conf", config ? 1 : 0);
+        map.put("node_k", nodeKey);
+        map.put("node_v", nodeValue);
+        map.put("node_oper", operator);
+        return map;
+    }
 
-  @Override
-  public NodeInfo clone() throws CloneNotSupportedException {
-    NodeInfo clone = new NodeInfo(nodeKey, nodeValue);
-    clone.setOperator(operator);
-    clone.config = false;
-    return clone;
-  }
+    @Override
+    public NodeInfo clone() throws CloneNotSupportedException {
+        NodeInfo clone = new NodeInfo(nodeKey, nodeValue);
+        clone.setOperator(operator);
+        clone.config = false;
+        return clone;
+    }
 }

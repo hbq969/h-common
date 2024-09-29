@@ -1,9 +1,8 @@
 package com.github.hbq969.code.common.encrypt.ext.advice;
 
-import com.github.hbq969.code.common.encrypt.ext.config.AESConfig;
+import com.github.hbq969.code.common.config.EncryptProperties;
 import com.github.hbq969.code.common.encrypt.ext.config.Algorithm;
 import com.github.hbq969.code.common.encrypt.ext.config.Encrypt;
-import com.github.hbq969.code.common.encrypt.ext.config.RSAConfig;
 import com.github.hbq969.code.common.encrypt.ext.utils.AESUtil;
 import com.github.hbq969.code.common.encrypt.ext.utils.Base64Util;
 import com.github.hbq969.code.common.encrypt.ext.utils.JsonUtils;
@@ -31,32 +30,24 @@ import java.util.Objects;
 public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Autowired
-    private RSAConfig rsaConfig;
-
-    @Autowired
-    private AESConfig aesConfig;
+    private EncryptProperties conf;
 
     @Override
-    public boolean supports(MethodParameter returnType,
-                            Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         Method method = returnType.getMethod();
         if (Objects.isNull(method)) {
             return false;
         }
-        return (rsaConfig.isEnabled() || aesConfig.isEnabled()) && method.isAnnotationPresent(
-                Encrypt.class);
+        return method.isAnnotationPresent(Encrypt.class);
     }
 
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType,
-                                  MediaType selectedContentType,
-                                  Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
-                                  ServerHttpResponse response) {
+    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
 
         Encrypt encrypt = returnType.getMethodAnnotation(Encrypt.class);
-        if (aesConfig.isEnabled() && encrypt.algorithm() == Algorithm.AES) {
-            String key = aesConfig.getKey();
-            String charset = aesConfig.getCharset();
+        if (encrypt.algorithm() == Algorithm.AES) {
+            String key = conf.getRestful().getAes().getKey();
+            String charset = conf.getRestful().getAes().getCharset();
             try {
                 String content = JsonUtils.writeValueAsString(body);
                 if (StringUtils.isBlank(key)) {
@@ -66,7 +57,7 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                     charset = "utf-8";
                 }
                 String encryptBody = AESUtil.encrypt(content, key, Charset.forName(charset));
-                if (aesConfig.isShowLog()) {
+                if (conf.getRestful().getAes().isShowLog()) {
                     log.info("请求响应, aes加密前: {}, 加密后: {}", content, encryptBody);
                 }
                 return encryptBody;
@@ -75,9 +66,9 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             }
         }
 
-        if (rsaConfig.isEnabled() && encrypt.algorithm() == Algorithm.RSA) {
-            String publicKey = rsaConfig.getPublicKey();
-            String charset = rsaConfig.getCharset();
+        if (encrypt.algorithm() == Algorithm.RSA) {
+            String publicKey = conf.getRestful().getRsa().getPublicKey();
+            String charset = conf.getRestful().getRsa().getCharset();
             try {
                 if (StringUtils.isBlank(publicKey)) {
                     throw new IllegalArgumentException("rsa加密的公钥不能为空");
@@ -89,7 +80,7 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                 byte[] data = content.getBytes(charset);
                 byte[] encodedData = RSAUtil.encrypt(data, publicKey);
                 String result = Base64Util.encode(encodedData);
-                if (rsaConfig.isShowLog()) {
+                if (conf.getRestful().getRsa().isShowLog()) {
                     log.info("请求响应, rsa加密前：{}，加密后：{}", content, result);
                 }
                 return result;

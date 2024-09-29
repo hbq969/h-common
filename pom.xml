@@ -3,6 +3,20 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <distributionManagement>
+    <repository>
+      <id>thirdparty-cmss</id>
+      <name>Nexus Releases Repository</name>
+      <url>http://nexus.cmss.com:8081/repository/thirdparty-cmss/</url>
+    </repository>
+    <snapshotRepository>
+      <id>thirdparty-snapshot</id>
+      <name>Nexus Snapshots Repository</name>
+      <url>http://nexus.cmss.com:8081/repository/thirdparty-snapshot/</url>
+    </snapshotRepository>
+
+  </distributionManagement>
+
   <parent>
     <groupId>com.github.hbq969</groupId>
     <artifactId>h-parent</artifactId>

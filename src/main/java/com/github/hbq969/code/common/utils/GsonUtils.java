@@ -1,6 +1,9 @@
 package com.github.hbq969.code.common.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 /**
  * @author : hbq969@gmail.com
@@ -16,5 +19,9 @@ public class GsonUtils {
 
     public static <T> T fromJson(String str, Class<T> clz) {
         return GSON.fromJson(str, clz);
+    }
+
+    public static <T> List<T> parseArray(String str, TypeToken<List<T>> token) {
+        return GSON.fromJson(str, token.getType());
     }
 }
