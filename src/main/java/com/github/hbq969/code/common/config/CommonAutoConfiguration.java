@@ -17,7 +17,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -212,14 +211,14 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
         };
     }
 
-    @ConditionalOnProperty(prefix = "spring.mvc.interceptors.api-safe", name = "enabled", havingValue = "true")
+    @ConditionalOnExpression("#{${spring.mvc.interceptors.api-safe.enabled:false} || ${spring.mvc.interceptors.login.enabled:false}}")
     @Bean("common-swaggerFilter")
     public FilterRegistrationBean<SwaggerFilter> swaggerFilterFilterRegistrationBean(SpringContext sc) {
         log.info("开启/v2/api-docs禁用拦截器");
         String apiSafeHeaderName = sc.getProperty("spring.mvc.interceptors.api-safe.header-name");
         String apiSafeHeaderValue = sc.getProperty("spring.mvc.interceptors.api-safe.header-value-regex");
         FilterRegistrationBean<SwaggerFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(new SwaggerFilter(apiSafeHeaderName, apiSafeHeaderValue));
+        registration.setFilter(new SwaggerFilter(sc, apiSafeHeaderName, apiSafeHeaderValue));
         registration.addUrlPatterns("/*");
         registration.setName("swaggerFilter");
         registration.setOrder(0);

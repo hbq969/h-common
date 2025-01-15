@@ -1,5 +1,7 @@
 package com.github.hbq969.code.common.filter;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.github.hbq969.code.common.spring.context.SpringContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -7,6 +9,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -19,23 +22,47 @@ public class SwaggerFilter implements Filter {
 
     private String apiSafeHeaderName;
     private String apiSafeHeaderValue;
+    private SpringContext sc;
+    private boolean loginEnabled = false;
 
-    public SwaggerFilter(String apiSafeHeaderName, String apiSafeHeaderValue) {
+    public SwaggerFilter(SpringContext sc, String apiSafeHeaderName, String apiSafeHeaderValue) {
+        this.sc = sc;
+        this.loginEnabled = sc.getBoolValue("spring.mvc.interceptors.login.enabled", false);
         this.apiSafeHeaderName = apiSafeHeaderName;
         this.apiSafeHeaderValue = apiSafeHeaderValue;
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest r = (HttpServletRequest) servletRequest;
-        String uri = r.getRequestURI();
-        String actualHeaderValue = r.getHeader(apiSafeHeaderName);
-        if (StringUtils.endsWith(uri, "/v2/api-docs") && !StringUtils.equals(apiSafeHeaderValue, actualHeaderValue)) {
-            log.warn("禁止访问/v2/api-docs");
-            HttpServletResponse resp = (HttpServletResponse) servletResponse;
-            resp.setStatus(HttpStatus.FORBIDDEN_403);
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String uri = request.getRequestURI();
+        if (!StringUtils.endsWith(uri, "/v2/api-docs")) {
+            filterChain.doFilter(request, response);
             return;
         }
-        filterChain.doFilter(servletRequest, servletResponse);
+        if (loginEnabled) {
+            HttpSession session = request.getSession();
+            if (null == session) {
+                log.warn("会话为空，禁止访问/v2/api-docs");
+                response.setStatus(HttpStatus.FORBIDDEN_403);
+                return;
+            }
+            Object user = session.getAttribute("h-sm-user");
+            if (ObjectUtil.isNotEmpty(user)) {
+                filterChain.doFilter(servletRequest, servletResponse);
+            } else {
+                log.warn("会话失效或注销，禁止访问/v2/api-docs");
+                response.setStatus(HttpStatus.FORBIDDEN_403);
+            }
+        } else {
+            String actualHeaderValue = request.getHeader(apiSafeHeaderName);
+            if (!StringUtils.equals(apiSafeHeaderValue, actualHeaderValue)) {
+                log.warn("禁止访问/v2/api-docs");
+                response.setStatus(HttpStatus.FORBIDDEN_403);
+            } else {
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
+        }
     }
 }
