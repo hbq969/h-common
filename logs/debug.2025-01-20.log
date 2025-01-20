@@ -1,0 +1,849 @@
+2025-01-20 14:04:37.199 DEBUG [] - Running with Spring Boot v2.6.11, Spring v5.3.22
+2025-01-20 14:04:38.533 DEBUG [] - 构建动态数据源: hikari, 驱动类: com.mysql.cj.jdbc.Driver, url: jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000, 连接总数: 10, 最小空闲: 2, 等待超时: 1800000 ms, 测试sql: SELECT 1
+2025-01-20 14:04:38.535 DEBUG [] - Driver class com.mysql.cj.jdbc.Driver found in Thread context class loader sun.misc.Launcher$AppClassLoader@18b4aac2
+2025-01-20 14:04:38.545 DEBUG [] - HikariPool-1 - configuration:
+2025-01-20 14:04:38.547 DEBUG [] - allowPoolSuspension................................false
+2025-01-20 14:04:38.547 DEBUG [] - autoCommit................................true
+2025-01-20 14:04:38.547 DEBUG [] - catalog................................none
+2025-01-20 14:04:38.547 DEBUG [] - connectionInitSql................................none
+2025-01-20 14:04:38.547 DEBUG [] - connectionTestQuery................................"SELECT 1"
+2025-01-20 14:04:38.547 DEBUG [] - connectionTimeout................................30000
+2025-01-20 14:04:38.547 DEBUG [] - dataSource................................none
+2025-01-20 14:04:38.547 DEBUG [] - dataSourceClassName................................none
+2025-01-20 14:04:38.547 DEBUG [] - dataSourceJNDI................................none
+2025-01-20 14:04:38.547 DEBUG [] - dataSourceProperties................................{password=<masked>}
+2025-01-20 14:04:38.547 DEBUG [] - driverClassName................................"com.mysql.cj.jdbc.Driver"
+2025-01-20 14:04:38.547 DEBUG [] - exceptionOverrideClassName................................none
+2025-01-20 14:04:38.548 DEBUG [] - healthCheckProperties................................{}
+2025-01-20 14:04:38.548 DEBUG [] - healthCheckRegistry................................none
+2025-01-20 14:04:38.548 DEBUG [] - idleTimeout................................600000
+2025-01-20 14:04:38.548 DEBUG [] - initializationFailTimeout................................1
+2025-01-20 14:04:38.548 DEBUG [] - isolateInternalQueries................................false
+2025-01-20 14:04:38.548 DEBUG [] - jdbcUrl................................jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000
+2025-01-20 14:04:38.548 DEBUG [] - keepaliveTime................................0
+2025-01-20 14:04:38.548 DEBUG [] - leakDetectionThreshold................................0
+2025-01-20 14:04:38.548 DEBUG [] - maxLifetime................................1800000
+2025-01-20 14:04:38.548 DEBUG [] - maximumPoolSize................................10
+2025-01-20 14:04:38.548 DEBUG [] - metricRegistry................................none
+2025-01-20 14:04:38.548 DEBUG [] - metricsTrackerFactory................................none
+2025-01-20 14:04:38.548 DEBUG [] - minimumIdle................................2
+2025-01-20 14:04:38.548 DEBUG [] - password................................<masked>
+2025-01-20 14:04:38.548 DEBUG [] - poolName................................"HikariPool-1"
+2025-01-20 14:04:38.548 DEBUG [] - readOnly................................false
+2025-01-20 14:04:38.549 DEBUG [] - registerMbeans................................false
+2025-01-20 14:04:38.549 DEBUG [] - scheduledExecutor................................none
+2025-01-20 14:04:38.549 DEBUG [] - schema................................none
+2025-01-20 14:04:38.549 DEBUG [] - threadFactory................................internal
+2025-01-20 14:04:38.549 DEBUG [] - transactionIsolation................................default
+2025-01-20 14:04:38.549 DEBUG [] - username................................"cscenter"
+2025-01-20 14:04:38.549 DEBUG [] - validationTimeout................................5000
+2025-01-20 14:04:38.647 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7f3c0399
+2025-01-20 14:04:38.753 DEBUG [] - HikariPool-1 - Before cleanup stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:04:38.753 DEBUG [] - HikariPool-1 - After cleanup  stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:04:38.764 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7efc43b
+2025-01-20 14:04:38.764 DEBUG [] - HikariPool-1 - After adding stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:04:40.611 DEBUG [] - 
+
+,------.                           ,--.  ,--.         ,--.                         
+|  .--. '  ,--,--.  ,---.   ,---.  |  '--'  |  ,---.  |  |  ,---.   ,---.  ,--.--. 
+|  '--' | ' ,-.  | | .-. | | .-. : |  .--.  | | .-. : |  | | .-. | | .-. : |  .--' 
+|  | --'  \ '-'  | ' '-' ' \   --. |  |  |  | \   --. |  | | '-' ' \   --. |  |    
+`--'       `--`--' .`-  /   `----' `--'  `--'  `----' `--' |  |-'   `----' `--'    
+                   `---'                                   `--'                        is intercepting.
+
+2025-01-20 14:05:08.759 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:05:08.761 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:05:08.761 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:05:14.566 DEBUG [] - Running with Spring Boot v2.6.11, Spring v5.3.22
+2025-01-20 14:05:15.855 DEBUG [] - 构建动态数据源: hikari, 驱动类: com.mysql.cj.jdbc.Driver, url: jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000, 连接总数: 10, 最小空闲: 2, 等待超时: 1800000 ms, 测试sql: SELECT 1
+2025-01-20 14:05:15.855 DEBUG [] - Driver class com.mysql.cj.jdbc.Driver found in Thread context class loader sun.misc.Launcher$AppClassLoader@18b4aac2
+2025-01-20 14:05:15.866 DEBUG [] - HikariPool-1 - configuration:
+2025-01-20 14:05:15.867 DEBUG [] - allowPoolSuspension................................false
+2025-01-20 14:05:15.867 DEBUG [] - autoCommit................................true
+2025-01-20 14:05:15.867 DEBUG [] - catalog................................none
+2025-01-20 14:05:15.867 DEBUG [] - connectionInitSql................................none
+2025-01-20 14:05:15.867 DEBUG [] - connectionTestQuery................................"SELECT 1"
+2025-01-20 14:05:15.867 DEBUG [] - connectionTimeout................................30000
+2025-01-20 14:05:15.867 DEBUG [] - dataSource................................none
+2025-01-20 14:05:15.867 DEBUG [] - dataSourceClassName................................none
+2025-01-20 14:05:15.867 DEBUG [] - dataSourceJNDI................................none
+2025-01-20 14:05:15.867 DEBUG [] - dataSourceProperties................................{password=<masked>}
+2025-01-20 14:05:15.867 DEBUG [] - driverClassName................................"com.mysql.cj.jdbc.Driver"
+2025-01-20 14:05:15.867 DEBUG [] - exceptionOverrideClassName................................none
+2025-01-20 14:05:15.868 DEBUG [] - healthCheckProperties................................{}
+2025-01-20 14:05:15.868 DEBUG [] - healthCheckRegistry................................none
+2025-01-20 14:05:15.868 DEBUG [] - idleTimeout................................600000
+2025-01-20 14:05:15.868 DEBUG [] - initializationFailTimeout................................1
+2025-01-20 14:05:15.868 DEBUG [] - isolateInternalQueries................................false
+2025-01-20 14:05:15.868 DEBUG [] - jdbcUrl................................jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000
+2025-01-20 14:05:15.868 DEBUG [] - keepaliveTime................................0
+2025-01-20 14:05:15.868 DEBUG [] - leakDetectionThreshold................................0
+2025-01-20 14:05:15.868 DEBUG [] - maxLifetime................................1800000
+2025-01-20 14:05:15.868 DEBUG [] - maximumPoolSize................................10
+2025-01-20 14:05:15.868 DEBUG [] - metricRegistry................................none
+2025-01-20 14:05:15.868 DEBUG [] - metricsTrackerFactory................................none
+2025-01-20 14:05:15.868 DEBUG [] - minimumIdle................................2
+2025-01-20 14:05:15.868 DEBUG [] - password................................<masked>
+2025-01-20 14:05:15.869 DEBUG [] - poolName................................"HikariPool-1"
+2025-01-20 14:05:15.869 DEBUG [] - readOnly................................false
+2025-01-20 14:05:15.869 DEBUG [] - registerMbeans................................false
+2025-01-20 14:05:15.869 DEBUG [] - scheduledExecutor................................none
+2025-01-20 14:05:15.869 DEBUG [] - schema................................none
+2025-01-20 14:05:15.869 DEBUG [] - threadFactory................................internal
+2025-01-20 14:05:15.869 DEBUG [] - transactionIsolation................................default
+2025-01-20 14:05:15.869 DEBUG [] - username................................"cscenter"
+2025-01-20 14:05:15.869 DEBUG [] - validationTimeout................................5000
+2025-01-20 14:05:15.990 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@604d28c6
+2025-01-20 14:05:16.096 DEBUG [] - HikariPool-1 - Before cleanup stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:05:16.096 DEBUG [] - HikariPool-1 - After cleanup  stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:05:16.159 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@53aaada6
+2025-01-20 14:05:16.159 DEBUG [] - HikariPool-1 - After adding stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:05:18.672 DEBUG [] - 
+
+,------.                           ,--.  ,--.         ,--.                         
+|  .--. '  ,--,--.  ,---.   ,---.  |  '--'  |  ,---.  |  |  ,---.   ,---.  ,--.--. 
+|  '--' | ' ,-.  | | .-. | | .-. : |  .--.  | | .-. : |  | | .-. | | .-. : |  .--' 
+|  | --'  \ '-'  | ' '-' ' \   --. |  |  |  | \   --. |  | | '-' ' \   --. |  |    
+`--'       `--`--' .`-  /   `----' `--'  `--'  `----' `--' |  |-'   `----' `--'    
+                   `---'                                   `--'                        is intercepting.
+
+2025-01-20 14:05:46.102 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:05:46.102 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:05:46.102 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:06:01.505 DEBUG [] - Running with Spring Boot v2.6.11, Spring v5.3.22
+2025-01-20 14:06:02.679 DEBUG [] - 构建动态数据源: hikari, 驱动类: com.mysql.cj.jdbc.Driver, url: jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000, 连接总数: 10, 最小空闲: 2, 等待超时: 1800000 ms, 测试sql: SELECT 1
+2025-01-20 14:06:02.680 DEBUG [] - Driver class com.mysql.cj.jdbc.Driver found in Thread context class loader sun.misc.Launcher$AppClassLoader@18b4aac2
+2025-01-20 14:06:02.690 DEBUG [] - HikariPool-1 - configuration:
+2025-01-20 14:06:02.691 DEBUG [] - allowPoolSuspension................................false
+2025-01-20 14:06:02.692 DEBUG [] - autoCommit................................true
+2025-01-20 14:06:02.692 DEBUG [] - catalog................................none
+2025-01-20 14:06:02.692 DEBUG [] - connectionInitSql................................none
+2025-01-20 14:06:02.692 DEBUG [] - connectionTestQuery................................"SELECT 1"
+2025-01-20 14:06:02.692 DEBUG [] - connectionTimeout................................30000
+2025-01-20 14:06:02.692 DEBUG [] - dataSource................................none
+2025-01-20 14:06:02.692 DEBUG [] - dataSourceClassName................................none
+2025-01-20 14:06:02.692 DEBUG [] - dataSourceJNDI................................none
+2025-01-20 14:06:02.692 DEBUG [] - dataSourceProperties................................{password=<masked>}
+2025-01-20 14:06:02.692 DEBUG [] - driverClassName................................"com.mysql.cj.jdbc.Driver"
+2025-01-20 14:06:02.692 DEBUG [] - exceptionOverrideClassName................................none
+2025-01-20 14:06:02.693 DEBUG [] - healthCheckProperties................................{}
+2025-01-20 14:06:02.693 DEBUG [] - healthCheckRegistry................................none
+2025-01-20 14:06:02.693 DEBUG [] - idleTimeout................................600000
+2025-01-20 14:06:02.693 DEBUG [] - initializationFailTimeout................................1
+2025-01-20 14:06:02.693 DEBUG [] - isolateInternalQueries................................false
+2025-01-20 14:06:02.693 DEBUG [] - jdbcUrl................................jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000
+2025-01-20 14:06:02.693 DEBUG [] - keepaliveTime................................0
+2025-01-20 14:06:02.693 DEBUG [] - leakDetectionThreshold................................0
+2025-01-20 14:06:02.693 DEBUG [] - maxLifetime................................1800000
+2025-01-20 14:06:02.693 DEBUG [] - maximumPoolSize................................10
+2025-01-20 14:06:02.693 DEBUG [] - metricRegistry................................none
+2025-01-20 14:06:02.693 DEBUG [] - metricsTrackerFactory................................none
+2025-01-20 14:06:02.693 DEBUG [] - minimumIdle................................2
+2025-01-20 14:06:02.693 DEBUG [] - password................................<masked>
+2025-01-20 14:06:02.693 DEBUG [] - poolName................................"HikariPool-1"
+2025-01-20 14:06:02.693 DEBUG [] - readOnly................................false
+2025-01-20 14:06:02.693 DEBUG [] - registerMbeans................................false
+2025-01-20 14:06:02.693 DEBUG [] - scheduledExecutor................................none
+2025-01-20 14:06:02.693 DEBUG [] - schema................................none
+2025-01-20 14:06:02.694 DEBUG [] - threadFactory................................internal
+2025-01-20 14:06:02.694 DEBUG [] - transactionIsolation................................default
+2025-01-20 14:06:02.694 DEBUG [] - username................................"cscenter"
+2025-01-20 14:06:02.694 DEBUG [] - validationTimeout................................5000
+2025-01-20 14:06:02.792 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@604d28c6
+2025-01-20 14:06:02.898 DEBUG [] - HikariPool-1 - Before cleanup stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:06:02.898 DEBUG [] - HikariPool-1 - After cleanup  stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:06:02.907 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2cff1953
+2025-01-20 14:06:02.908 DEBUG [] - HikariPool-1 - After adding stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:06:04.649 DEBUG [] - 
+
+,------.                           ,--.  ,--.         ,--.                         
+|  .--. '  ,--,--.  ,---.   ,---.  |  '--'  |  ,---.  |  |  ,---.   ,---.  ,--.--. 
+|  '--' | ' ,-.  | | .-. | | .-. : |  .--.  | | .-. : |  | | .-. | | .-. : |  .--' 
+|  | --'  \ '-'  | ' '-' ' \   --. |  |  |  | \   --. |  | | '-' ' \   --. |  |    
+`--'       `--`--' .`-  /   `----' `--'  `--'  `----' `--' |  |-'   `----' `--'    
+                   `---'                                   `--'                        is intercepting.
+
+2025-01-20 14:06:32.903 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:06:32.904 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:06:32.904 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:07:02.910 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:07:02.913 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:07:02.913 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:07:32.915 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:07:32.916 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:07:32.917 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:08:02.896 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:08:02.897 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:08:02.897 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:08:32.888 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:08:32.889 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:08:32.889 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:09:02.891 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:09:02.891 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:09:02.891 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:09:32.897 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:09:32.898 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:09:32.898 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:09:40.061 DEBUG [] - Running with Spring Boot v2.6.11, Spring v5.3.22
+2025-01-20 14:09:41.515 DEBUG [] - 构建动态数据源: hikari, 驱动类: com.mysql.cj.jdbc.Driver, url: jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000, 连接总数: 10, 最小空闲: 2, 等待超时: 1800000 ms, 测试sql: SELECT 1
+2025-01-20 14:09:41.516 DEBUG [] - Driver class com.mysql.cj.jdbc.Driver found in Thread context class loader sun.misc.Launcher$AppClassLoader@18b4aac2
+2025-01-20 14:09:41.526 DEBUG [] - HikariPool-1 - configuration:
+2025-01-20 14:09:41.528 DEBUG [] - allowPoolSuspension................................false
+2025-01-20 14:09:41.528 DEBUG [] - autoCommit................................true
+2025-01-20 14:09:41.528 DEBUG [] - catalog................................none
+2025-01-20 14:09:41.528 DEBUG [] - connectionInitSql................................none
+2025-01-20 14:09:41.528 DEBUG [] - connectionTestQuery................................"SELECT 1"
+2025-01-20 14:09:41.528 DEBUG [] - connectionTimeout................................30000
+2025-01-20 14:09:41.528 DEBUG [] - dataSource................................none
+2025-01-20 14:09:41.528 DEBUG [] - dataSourceClassName................................none
+2025-01-20 14:09:41.528 DEBUG [] - dataSourceJNDI................................none
+2025-01-20 14:09:41.529 DEBUG [] - dataSourceProperties................................{password=<masked>}
+2025-01-20 14:09:41.529 DEBUG [] - driverClassName................................"com.mysql.cj.jdbc.Driver"
+2025-01-20 14:09:41.529 DEBUG [] - exceptionOverrideClassName................................none
+2025-01-20 14:09:41.529 DEBUG [] - healthCheckProperties................................{}
+2025-01-20 14:09:41.529 DEBUG [] - healthCheckRegistry................................none
+2025-01-20 14:09:41.529 DEBUG [] - idleTimeout................................600000
+2025-01-20 14:09:41.529 DEBUG [] - initializationFailTimeout................................1
+2025-01-20 14:09:41.529 DEBUG [] - isolateInternalQueries................................false
+2025-01-20 14:09:41.529 DEBUG [] - jdbcUrl................................jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000
+2025-01-20 14:09:41.530 DEBUG [] - keepaliveTime................................0
+2025-01-20 14:09:41.530 DEBUG [] - leakDetectionThreshold................................0
+2025-01-20 14:09:41.530 DEBUG [] - maxLifetime................................1800000
+2025-01-20 14:09:41.530 DEBUG [] - maximumPoolSize................................10
+2025-01-20 14:09:41.530 DEBUG [] - metricRegistry................................none
+2025-01-20 14:09:41.530 DEBUG [] - metricsTrackerFactory................................none
+2025-01-20 14:09:41.530 DEBUG [] - minimumIdle................................2
+2025-01-20 14:09:41.530 DEBUG [] - password................................<masked>
+2025-01-20 14:09:41.530 DEBUG [] - poolName................................"HikariPool-1"
+2025-01-20 14:09:41.530 DEBUG [] - readOnly................................false
+2025-01-20 14:09:41.530 DEBUG [] - registerMbeans................................false
+2025-01-20 14:09:41.530 DEBUG [] - scheduledExecutor................................none
+2025-01-20 14:09:41.530 DEBUG [] - schema................................none
+2025-01-20 14:09:41.530 DEBUG [] - threadFactory................................internal
+2025-01-20 14:09:41.530 DEBUG [] - transactionIsolation................................default
+2025-01-20 14:09:41.530 DEBUG [] - username................................"cscenter"
+2025-01-20 14:09:41.530 DEBUG [] - validationTimeout................................5000
+2025-01-20 14:09:41.637 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@604d28c6
+2025-01-20 14:09:41.743 DEBUG [] - HikariPool-1 - Before cleanup stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:09:41.743 DEBUG [] - HikariPool-1 - After cleanup  stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:09:41.757 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5467e5fb
+2025-01-20 14:09:41.757 DEBUG [] - HikariPool-1 - After adding stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:09:44.303 DEBUG [] - 
+
+,------.                           ,--.  ,--.         ,--.                         
+|  .--. '  ,--,--.  ,---.   ,---.  |  '--'  |  ,---.  |  |  ,---.   ,---.  ,--.--. 
+|  '--' | ' ,-.  | | .-. | | .-. : |  .--.  | | .-. : |  | | .-. | | .-. : |  .--' 
+|  | --'  \ '-'  | ' '-' ' \   --. |  |  |  | \   --. |  | | '-' ' \   --. |  |    
+`--'       `--`--' .`-  /   `----' `--'  `--'  `----' `--' |  |-'   `----' `--'    
+                   `---'                                   `--'                        is intercepting.
+
+2025-01-20 14:10:11.750 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:10:11.756 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:10:11.757 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:10:41.761 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:10:41.761 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:10:41.762 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:11:11.764 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:11:11.768 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:11:11.768 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:11:41.772 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:11:41.772 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:11:41.773 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:12:11.779 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:12:11.783 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:12:11.784 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:12:41.789 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:12:41.790 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:12:41.791 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:13:11.797 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:13:11.800 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:13:11.800 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:13:41.803 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:13:41.804 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:13:41.804 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:14:11.808 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:14:11.809 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:14:11.809 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:14:41.813 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:14:41.814 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:14:41.814 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:15:11.817 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:15:11.819 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:15:11.819 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:15:41.824 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:15:41.826 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:15:41.826 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:16:11.831 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:16:11.833 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:16:11.833 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:16:41.836 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:16:41.838 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:16:41.838 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:17:11.839 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:17:11.840 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:17:11.840 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:17:41.847 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:17:41.851 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:17:41.852 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:18:11.854 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:18:11.857 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:18:11.857 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:18:41.863 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:18:41.866 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:18:41.866 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:18:55.577 DEBUG [] - Running with Spring Boot v2.6.11, Spring v5.3.22
+2025-01-20 14:18:56.778 DEBUG [] - 构建动态数据源: hikari, 驱动类: com.mysql.cj.jdbc.Driver, url: jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000, 连接总数: 10, 最小空闲: 2, 等待超时: 1800000 ms, 测试sql: SELECT 1
+2025-01-20 14:18:56.779 DEBUG [] - Driver class com.mysql.cj.jdbc.Driver found in Thread context class loader sun.misc.Launcher$AppClassLoader@18b4aac2
+2025-01-20 14:18:56.791 DEBUG [] - HikariPool-1 - configuration:
+2025-01-20 14:18:56.792 DEBUG [] - allowPoolSuspension................................false
+2025-01-20 14:18:56.792 DEBUG [] - autoCommit................................true
+2025-01-20 14:18:56.792 DEBUG [] - catalog................................none
+2025-01-20 14:18:56.792 DEBUG [] - connectionInitSql................................none
+2025-01-20 14:18:56.792 DEBUG [] - connectionTestQuery................................"SELECT 1"
+2025-01-20 14:18:56.792 DEBUG [] - connectionTimeout................................30000
+2025-01-20 14:18:56.792 DEBUG [] - dataSource................................none
+2025-01-20 14:18:56.792 DEBUG [] - dataSourceClassName................................none
+2025-01-20 14:18:56.793 DEBUG [] - dataSourceJNDI................................none
+2025-01-20 14:18:56.793 DEBUG [] - dataSourceProperties................................{password=<masked>}
+2025-01-20 14:18:56.793 DEBUG [] - driverClassName................................"com.mysql.cj.jdbc.Driver"
+2025-01-20 14:18:56.793 DEBUG [] - exceptionOverrideClassName................................none
+2025-01-20 14:18:56.793 DEBUG [] - healthCheckProperties................................{}
+2025-01-20 14:18:56.793 DEBUG [] - healthCheckRegistry................................none
+2025-01-20 14:18:56.793 DEBUG [] - idleTimeout................................600000
+2025-01-20 14:18:56.793 DEBUG [] - initializationFailTimeout................................1
+2025-01-20 14:18:56.794 DEBUG [] - isolateInternalQueries................................false
+2025-01-20 14:18:56.794 DEBUG [] - jdbcUrl................................jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000
+2025-01-20 14:18:56.794 DEBUG [] - keepaliveTime................................0
+2025-01-20 14:18:56.794 DEBUG [] - leakDetectionThreshold................................0
+2025-01-20 14:18:56.794 DEBUG [] - maxLifetime................................1800000
+2025-01-20 14:18:56.794 DEBUG [] - maximumPoolSize................................10
+2025-01-20 14:18:56.794 DEBUG [] - metricRegistry................................none
+2025-01-20 14:18:56.794 DEBUG [] - metricsTrackerFactory................................none
+2025-01-20 14:18:56.794 DEBUG [] - minimumIdle................................2
+2025-01-20 14:18:56.794 DEBUG [] - password................................<masked>
+2025-01-20 14:18:56.794 DEBUG [] - poolName................................"HikariPool-1"
+2025-01-20 14:18:56.794 DEBUG [] - readOnly................................false
+2025-01-20 14:18:56.794 DEBUG [] - registerMbeans................................false
+2025-01-20 14:18:56.794 DEBUG [] - scheduledExecutor................................none
+2025-01-20 14:18:56.794 DEBUG [] - schema................................none
+2025-01-20 14:18:56.794 DEBUG [] - threadFactory................................internal
+2025-01-20 14:18:56.794 DEBUG [] - transactionIsolation................................default
+2025-01-20 14:18:56.794 DEBUG [] - username................................"cscenter"
+2025-01-20 14:18:56.794 DEBUG [] - validationTimeout................................5000
+2025-01-20 14:18:56.895 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@604d28c6
+2025-01-20 14:18:56.999 DEBUG [] - HikariPool-1 - Before cleanup stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:18:57.000 DEBUG [] - HikariPool-1 - After cleanup  stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 14:18:57.007 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@21edcf49
+2025-01-20 14:18:57.007 DEBUG [] - HikariPool-1 - After adding stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:18:59.170 DEBUG [] - 
+
+,------.                           ,--.  ,--.         ,--.                         
+|  .--. '  ,--,--.  ,---.   ,---.  |  '--'  |  ,---.  |  |  ,---.   ,---.  ,--.--. 
+|  '--' | ' ,-.  | | .-. | | .-. : |  .--.  | | .-. : |  | | .-. | | .-. : |  .--' 
+|  | --'  \ '-'  | ' '-' ' \   --. |  |  |  | \   --. |  | | '-' ' \   --. |  |    
+`--'       `--`--' .`-  /   `----' `--'  `--'  `----' `--' |  |-'   `----' `--'    
+                   `---'                                   `--'                        is intercepting.
+
+2025-01-20 14:19:27.002 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:19:27.004 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:19:27.004 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:19:57.008 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:19:57.012 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:19:57.012 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:20:27.017 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:20:27.017 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:20:27.017 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:20:57.020 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:20:57.022 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:20:57.022 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:21:27.028 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:21:27.030 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:21:27.030 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:21:57.039 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:21:57.045 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:21:57.045 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:22:27.047 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:22:27.048 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:22:27.048 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:22:57.039 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:22:57.045 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:22:57.045 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:23:27.028 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:23:27.029 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:23:27.029 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:23:57.031 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:23:57.032 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:23:57.033 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:24:27.039 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:24:27.045 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:24:27.045 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:24:57.046 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:24:57.047 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:24:57.047 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:25:27.048 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:25:27.050 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:25:27.050 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:25:57.052 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:25:57.055 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:25:57.055 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:26:27.060 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:26:27.062 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:26:27.063 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:26:57.068 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:26:57.070 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:26:57.070 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:27:27.071 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:27:27.072 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:27:27.072 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:27:57.077 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:27:57.077 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:27:57.077 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:28:27.083 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:28:27.084 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:28:27.085 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:28:57.089 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:28:57.092 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:28:57.092 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:29:27.097 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:29:27.099 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:29:27.099 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:29:57.103 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:29:57.103 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:29:57.104 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:30:27.109 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:30:27.112 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:30:27.112 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:30:57.118 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:30:57.122 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:30:57.123 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:31:27.130 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:31:27.132 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:31:27.133 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:31:57.138 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:31:57.140 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:31:57.140 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:32:27.147 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:32:27.152 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:32:27.153 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:32:57.155 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:32:57.158 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:32:57.158 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:33:27.165 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:33:27.167 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:33:27.167 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:33:57.172 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:33:57.174 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:33:57.174 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:34:27.179 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:34:27.182 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:34:27.182 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:34:57.187 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:34:57.188 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:34:57.188 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:35:27.194 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:35:27.198 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:35:27.198 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:35:57.203 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:35:57.205 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:35:57.206 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:36:27.208 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:36:27.210 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:36:27.210 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:36:57.216 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:36:57.217 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:36:57.217 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:37:27.223 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:37:27.226 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:37:27.227 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:37:57.237 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:37:57.239 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:37:57.239 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:38:27.260 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:38:27.264 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:38:27.265 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:38:57.275 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:38:57.277 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:38:57.277 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:39:27.280 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:39:27.283 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:39:27.283 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:39:57.288 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:39:57.290 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:39:57.290 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:40:27.295 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:40:27.297 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:40:27.297 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:40:57.299 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:40:57.303 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:40:57.303 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:41:27.307 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:41:27.309 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:41:27.309 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:41:57.316 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:41:57.318 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:41:57.318 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:42:27.321 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:42:27.325 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:42:27.325 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:42:57.330 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:42:57.331 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:42:57.331 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:43:27.332 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:43:27.334 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:43:27.334 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:43:57.337 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:43:57.339 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:43:57.339 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:44:27.341 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:44:27.343 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:44:27.343 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:44:57.346 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:44:57.346 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:44:57.346 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:45:27.352 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:45:27.353 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:45:27.353 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:45:57.358 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:45:57.358 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:45:57.358 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:46:27.364 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:46:27.364 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:46:27.364 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:46:57.370 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:46:57.371 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:46:57.372 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:47:27.372 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:47:27.374 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:47:27.374 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:47:57.382 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:47:57.383 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:47:57.383 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:48:22.706 DEBUG [] - HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@604d28c6: (connection has passed maxLifetime)
+2025-01-20 14:48:22.724 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@68073883
+2025-01-20 14:48:27.386 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:48:27.386 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:48:27.386 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:48:56.648 DEBUG [] - HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@21edcf49: (connection has passed maxLifetime)
+2025-01-20 14:48:56.664 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@472f6e4e
+2025-01-20 14:48:57.390 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:48:57.390 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:48:57.391 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:49:27.396 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:49:27.398 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:49:27.398 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:49:57.399 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:49:57.401 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:49:57.401 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:50:27.406 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:50:27.409 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:50:27.409 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:50:57.416 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:50:57.417 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:50:57.417 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:51:27.426 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:51:27.427 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:51:27.428 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:51:57.433 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:51:57.436 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:51:57.436 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:52:27.439 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:52:27.442 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:52:27.442 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:52:57.448 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:52:57.452 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:52:57.452 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:53:27.456 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:53:27.456 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:53:27.457 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:53:57.465 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:53:57.468 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:53:57.468 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:54:27.475 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:54:27.476 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:54:27.476 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:54:57.486 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:54:57.493 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:54:57.493 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:55:27.498 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:55:27.499 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:55:27.499 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:55:57.506 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:55:57.511 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:55:57.512 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:56:27.519 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:56:27.520 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:56:27.520 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:56:57.521 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:56:57.523 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:56:57.523 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:57:27.529 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:57:27.530 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:57:27.530 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:57:57.532 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:57:57.533 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:57:57.533 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:58:27.535 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:58:27.539 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:58:27.540 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:58:57.541 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:58:57.542 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:58:57.542 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:59:27.548 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:59:27.550 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:59:27.550 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 14:59:57.557 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:59:57.557 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 14:59:57.557 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:00:27.561 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:00:27.563 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:00:27.563 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:00:57.568 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:00:57.570 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:00:57.570 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:01:27.575 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:01:27.576 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:01:27.577 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:01:57.582 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:01:57.583 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:01:57.583 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:02:27.589 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:02:27.590 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:02:27.591 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:02:57.596 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:02:57.597 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:02:57.597 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:03:27.603 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:03:27.605 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:03:27.605 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:03:57.610 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:03:57.611 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:03:57.611 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:04:27.617 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:04:27.618 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:04:27.618 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:04:57.623 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:04:57.627 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:04:57.627 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:05:27.635 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:05:27.638 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:05:27.638 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:05:57.643 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:05:57.645 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:05:57.645 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:06:27.651 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:06:27.653 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:06:27.653 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:06:57.659 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:06:57.665 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:06:57.665 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:07:27.666 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:07:27.668 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:07:27.668 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:07:57.673 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:07:57.674 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:07:57.674 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:08:27.680 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:08:27.682 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:08:27.682 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:08:57.685 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:08:57.685 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:08:57.685 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:09:27.658 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:09:27.659 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:09:27.659 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:09:57.655 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:09:57.657 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:09:57.657 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:10:27.661 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:10:27.663 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:10:27.663 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:10:57.667 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:10:57.671 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:10:57.672 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:11:27.677 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:11:27.678 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:11:27.678 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:11:57.684 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:11:57.687 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:11:57.687 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:12:27.692 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:12:27.695 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:12:27.695 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:12:57.698 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:12:57.700 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:12:57.700 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:13:27.703 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:13:27.704 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:13:27.705 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:13:57.713 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:13:57.716 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:13:57.717 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:14:24.046 DEBUG [] - Running with Spring Boot v2.6.11, Spring v5.3.22
+2025-01-20 15:14:25.267 DEBUG [] - 构建动态数据源: hikari, 驱动类: com.mysql.cj.jdbc.Driver, url: jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000, 连接总数: 10, 最小空闲: 2, 等待超时: 1800000 ms, 测试sql: SELECT 1
+2025-01-20 15:14:25.268 DEBUG [] - Driver class com.mysql.cj.jdbc.Driver found in Thread context class loader sun.misc.Launcher$AppClassLoader@18b4aac2
+2025-01-20 15:14:25.278 DEBUG [] - HikariPool-1 - configuration:
+2025-01-20 15:14:25.280 DEBUG [] - allowPoolSuspension................................false
+2025-01-20 15:14:25.280 DEBUG [] - autoCommit................................true
+2025-01-20 15:14:25.280 DEBUG [] - catalog................................none
+2025-01-20 15:14:25.280 DEBUG [] - connectionInitSql................................none
+2025-01-20 15:14:25.280 DEBUG [] - connectionTestQuery................................"SELECT 1"
+2025-01-20 15:14:25.280 DEBUG [] - connectionTimeout................................30000
+2025-01-20 15:14:25.280 DEBUG [] - dataSource................................none
+2025-01-20 15:14:25.280 DEBUG [] - dataSourceClassName................................none
+2025-01-20 15:14:25.280 DEBUG [] - dataSourceJNDI................................none
+2025-01-20 15:14:25.280 DEBUG [] - dataSourceProperties................................{password=<masked>}
+2025-01-20 15:14:25.280 DEBUG [] - driverClassName................................"com.mysql.cj.jdbc.Driver"
+2025-01-20 15:14:25.280 DEBUG [] - exceptionOverrideClassName................................none
+2025-01-20 15:14:25.281 DEBUG [] - healthCheckProperties................................{}
+2025-01-20 15:14:25.281 DEBUG [] - healthCheckRegistry................................none
+2025-01-20 15:14:25.281 DEBUG [] - idleTimeout................................600000
+2025-01-20 15:14:25.281 DEBUG [] - initializationFailTimeout................................1
+2025-01-20 15:14:25.281 DEBUG [] - isolateInternalQueries................................false
+2025-01-20 15:14:25.281 DEBUG [] - jdbcUrl................................jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000
+2025-01-20 15:14:25.281 DEBUG [] - keepaliveTime................................0
+2025-01-20 15:14:25.281 DEBUG [] - leakDetectionThreshold................................0
+2025-01-20 15:14:25.281 DEBUG [] - maxLifetime................................1800000
+2025-01-20 15:14:25.281 DEBUG [] - maximumPoolSize................................10
+2025-01-20 15:14:25.281 DEBUG [] - metricRegistry................................none
+2025-01-20 15:14:25.281 DEBUG [] - metricsTrackerFactory................................none
+2025-01-20 15:14:25.281 DEBUG [] - minimumIdle................................2
+2025-01-20 15:14:25.281 DEBUG [] - password................................<masked>
+2025-01-20 15:14:25.281 DEBUG [] - poolName................................"HikariPool-1"
+2025-01-20 15:14:25.281 DEBUG [] - readOnly................................false
+2025-01-20 15:14:25.281 DEBUG [] - registerMbeans................................false
+2025-01-20 15:14:25.281 DEBUG [] - scheduledExecutor................................none
+2025-01-20 15:14:25.281 DEBUG [] - schema................................none
+2025-01-20 15:14:25.282 DEBUG [] - threadFactory................................internal
+2025-01-20 15:14:25.282 DEBUG [] - transactionIsolation................................default
+2025-01-20 15:14:25.282 DEBUG [] - username................................"cscenter"
+2025-01-20 15:14:25.282 DEBUG [] - validationTimeout................................5000
+2025-01-20 15:14:25.371 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7f3c0399
+2025-01-20 15:14:25.475 DEBUG [] - HikariPool-1 - Before cleanup stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 15:14:25.475 DEBUG [] - HikariPool-1 - After cleanup  stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 15:14:25.492 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5c2618b1
+2025-01-20 15:14:25.492 DEBUG [] - HikariPool-1 - After adding stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:14:27.699 DEBUG [] - 
+
+,------.                           ,--.  ,--.         ,--.                         
+|  .--. '  ,--,--.  ,---.   ,---.  |  '--'  |  ,---.  |  |  ,---.   ,---.  ,--.--. 
+|  '--' | ' ,-.  | | .-. | | .-. : |  .--.  | | .-. : |  | | .-. | | .-. : |  .--' 
+|  | --'  \ '-'  | ' '-' ' \   --. |  |  |  | \   --. |  | | '-' ' \   --. |  |    
+`--'       `--`--' .`-  /   `----' `--'  `--'  `----' `--' |  |-'   `----' `--'    
+                   `---'                                   `--'                        is intercepting.
+
+2025-01-20 15:14:55.480 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:14:55.482 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:14:55.482 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:15:25.486 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:15:25.488 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:15:25.488 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:15:55.493 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:15:55.496 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:15:55.496 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:16:25.502 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:16:25.505 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:16:25.505 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:16:55.510 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:16:55.512 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:16:55.512 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:17:25.518 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:17:25.522 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:17:25.522 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:17:55.526 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:17:55.528 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:17:55.528 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:18:25.533 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:18:25.535 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:18:25.535 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:18:55.535 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:18:55.537 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:18:55.537 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:19:25.541 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:19:25.543 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:19:25.543 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:19:30.302 DEBUG [] - Running with Spring Boot v2.6.11, Spring v5.3.22
+2025-01-20 15:19:31.469 DEBUG [] - 构建动态数据源: hikari, 驱动类: com.mysql.cj.jdbc.Driver, url: jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000, 连接总数: 10, 最小空闲: 2, 等待超时: 1800000 ms, 测试sql: SELECT 1
+2025-01-20 15:19:31.469 DEBUG [] - Driver class com.mysql.cj.jdbc.Driver found in Thread context class loader sun.misc.Launcher$AppClassLoader@18b4aac2
+2025-01-20 15:19:31.479 DEBUG [] - HikariPool-1 - configuration:
+2025-01-20 15:19:31.481 DEBUG [] - allowPoolSuspension................................false
+2025-01-20 15:19:31.481 DEBUG [] - autoCommit................................true
+2025-01-20 15:19:31.481 DEBUG [] - catalog................................none
+2025-01-20 15:19:31.481 DEBUG [] - connectionInitSql................................none
+2025-01-20 15:19:31.481 DEBUG [] - connectionTestQuery................................"SELECT 1"
+2025-01-20 15:19:31.481 DEBUG [] - connectionTimeout................................30000
+2025-01-20 15:19:31.481 DEBUG [] - dataSource................................none
+2025-01-20 15:19:31.481 DEBUG [] - dataSourceClassName................................none
+2025-01-20 15:19:31.481 DEBUG [] - dataSourceJNDI................................none
+2025-01-20 15:19:31.481 DEBUG [] - dataSourceProperties................................{password=<masked>}
+2025-01-20 15:19:31.481 DEBUG [] - driverClassName................................"com.mysql.cj.jdbc.Driver"
+2025-01-20 15:19:31.481 DEBUG [] - exceptionOverrideClassName................................none
+2025-01-20 15:19:31.481 DEBUG [] - healthCheckProperties................................{}
+2025-01-20 15:19:31.481 DEBUG [] - healthCheckRegistry................................none
+2025-01-20 15:19:31.482 DEBUG [] - idleTimeout................................600000
+2025-01-20 15:19:31.482 DEBUG [] - initializationFailTimeout................................1
+2025-01-20 15:19:31.482 DEBUG [] - isolateInternalQueries................................false
+2025-01-20 15:19:31.482 DEBUG [] - jdbcUrl................................jdbc:mysql://docker.for.mac.host.internal:3306/workbench?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=15000
+2025-01-20 15:19:31.482 DEBUG [] - keepaliveTime................................0
+2025-01-20 15:19:31.482 DEBUG [] - leakDetectionThreshold................................0
+2025-01-20 15:19:31.482 DEBUG [] - maxLifetime................................1800000
+2025-01-20 15:19:31.482 DEBUG [] - maximumPoolSize................................10
+2025-01-20 15:19:31.482 DEBUG [] - metricRegistry................................none
+2025-01-20 15:19:31.482 DEBUG [] - metricsTrackerFactory................................none
+2025-01-20 15:19:31.482 DEBUG [] - minimumIdle................................2
+2025-01-20 15:19:31.482 DEBUG [] - password................................<masked>
+2025-01-20 15:19:31.482 DEBUG [] - poolName................................"HikariPool-1"
+2025-01-20 15:19:31.482 DEBUG [] - readOnly................................false
+2025-01-20 15:19:31.482 DEBUG [] - registerMbeans................................false
+2025-01-20 15:19:31.482 DEBUG [] - scheduledExecutor................................none
+2025-01-20 15:19:31.482 DEBUG [] - schema................................none
+2025-01-20 15:19:31.482 DEBUG [] - threadFactory................................internal
+2025-01-20 15:19:31.482 DEBUG [] - transactionIsolation................................default
+2025-01-20 15:19:31.482 DEBUG [] - username................................"cscenter"
+2025-01-20 15:19:31.482 DEBUG [] - validationTimeout................................5000
+2025-01-20 15:19:31.580 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7f3c0399
+2025-01-20 15:19:31.686 DEBUG [] - HikariPool-1 - Before cleanup stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 15:19:31.686 DEBUG [] - HikariPool-1 - After cleanup  stats (total=1, active=0, idle=1, waiting=0)
+2025-01-20 15:19:31.696 DEBUG [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@26fffe7e
+2025-01-20 15:19:31.696 DEBUG [] - HikariPool-1 - After adding stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:19:33.592 DEBUG [] - 
+
+,------.                           ,--.  ,--.         ,--.                         
+|  .--. '  ,--,--.  ,---.   ,---.  |  '--'  |  ,---.  |  |  ,---.   ,---.  ,--.--. 
+|  '--' | ' ,-.  | | .-. | | .-. : |  .--.  | | .-. : |  | | .-. | | .-. : |  .--' 
+|  | --'  \ '-'  | ' '-' ' \   --. |  |  |  | \   --. |  | | '-' ' \   --. |  |    
+`--'       `--`--' .`-  /   `----' `--'  `--'  `----' `--' |  |-'   `----' `--'    
+                   `---'                                   `--'                        is intercepting.
+
+2025-01-20 15:20:01.688 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:20:01.690 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:20:01.690 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:20:31.696 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:20:31.698 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:20:31.698 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:21:01.704 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:21:01.707 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:21:01.707 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:21:31.710 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:21:31.715 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:21:31.716 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:22:01.719 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:22:01.724 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:22:01.725 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:22:31.730 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:22:31.732 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:22:31.732 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:23:01.734 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:23:01.736 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:23:01.737 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:23:31.740 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:23:31.741 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:23:31.741 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:24:01.746 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:24:01.746 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:24:01.747 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:24:31.752 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:24:31.752 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:24:31.752 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+2025-01-20 15:25:01.757 DEBUG [] - HikariPool-1 - Before cleanup stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:25:01.759 DEBUG [] - HikariPool-1 - After cleanup  stats (total=2, active=0, idle=2, waiting=0)
+2025-01-20 15:25:01.759 DEBUG [] - HikariPool-1 - Fill pool skipped, pool is at sufficient level.

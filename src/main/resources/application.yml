@@ -1,0 +1,129 @@
+server:
+  port: 30100
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        max-age: ${spring.mvc.interceptors.login.cookie-max-age-sec}
+        secure: false
+        same-site: strict
+        path: /
+      timeout: 30m
+
+mybatis:
+  mapper-locations:
+    - classpath*:mappers/*.xml
+    - classpath*:**/mapper/common/*Mapper.xml
+    - classpath*:**/mapper/embedded/*Mapper.xml
+  config-location: classpath:jpaConfig-embedded.xml
+mybatis-plus:
+  mapper-locations: ${mybatis.mapper-locations}
+  config-location: ${mybatis.config-location}
+
+spring:
+  application:
+    name: h-common
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    basename: i18n/message
+    encoding: UTF-8
+  mvc:
+    interceptors:
+      mdc:
+        enabled: true
+      api-safe:
+        enabled: false
+        include-path-patterns:
+          - /hbq969-dict/**
+          - /hbq969-tabula/**
+        header-name: api-safe-token
+        header-value-regex: 8DC75E91D4E143CF94BA29C46C43B24B
+      resource-handler-registry:
+        entries:
+          - handlers: /hbq969-dict/**
+            locations: classpath:/static/hbq969-dict/
+          - handlers: /hbq969-tabula/**
+            locations: classpath:/static/hbq969-tabula/
+          - handlers: /hbq969-sm/**
+            locations: classpath:/static/hbq969-sm/
+          - handlers: /hbq969-common/**
+            locations: classpath:/static/hbq969-common/
+        enabled: true
+      login:
+        enabled: false
+        cookie-max-age-sec: 1800
+        dialect: embedded
+        include-urls:
+          - "/hbq969-common/**"
+          - "/hbq969-sm/**"
+          - "/hbq969-dict/**"
+          - "/hbq969-tabula/**"
+          - "/common/encrypt/**"
+          - "/ui-gw/**"
+          - "/**/doc.html"
+          - "/**/swagger-ui.html"
+          - "/**/api-docs"
+        exclude-urls:
+          - "/**/error"
+          - "/common/health"
+          - "/hbq969-sm/index.html"
+          - "/hbq969-sm/**/*.js"
+          - "/hbq969-sm/**/*.css"
+          - "/hbq969-sm/**/*.png"
+          - "/hbq969-sm/**/*.jpg"
+          - "/hbq969-sm/**/*.map"
+          - "/hbq969-sm/**/*.ico"
+          - "/hbq969-sm/**/login"
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    dynamic:
+      enabled: true
+      base-packages: com.github.hbq969
+      default-lookup-key: hikari
+    hikari:
+      jdbc-url: jdbc:h2:mem:local
+      driver-class-name: org.h2.Driver
+      username: foo
+      password: ENC(2HRE3Jhuz6IfiD8L7orn4flpXNPTWLhH4u6lH/i0SWf8jXh3tNGQG++plhHmJN3F)
+      maximum-pool-size: 20
+      minimum-idle: 5
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+
+knife4j:
+  enable: true
+  production: false
+  basic:
+    enable: true
+    username: ${spring.application.name}
+    password: 123456
+
+swagger:
+  base-package: com
+  api-info:
+    title: web应用Restful API
+    description: web应用Restful API
+    termsOfServiceUrl: http://127.0.0.1:${server.port}
+    version: v1.0
+    license: Apache LICENSE-2.0
+    licenseUrl: https://apache.org/licenses/LICENSE-2.0.txt
+
+encrypt:
+  config:
+    enabled: true
+  restful:
+    enabled: true
+    aes:
+      key: DC2EE8931E434A44
+      show-log: true
+
+advice:
+  log:
+    enabled: true
+  restful-limit:
+    enabled: true
+
+operlog:
+  enabled: false

@@ -23,3 +23,8 @@
 ## 2025-01-17
 ### Features
 - 接口操作日志记录，提供缺省的采集策略实现DefaultLogCollect, DefaultLogModelDefProvider
+
+
+## 2025-01-20
+### Features
+- 增加common包部分实用接口的页面功能，增加使用体验

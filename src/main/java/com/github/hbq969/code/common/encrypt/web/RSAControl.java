@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * @author hbq969@gmail.com
  */
-@RequestMapping(path = "/common/encrypt/restful/rsa")
+@RequestMapping(path = "/hbq969-common/encrypt/restful/rsa")
 @Slf4j
 @Api(description = "接口rsa非对称加解密", tags = "维护使用-RSA加解密")
 public class RSAControl implements ICommonControl {
@@ -74,8 +74,7 @@ public class RSAControl implements ICommonControl {
         log.info("使用公钥加密: {}", info);
         try {
             if (info.valid()) {
-                ObjectMapper mapper = new ObjectMapper();
-                String content = mapper.writeValueAsString(info.getObj());
+                String content = String.valueOf(info.getObj());
                 byte[] data = content.getBytes(info.getCharset());
                 data = RSAUtil.encrypt(data, info.getPublicKey());
                 String result = Base64Util.encode(data);
@@ -107,6 +106,7 @@ public class RSAControl implements ICommonControl {
                         result.append(value);
                     }
                 }
+                log.info("++++++ {}",result);
                 return ReturnMessage.success(result.toString());
             } else {
                 return ReturnMessage.fail("解码失败");

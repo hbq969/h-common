@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 日志输出目录 -->
+    <property name="LOG_HOME" value="logs"/>
+
+    <!-- 控制台日志Appender -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{20} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 按天输出日志Appender -->
+    <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/info.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>3</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{20} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 应用包路径下的DEBUG日志Appender -->
+    <appender name="debug-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/debug.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>3</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="debug-console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{20} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="trace-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/hql.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>3</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{20} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="trace-console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{20} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- MYBATIS日志Appender -->
+    <appender name="ibatis-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator>
+                <expression>return message.contains("==>") || message.contains("&lt;==");</expression>
+            </evaluator>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/sql.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>3</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{20} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 定义应用INFO及以下级别日志输出 -->
+    <logger name="com" level="INFO">
+        <appender-ref ref="info"/>
+    </logger>
+    <logger name="org" level="INFO">
+        <appender-ref ref="info"/>
+    </logger>
+
+    <!-- 定义应用DEBUG及级别日志输出 -->
+    <logger name="com" level="DEBUG">
+        <appender-ref ref="ibatis-file"/>
+        <appender-ref ref="debug-console"/>
+        <appender-ref ref="debug-file"/>
+    </logger>
+    <!-- hibernate -->
+    <logger name="org.hibernate.SQL" level="DEBUG">
+        <appender-ref ref="debug-console"/>
+        <appender-ref ref="debug-file"/>
+    </logger>
+    <logger name="org.hibernate.engine.spi.QueryParameters" level="TRACE">
+        <appender-ref ref="trace-console"/>
+        <appender-ref ref="trace-file"/>
+    </logger>
+    <logger name="org.hibernate.engine.query.spi.HQLQueryPlan" level="TRACE">
+        <appender-ref ref="trace-console"/>
+        <appender-ref ref="trace-file"/>
+    </logger>
+
+    <!-- 默认控制台日志输出(INFO级别及以下) -->
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>

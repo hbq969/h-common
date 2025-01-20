@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <plugins>
+    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+      <property name="helperDialect" value="oracle"/>
+      <property name="offsetAsPageNum" value="true"/>
+      <property name="params" value="pageNum,pageSize,count,pageSizeZero,reasonable"/>
+      <property name="supportMethodsArguments" value="true"/>
+    </plugin>
+  </plugins>
+</configuration>

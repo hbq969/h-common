@@ -15,7 +15,7 @@ import java.nio.charset.Charset;
  * @author hbq969@gmail.com
  */
 @Api(description = "接口aes对称加解密", tags = "维护使用-AES加解密")
-@RequestMapping(path = "/common/encrypt/restful/aes")
+@RequestMapping(path = "/hbq969-common/encrypt/restful/aes")
 @Slf4j
 public class AESControl implements ICommonControl {
 
