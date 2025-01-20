@@ -13,35 +13,42 @@ import java.util.concurrent.TimeUnit;
 @Data
 public class TableInfo {
 
-  private RoundInfo roundInfo;
-  private String tablePrefix;
-  private String tableSuffix;
-  private String tableName;
+    private RoundInfo roundInfo;
+    private String tablePrefix;
+    private String tableSuffix;
+    private String tableName;
 
-  public TableInfo format() {
-    if (StringUtils.isEmpty(tableName)) {
-      String suffix = FormatTime.format(tableSuffix, FormatTime.nowSecs(), TimeUnit.SECONDS);
-      if (roundInfo != null) {
-        suffix = FormatTime.format(tableSuffix, roundInfo.getStartTime().getSecs(), TimeUnit.SECONDS);
-      }
-      this.tableName = String.join("", tablePrefix, suffix);
+    public TableInfo format() {
+        if (StringUtils.isEmpty(tableName)) {
+            String suffix = FormatTime.format(tableSuffix, FormatTime.nowSecs(), TimeUnit.SECONDS);
+            if (roundInfo != null) {
+                suffix = FormatTime.format(tableSuffix, roundInfo.getStartTime().getSecs(), TimeUnit.SECONDS);
+            }
+            this.tableName = String.join("", tablePrefix, suffix);
+        }
+        return this;
     }
-    return this;
-  }
 
-  public long getStartTimeSec() {
-    return roundInfo == null ? -1 : roundInfo.getStartTime() == null ? -1 : roundInfo.getStartTime().getSecs();
-  }
+    public long getStartTimeSec() {
+        return roundInfo == null ? -1 : roundInfo.getStartTime() == null ? -1 : roundInfo.getStartTime().getSecs();
+    }
 
-  public long getStartTimeMills() {
-    return roundInfo == null ? -1 : roundInfo.getStartTime() == null ? -1 : roundInfo.getStartTime().getMills();
-  }
+    public long getStartTimeMills() {
+        return roundInfo == null ? -1 : roundInfo.getStartTime() == null ? -1 : roundInfo.getStartTime().getMills();
+    }
 
-  public long getEndTimeSec() {
-    return roundInfo == null ? -1 : roundInfo.getEndTime() == null ? -1 : roundInfo.getEndTime().getSecs();
-  }
+    public long getEndTimeSec() {
+        return roundInfo == null ? -1 : roundInfo.getEndTime() == null ? -1 : roundInfo.getEndTime().getSecs();
+    }
 
-  public long getEndTimeMills() {
-    return roundInfo == null ? -1 : roundInfo.getEndTime() == null ? -1 : roundInfo.getEndTime().getMills();
-  }
+    public long getEndTimeMills() {
+        return roundInfo == null ? -1 : roundInfo.getEndTime() == null ? -1 : roundInfo.getEndTime().getMills();
+    }
+
+    public String getTableName() {
+        if (StringUtils.isEmpty(tableName)) {
+            format();
+        }
+        return this.tableName;
+    }
 }
