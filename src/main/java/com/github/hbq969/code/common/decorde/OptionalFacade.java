@@ -22,6 +22,22 @@ public interface OptionalFacade<KEY, SERVICE> {
     void register(KEY key, SERVICE service);
 
     /**
+     * 清理指定服务
+     *
+     * @param key
+     * @return
+     */
+    SERVICE remove(KEY key);
+
+    /**
+     * 清理指定多个服务
+     *
+     * @param keys
+     * @return
+     */
+    Collection<SERVICE> remove(Set<KEY> keys);
+
+    /**
      * 根据服务key查询服务
      *
      * @return

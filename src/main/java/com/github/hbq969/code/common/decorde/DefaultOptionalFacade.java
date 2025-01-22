@@ -23,6 +23,18 @@ public class DefaultOptionalFacade<KEY, SERVICE> implements OptionalFacade<KEY, 
         services.put(key, service);
     }
 
+    @Override
+    public SERVICE remove(KEY key) {
+        return services.remove(key);
+    }
+
+    @Override
+    public Collection<SERVICE> remove(Set<KEY> keys) {
+        List<SERVICE> removes = new ArrayList<>();
+        keys.forEach(k -> removes.add(services.remove(k)));
+        return removes;
+    }
+
     /**
      * 清空注册的服务
      */
