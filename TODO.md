@@ -13,3 +13,4 @@
 - [x] ~~增加Swagger2Controller的安全拦截器~~
 - [x] ~~操作日志采集~~
 - [x] ~~增加common包部分实用接口的页面功能，增加使用体验~~
+- [ ] 增加yaml和properties文件的转换工具类

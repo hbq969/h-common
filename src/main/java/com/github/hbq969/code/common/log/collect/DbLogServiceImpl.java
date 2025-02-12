@@ -9,6 +9,7 @@ import com.github.hbq969.code.common.log.spi.LogModelDefProvider;
 import com.github.hbq969.code.common.utils.Count;
 import com.github.hbq969.code.common.utils.StrUtils;
 import com.github.hbq969.code.common.utils.TableInfo;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -25,9 +26,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Slf4j
-public class MysqlLogServiceImpl implements OptionalFacadeAware<String, LogService>, LogService {
+public class DbLogServiceImpl implements OptionalFacadeAware<String, LogService>, LogService {
 
     @Autowired
     private LogServiceFacade facade;
@@ -56,7 +58,12 @@ public class MysqlLogServiceImpl implements OptionalFacadeAware<String, LogServi
 
     @Override
     public String getKey() {
-        return "mysql";
+        return null;
+    }
+
+    @Override
+    public Set<String> getKeys() {
+        return Sets.newHashSet("mysql","oracle");
     }
 
     @Override

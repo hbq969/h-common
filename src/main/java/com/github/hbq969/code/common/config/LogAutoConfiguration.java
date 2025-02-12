@@ -3,7 +3,7 @@ package com.github.hbq969.code.common.config;
 import com.github.hbq969.code.common.log.aop.LogBeanProcessor;
 import com.github.hbq969.code.common.log.aop.OperlogAspect;
 import com.github.hbq969.code.common.log.collect.LogServiceFacade;
-import com.github.hbq969.code.common.log.collect.MysqlLogServiceImpl;
+import com.github.hbq969.code.common.log.collect.DbLogServiceImpl;
 import com.github.hbq969.code.common.log.spi.DefaultLogCollect;
 import com.github.hbq969.code.common.log.spi.DefaultLogModelDefProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -38,14 +38,20 @@ public class LogAutoConfiguration {
 
     @ConditionalOnProperty(prefix = "operlog", name = "enabled", havingValue = "true")
     @Bean("common-MysqlLogServiceImpl")
-    MysqlLogServiceImpl mysqlLogService() {
-        return new MysqlLogServiceImpl();
+    DbLogServiceImpl mysqlLogService() {
+        return new DbLogServiceImpl();
     }
 
-    @ConditionalOnExpression("#{ ${operlog.enabled:false} && ${operlog.use-default-collect-policy:false}}")
+    @ConditionalOnExpression("#{ ${operlog.enabled:false} && ${operlog.use-default-collect-policy:false} && '${operlog.policy}'.equals('mysql')}")
     @Bean("common-DefaultLogModelDefProvider")
     DefaultLogModelDefProvider defaultLogModelDefProvider() {
         return new DefaultLogModelDefProvider();
+    }
+
+    @ConditionalOnExpression("#{ ${operlog.enabled:false} && ${operlog.use-default-collect-policy:false} && '${operlog.policy}'.equals('oracle')}")
+    @Bean("common-oracle-DefaultLogModelDefProvider")
+    com.github.hbq969.code.common.log.spi.oracle.DefaultLogModelDefProvider defaultOracleLogModelDefProvider() {
+        return new com.github.hbq969.code.common.log.spi.oracle.DefaultLogModelDefProvider();
     }
 
     @ConditionalOnExpression("#{ ${operlog.enabled:false} && ${operlog.use-default-collect-policy:false}}")

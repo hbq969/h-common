@@ -57,6 +57,12 @@ public class LogDealer implements Runnable {
                 }
             } catch (Throwable e) {
                 log.error("", e);
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException ex) {
+                    log.info("{} 被中断，正常退出。", tn);
+                    break;
+                }
             }
         }
 
