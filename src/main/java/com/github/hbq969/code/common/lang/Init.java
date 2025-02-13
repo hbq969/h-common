@@ -7,5 +7,10 @@ package com.github.hbq969.code.common.lang;
  */
 public interface Init {
 
-  void init();
+    default void init() {
+    }
+
+    default void finished(Runnable r) {
+        r.run();
+    }
 }
