@@ -7,15 +7,16 @@ import com.github.hbq969.code.common.encrypt.ext.utils.AESUtil;
 import com.github.hbq969.code.common.encrypt.ext.utils.Base64Util;
 import com.github.hbq969.code.common.encrypt.ext.utils.JsonUtils;
 import com.github.hbq969.code.common.encrypt.ext.utils.RSAUtil;
+import com.github.hbq969.code.common.spring.context.SpringContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.lang.reflect.Method;
@@ -25,12 +26,15 @@ import java.util.Objects;
 /**
  * @author hbq969@gmail.com
  **/
-@ControllerAdvice({"com"})
+//@ConditionalOnProperty(prefix = "encrypt.restful",name = "enabled",havingValue = "true")
 @Slf4j
-public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
+public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, ResponseBodyAdvice<Object> {
 
     @Autowired
     private EncryptProperties conf;
+
+    @Autowired
+    private SpringContext context;
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
@@ -38,12 +42,14 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         if (Objects.isNull(method)) {
             return false;
         }
-        return method.isAnnotationPresent(Encrypt.class);
+        String controllerPackage = returnType.getContainingClass().getName();
+        boolean flg = conf.getRestful().supportPackage(controllerPackage);
+        return method.isAnnotationPresent(Encrypt.class)
+                && flg;
     }
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-
         Encrypt encrypt = returnType.getMethodAnnotation(Encrypt.class);
         if (encrypt.algorithm() == Algorithm.AES) {
             String key = conf.getRestful().getAes().getKey();

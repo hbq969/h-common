@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -32,19 +32,22 @@ public class EncryptAutoConfiguration implements EnvironmentAware {
 
     @Bean("common-EncryptProperties")
     EncryptProperties encryptProperties() {
+        log.info("初始化 EncryptProperties");
         return new EncryptProperties();
     }
 
-    @ConditionalOnExpression("${encrypt.config.enabled:true}")
+    @ConditionalOnProperty(prefix = "encrypt.config",name = "enabled",havingValue = "true")
     @Bean("common-encrypt-config-SpringConfigEncryptCtrl")
     ConfigControl configControl() {
         return new ConfigControl();
     }
 
+
+    @ConditionalOnProperty(prefix = "encrypt.config",name = "enabled",havingValue = "true")
     @Bean("jasyptStringEncryptor")
-    @ConditionalOnExpression("${encrypt.config.enabled:true}")
     @Primary
     StringEncryptor stringEncryptor() {
+        log.info("初始化自定义的 jasyptStringEncryptor.");
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
         String pwd = environment.getProperty("jasypt.encryptor.password", "U(^3ia)*v2$");
@@ -60,27 +63,27 @@ public class EncryptAutoConfiguration implements EnvironmentAware {
         return encryptor;
     }
 
-    @ConditionalOnExpression("${encrypt.restful.enabled:false}")
+    @ConditionalOnProperty(prefix = "encrypt.restful",name = "enabled",havingValue = "true")
     @Bean("common-restful-AESCtrl")
     AESControl aesControl() {
         return new AESControl();
     }
 
-    @ConditionalOnExpression("${encrypt.restful.enabled:false}")
+    @ConditionalOnProperty(prefix = "encrypt.restful",name = "enabled",havingValue = "true")
     @Bean("common-restful-RSACtrl")
     RSAControl rsaControl() {
         return new RSAControl();
     }
 
+    @ConditionalOnProperty(prefix = "encrypt.restful",name = "enabled",havingValue = "true")
     @Bean("common-spring-encrypt-encryptRequestBodyAdvice")
-    @ConditionalOnExpression("${encrypt.restful.enabled:false}")
     public EncryptRequestBodyAdvice encryptRequestBodyAdvice() {
         log.info("启用restful接口对称加密");
         return new EncryptRequestBodyAdvice();
     }
 
+    @ConditionalOnProperty(prefix = "encrypt.restful",name = "enabled",havingValue = "true")
     @Bean("common-spring-encrypt-encryptResponseBodyAdvice")
-    @ConditionalOnExpression("${encrypt.restful.enabled:false}")
     public EncryptResponseBodyAdvice encryptResponseBodyAdvice() {
         log.info("启用restful接口非对称加密");
         return new EncryptResponseBodyAdvice();

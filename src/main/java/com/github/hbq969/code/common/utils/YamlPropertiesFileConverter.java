@@ -2,13 +2,17 @@ package com.github.hbq969.code.common.utils;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Pair;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONObject;
 import com.google.common.base.Joiner;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class YamlPropertiesFileConverter {
 
@@ -47,10 +51,97 @@ public class YamlPropertiesFileConverter {
         }
     }
 
-    public static void main(String[] args) {
+    public static String propertiesToYaml(List<Pair<String, Object>> pairs) {
+        if (CollectionUtils.isEmpty(pairs)) {
+            return null;
+        }
+        Properties properties = new Properties();
+        for (Pair<String, Object> pair : pairs) {
+            properties.setProperty(pair.getKey(), String.valueOf(pair.getValue()));
+        }
+
+        Map<String, Object> yamlMap = convertMap(properties);
+
+        // 将properties转换为Map
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        Yaml yaml = new Yaml(options);
+        String yamlString = yaml.dump(yamlMap);
+
+        return yamlString;
+
+    }
+
+    private static Map<String, Object> convertMap(Properties map) {
+        Map<String, Object> result = new HashMap<>();
+        for (Map.Entry entry : map.entrySet()) {
+            String[] keys = entry.getKey().toString().split("\\."); // 按照"."分割
+            putValue(result, keys, 0, entry.getValue());
+        }
+        return result;
+    }
+
+    // 递归设置值
+    private static void putValue(Map<String, Object> result, String[] keys, int index, Object value) {
+        if (index == keys.length) {
+            return;
+        }
+
+        String key = keys[index];
+        if (key.contains("[")) {
+            // 处理数组，提取出基准键和索引
+            String baseKey = key.substring(0, key.indexOf("["));
+            int arrayIndex = Integer.parseInt(key.substring(key.indexOf("[") + 1, key.indexOf("]")));
+
+            Map<String, Object> subMap = (Map<String, Object>) result.computeIfAbsent(baseKey, k -> new HashMap<>());
+            List<Map<String, Object>> list = (List<Map<String, Object>>) subMap.computeIfAbsent("entries", k -> new ArrayList<>());
+
+            // 确保数组长度
+            while (list.size() <= arrayIndex) {
+                list.add(new HashMap<>());
+            }
+
+            // 递归继续处理
+            putValue(list.get(arrayIndex), Arrays.copyOfRange(keys, index + 1, keys.length), 0, value);
+        } else {
+            // 普通键值对
+            if (index == keys.length - 1) {
+                result.put(key, value);
+            } else {
+                // 嵌套map
+                Map<String, Object> subMap = (Map<String, Object>) result.computeIfAbsent(key, k -> new HashMap<>());
+                putValue(subMap, Arrays.copyOfRange(keys, index + 1, keys.length), 0, value);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
         List<Pair<String, Object>> pairs = yamlToProperties(FileUtil.readString("/Users/hbq/Downloads/dbc-config/application.yml", StandardCharsets.UTF_8));
         for (Pair<String, Object> pair : pairs) {
-            System.out.println(pair.getKey() + ": " + pair.getValue());
+//            System.out.println(pair.getKey() + ": " + pair.getValue());
         }
+
+        String yamlString = propertiesToYaml(pairs);
+        System.out.println();
+        System.out.println();
+        System.out.println(yamlString);
+
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        Yaml yaml = new Yaml(options);
+        Map map = yaml.loadAs(FileUtils.openInputStream(new File("/Users/hbq/Codes/tmp/h-example/src/main/resources/application.yml")),Map.class);
+        System.out.println();
+//        System.out.println(GsonUtils.toJson(map));
+//
+        JSONObject json = new JSONObject(map);
+//       Object value= json.getByPath("spring.mvc.interceptors.resource-handler-registry.entries[0].handlers");
+//        System.out.println(value);
+//
+//        json.putByPath("spring.mvc.interceptors.resource-handler-registry.entries[0].handlers","bar");
+//        value= json.getByPath("spring.mvc.interceptors.resource-handler-registry.entries[0].handlers");
+//        System.out.println(value);
+//
+       String xx= yaml.dump(json);
+        System.out.println(xx);
     }
 }

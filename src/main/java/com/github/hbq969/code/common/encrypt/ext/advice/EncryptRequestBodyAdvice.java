@@ -5,10 +5,10 @@ import com.github.hbq969.code.common.encrypt.ext.config.Decrypt;
 import com.github.hbq969.code.common.encrypt.ext.exception.EncryptRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
 import java.lang.reflect.Method;
@@ -17,9 +17,9 @@ import java.lang.reflect.Type;
 /**
  * @author hbq969@gmail.com
  **/
-@ControllerAdvice({"com"})
+//@ConditionalOnProperty(prefix = "encrypt.restful",name = "enabled",havingValue = "true")
 @Slf4j
-public class EncryptRequestBodyAdvice implements RequestBodyAdvice {
+public class EncryptRequestBodyAdvice implements ControllerAdviceRemark, RequestBodyAdvice {
 
     @Autowired
     private EncryptProperties conf;
@@ -27,7 +27,9 @@ public class EncryptRequestBodyAdvice implements RequestBodyAdvice {
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
         Method method = methodParameter.getMethod();
-        return method.isAnnotationPresent(Decrypt.class);
+        String controllerPackage = methodParameter.getContainingClass().getName();
+        return method.isAnnotationPresent(Decrypt.class)
+                && conf.getRestful().supportPackage(controllerPackage);
     }
 
     @Override

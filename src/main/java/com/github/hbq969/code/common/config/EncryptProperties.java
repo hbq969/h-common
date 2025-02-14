@@ -1,8 +1,13 @@
 package com.github.hbq969.code.common.config;
 
 import com.github.hbq969.code.common.encrypt.ext.utils.AESUtil;
+import com.google.common.collect.Lists;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
 
 /**
  * @author : hbq969@gmail.com
@@ -11,6 +16,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "encrypt")
 @Data
+@Slf4j
 public class EncryptProperties {
 
     private Config config = new Config();
@@ -32,9 +38,26 @@ public class EncryptProperties {
          */
         private boolean enabled = false;
 
+        /**
+         * 扫描的包路径
+         */
+        private List<String> advicePackages = Lists.newArrayList("com");
+
         private AES aes = new AES();
 
         private RSA rsa = new RSA();
+
+        public boolean supportPackage(String pn) {
+            if (advicePackages == null) {
+                return false;
+            }
+            for (String apn : advicePackages) {
+                if (StringUtils.startsWith(pn, apn)) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         @Data
         public static class AES {
