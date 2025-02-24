@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.hbq969.code.common.spring.context.SpringContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jetty.http.HttpStatus;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +44,7 @@ public class SwaggerFilter implements Filter {
             HttpSession session = request.getSession();
             if (null == session) {
                 log.warn("会话为空，禁止访问/v2/api-docs");
-                response.setStatus(HttpStatus.FORBIDDEN_403);
+                response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
                 return;
             }
             Object user = session.getAttribute("h-sm-user");
@@ -53,13 +52,13 @@ public class SwaggerFilter implements Filter {
                 filterChain.doFilter(servletRequest, servletResponse);
             } else {
                 log.warn("会话失效或注销，禁止访问/v2/api-docs");
-                response.setStatus(HttpStatus.FORBIDDEN_403);
+                response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
             }
         } else {
             String actualHeaderValue = request.getHeader(apiSafeHeaderName);
             if (!StringUtils.equals(apiSafeHeaderValue, actualHeaderValue)) {
                 log.warn("禁止访问/v2/api-docs");
-                response.setStatus(HttpStatus.FORBIDDEN_403);
+                response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
             } else {
                 filterChain.doFilter(servletRequest, servletResponse);
             }
