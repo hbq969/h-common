@@ -34,9 +34,11 @@ const springConfigEncode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form.encodeResult = res.data.body
         } else {
-          msg(res.data.errorMessage, 'warning')
+          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          msg(content, "warning")
         }
       }).catch((err: Error) => {
+        console.log('',err)
         msg('请求异常', 'error')
       })
     }
@@ -79,9 +81,11 @@ const springConfigEncode2 = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form2.decodeResult = res.data.body
         } else {
-          msg(res.data.errorMessage, 'warning')
+          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          msg(content, "warning")
         }
       }).catch((err: Error) => {
+        console.log('',err)
         msg('请求异常', 'error')
       })
     }
@@ -104,9 +108,11 @@ const aesRandomKeyCreate = () => {
     if (res.data.state == 'OK') {
       aesRandomKey.value = res.data.body
     } else {
-      msg(res.data.errorMessage, 'warning')
+      let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+      msg(content, "warning")
     }
   }).catch((err: Error) => {
+    console.log('',err)
     msg('请求异常', 'error')
   })
 }
@@ -142,9 +148,11 @@ const aesEncode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form3.encodeResult = res.data.body
         } else {
-          msg(res.data.errorMessage, 'warning')
+          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          msg(content, "warning")
         }
       }).catch((err: Error) => {
+        console.log('',err)
         msg('请求异常', 'error')
       })
     }
@@ -183,9 +191,11 @@ const aesDecode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form4.decodeResult = res.data.body
         } else {
-          msg(res.data.errorMessage, 'warning')
+          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          msg(content, "warning")
         }
       }).catch((err: Error) => {
+        console.log('',err)
         msg('请求异常', 'error')
       })
     }
@@ -212,9 +222,11 @@ const rsaKeyPairCreate = () => {
       form5.privateKey = res.data.body.RSAPrivateKey
       form5.publicKey = res.data.body.RSAPublicKey
     } else {
-      msg(res.data.errorMessage, 'warning')
+      let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+      msg(content, "warning")
     }
   }).catch((err: Error) => {
+    console.log('',err)
     msg('请求异常', 'error')
   })
 }
@@ -251,9 +263,11 @@ const rsaEncode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form6.encodeResult = res.data.body
         } else {
-          msg(res.data.errorMessage, 'warning')
+          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          msg(content, "warning")
         }
       }).catch((err: Error) => {
+        console.log('',err)
         msg('请求异常', 'error')
       })
     }
@@ -294,9 +308,11 @@ const rsaDecode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form7.decodeResult = res.data.body
         } else {
-          msg(res.data.errorMessage, 'warning')
+          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          msg(content, "warning")
         }
       }).catch((err: Error) => {
+        console.log('',err)
         msg('请求异常', 'error')
       })
     }

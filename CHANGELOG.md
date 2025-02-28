@@ -40,3 +40,6 @@
 ## 2025-02-27
 ### Features
 - 针对restful的advice支持handler链
+
+### Modify
+- axios请求失败情况下优化提示信息
