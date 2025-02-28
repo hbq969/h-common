@@ -7,6 +7,8 @@ import com.github.hbq969.code.common.spring.advice.conf.AdviceProperties;
 import com.github.hbq969.code.common.spring.advice.ex.GlobalExceptionHandler;
 import com.github.hbq969.code.common.spring.advice.limit.RestfulLimitAdvice;
 import com.github.hbq969.code.common.spring.advice.log.LogAdvice;
+import com.github.hbq969.code.common.spring.advice.log.LogRestfulHandler;
+import com.github.hbq969.code.common.spring.advice.rest.RestfulAdvice;
 import com.github.hbq969.code.common.spring.context.SpringContext;
 import com.github.hbq969.code.common.spring.context.SpringEnv;
 import com.github.hbq969.code.common.spring.context.SpringEnvImpl;
@@ -107,11 +109,23 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
         return new AdviceProperties();
     }
 
+//    @ConditionalOnExpression("${advice.log.enabled:true}")
+//    @Bean("common-logAdvice")
+//    LogAdvice logAdvice() {
+//        log.info("初始化restful接口日志记录aop组件");
+//        return new LogAdvice();
+//    }
+
     @ConditionalOnExpression("${advice.log.enabled:true}")
-    @Bean("common-logAdvice")
-    LogAdvice logAdvice() {
-        log.info("初始化restful接口日志记录aop组件");
-        return new LogAdvice();
+    @Bean("common-RestfulAdvice")
+    RestfulAdvice restfulAdvice(){
+        return new RestfulAdvice();
+    }
+
+    @ConditionalOnExpression("${advice.log.enabled:true}")
+    @Bean("common-LogRestfulHandler")
+    LogRestfulHandler logRestfulHandler() {
+        return new LogRestfulHandler();
     }
 
     @ConditionalOnExpression("${advice.ex.enabled:true}")

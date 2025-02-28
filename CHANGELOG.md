@@ -36,3 +36,7 @@
 ## 2025-02-12
 ### Features
 - 操作日志增加oracle适配
+
+## 2025-02-27
+### Features
+- 针对restful的advice支持handler链
