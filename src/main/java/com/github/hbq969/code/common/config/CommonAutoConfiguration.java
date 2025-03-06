@@ -6,12 +6,12 @@ import com.github.hbq969.code.common.restful.version.VersionRegistrations;
 import com.github.hbq969.code.common.spring.advice.conf.AdviceProperties;
 import com.github.hbq969.code.common.spring.advice.ex.GlobalExceptionHandler;
 import com.github.hbq969.code.common.spring.advice.limit.RestfulLimitAdvice;
-import com.github.hbq969.code.common.spring.advice.log.LogAdvice;
 import com.github.hbq969.code.common.spring.advice.log.LogRestfulHandler;
 import com.github.hbq969.code.common.spring.advice.rest.RestfulAdvice;
 import com.github.hbq969.code.common.spring.context.SpringContext;
 import com.github.hbq969.code.common.spring.context.SpringEnv;
 import com.github.hbq969.code.common.spring.context.SpringEnvImpl;
+import com.github.hbq969.code.common.spring.i18n.I18nCtrl;
 import com.github.hbq969.code.common.spring.interceptor.*;
 import com.github.hbq969.code.common.utils.GsonUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +28,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -118,7 +121,7 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
 
     @ConditionalOnExpression("${advice.log.enabled:true}")
     @Bean("common-RestfulAdvice")
-    RestfulAdvice restfulAdvice(){
+    RestfulAdvice restfulAdvice() {
         return new RestfulAdvice();
     }
 
@@ -237,5 +240,21 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
         registration.setName("swaggerFilter");
         registration.setOrder(0);
         return registration;
+    }
+
+    @ConditionalOnMissingBean(ResourceBundleMessageSource.class)
+    @Bean("common-MessageSource")
+    public ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("i18n/messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setUseCodeAsDefaultMessage(true);
+        log.info("初始化国际化功能: {}", messageSource);
+        return messageSource;
+    }
+
+    @Bean("common-restful-I18nCtrl")
+    I18nCtrl i18nCtrl() {
+        return new I18nCtrl();
     }
 }

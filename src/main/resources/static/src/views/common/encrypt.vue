@@ -6,6 +6,10 @@ import {ref, reactive, onMounted, computed, provide, inject} from 'vue'
 import axios from '@/network'
 import {msg} from '@/utils/Utils'
 import type {FormInstance, FormRules} from 'element-plus'
+import {locale} from "@/i18n/locale";
+
+const language = sessionStorage.getItem('h-sm-lang') || 'zh-CN'
+const langData = locale[language]
 
 const form = reactive({
   keySource: 'default',
@@ -15,8 +19,8 @@ const form = reactive({
 })
 const formRef1 = ref<FormInstance>();
 const rules1 = reactive<FormRules>({
-  encodeData: [{required: true, message: '不能为空', trigger: 'blur'}],
-  customKey: [{required: true, message: '不能为空', trigger: 'blur'}]
+  encodeData: [{required: true, message: langData.notNull, trigger: 'blur'}],
+  customKey: [{required: true, message: langData.notNull, trigger: 'blur'}]
 })
 
 const springConfigEncode = async (formEl: FormInstance | undefined) => {
@@ -34,12 +38,12 @@ const springConfigEncode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form.encodeResult = res.data.body
         } else {
-          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
           msg(content, "warning")
         }
       }).catch((err: Error) => {
-        console.log('',err)
-        msg('请求异常', 'error')
+        console.log('', err)
+        msg(langData.requestErr, 'error')
       })
     }
   })
@@ -62,8 +66,8 @@ const form2 = reactive({
 })
 const formRef2 = ref<FormInstance>();
 const rules2 = reactive<FormRules>({
-  decodeData: [{required: true, message: '不能为空', trigger: 'blur'}],
-  customKey: [{required: true, message: '不能为空', trigger: 'blur'}]
+  decodeData: [{required: true, message: langData.notNull, trigger: 'blur'}],
+  customKey: [{required: true, message: langData.notNull, trigger: 'blur'}]
 })
 
 const springConfigEncode2 = async (formEl: FormInstance | undefined) => {
@@ -81,12 +85,12 @@ const springConfigEncode2 = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form2.decodeResult = res.data.body
         } else {
-          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
           msg(content, "warning")
         }
       }).catch((err: Error) => {
-        console.log('',err)
-        msg('请求异常', 'error')
+        console.log('', err)
+        msg(langData.requestErr, 'error')
       })
     }
   })
@@ -108,12 +112,12 @@ const aesRandomKeyCreate = () => {
     if (res.data.state == 'OK') {
       aesRandomKey.value = res.data.body
     } else {
-      let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+      let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
       msg(content, "warning")
     }
   }).catch((err: Error) => {
-    console.log('',err)
-    msg('请求异常', 'error')
+    console.log('', err)
+    msg(langData.requestErr, 'error')
   })
 }
 
@@ -129,8 +133,8 @@ const form3 = reactive({
 })
 const formRef3 = ref<FormInstance>();
 const rules3 = reactive<FormRules>({
-  encryptKey: [{required: true, message: '不能为空', trigger: 'blur'}],
-  encodeData: [{required: true, message: '不能为空', trigger: 'blur'}]
+  encryptKey: [{required: true, message: langData.notNull, trigger: 'blur'}],
+  encodeData: [{required: true, message: langData.notNull, trigger: 'blur'}]
 })
 
 const aesEncode = async (formEl: FormInstance | undefined) => {
@@ -148,12 +152,12 @@ const aesEncode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form3.encodeResult = res.data.body
         } else {
-          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
           msg(content, "warning")
         }
       }).catch((err: Error) => {
-        console.log('',err)
-        msg('请求异常', 'error')
+        console.log('', err)
+        msg(langData.requestErr, 'error')
       })
     }
   })
@@ -172,8 +176,8 @@ const form4 = reactive({
 })
 const formRef4 = ref<FormInstance>();
 const rules4 = reactive<FormRules>({
-  decryptKey: [{required: true, message: '不能为空', trigger: 'blur'}],
-  decodeData: [{required: true, message: '不能为空', trigger: 'blur'}]
+  decryptKey: [{required: true, message: langData.notNull, trigger: 'blur'}],
+  decodeData: [{required: true, message: langData.notNull, trigger: 'blur'}]
 })
 
 const aesDecode = async (formEl: FormInstance | undefined) => {
@@ -191,12 +195,12 @@ const aesDecode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form4.decodeResult = res.data.body
         } else {
-          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
           msg(content, "warning")
         }
       }).catch((err: Error) => {
-        console.log('',err)
-        msg('请求异常', 'error')
+        console.log('', err)
+        msg(langData.requestErr, 'error')
       })
     }
   })
@@ -222,12 +226,12 @@ const rsaKeyPairCreate = () => {
       form5.privateKey = res.data.body.RSAPrivateKey
       form5.publicKey = res.data.body.RSAPublicKey
     } else {
-      let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+      let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
       msg(content, "warning")
     }
   }).catch((err: Error) => {
-    console.log('',err)
-    msg('请求异常', 'error')
+    console.log('', err)
+    msg(langData.requestErr, 'error')
   })
 }
 
@@ -243,8 +247,8 @@ const form6 = reactive({
 })
 const formRef6 = ref<FormInstance>()
 const rules6 = reactive<FormRules>({
-  publicKey: [{required: true, message: '不能为空', trigger: 'blur'}],
-  encodeData: [{required: true, message: '不能为空', trigger: 'blur'}]
+  publicKey: [{required: true, message: langData.notNull, trigger: 'blur'}],
+  encodeData: [{required: true, message: langData.notNull, trigger: 'blur'}]
 })
 
 const rsaEncode = async (formEl: FormInstance | undefined) => {
@@ -263,12 +267,12 @@ const rsaEncode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form6.encodeResult = res.data.body
         } else {
-          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
           msg(content, "warning")
         }
       }).catch((err: Error) => {
-        console.log('',err)
-        msg('请求异常', 'error')
+        console.log('', err)
+        msg(langData.requestErr, 'error')
       })
     }
   })
@@ -288,8 +292,8 @@ const form7 = reactive({
 })
 const formRef7 = ref<FormInstance>()
 const rules7 = reactive<FormRules>({
-  privateKey: [{required: true, message: '不能为空', trigger: 'blur'}],
-  decodeData: [{required: true, message: '不能为空', trigger: 'blur'}]
+  privateKey: [{required: true, message: langData.notNull, trigger: 'blur'}],
+  decodeData: [{required: true, message: langData.notNull, trigger: 'blur'}]
 })
 
 const rsaDecode = async (formEl: FormInstance | undefined) => {
@@ -308,12 +312,12 @@ const rsaDecode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form7.decodeResult = res.data.body
         } else {
-          let content = '调用 '+res.config.baseURL+res.config.url+': '+res.data.errorMessage;
+          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
           msg(content, "warning")
         }
       }).catch((err: Error) => {
-        console.log('',err)
-        msg('请求异常', 'error')
+        console.log('', err)
+        msg(langData.requestErr, 'error')
       })
     }
   })
@@ -352,58 +356,58 @@ const _ = (window as any).ResizeObserver;
       <el-card style="max-width: 400px">
         <template #header>
           <div class="card-header">
-            <span>Spring配置加密</span>
+            <span>{{ langData.dialog1Title }}</span>
           </div>
         </template>
         <el-form :model="form" size="small" label-position="right" inline-message inline label-width="100px"
                  ref="formRef1" :rules="rules1">
-          <el-form-item label="秘钥来源" prop="keySource">
+          <el-form-item :label="langData.dialog1SecretSource" prop="keySource">
             <el-radio-group v-model="form.keySource" size="small">
               <el-radio-button label="default" value="缺省默认"/>
               <el-radio-button label="custom" value="自定义"/>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="自定义秘钥：" prop="customKey" v-if="form.keySource=='custom'">
+          <el-form-item :label="langData.dialog3CustomSecret" prop="customKey" v-if="form.keySource=='custom'">
             <el-input v-model="form.customKey" style="width: 220px"/>
           </el-form-item>
-          <el-form-item label="加密内容：" prop="encodeData">
+          <el-form-item :label="langData.dialog1EncryptContent" prop="encodeData">
             <el-input v-model="form.encodeData" type="textarea" rows="5" style="width: 220px"/>
           </el-form-item>
-          <el-form-item label="加密结果：" prop="encodeResult">
+          <el-form-item :label="langData.dialog1EncryptResult" prop="encodeResult">
             <el-input v-model="form.encodeResult" type="textarea" rows="5" style="width: 220px" readonly/>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="springConfigEncode(formRef1)">提交</el-button>
-            <el-button type="info" size="small" @click="resetSpringConfigEncode">重置</el-button>
+            <el-button type="primary" size="small" @click="springConfigEncode(formRef1)">{{langData.dialog1BtnSubmit}}</el-button>
+            <el-button type="info" size="small" @click="resetSpringConfigEncode">{{langData.dialog1BtnReset}}</el-button>
           </el-form-item>
         </el-form>
       </el-card>
       <el-card style="max-width: 400px;">
         <template #header>
           <div class="card-header">
-            <span>Spring配置解密</span>
+            <span>{{langData.dialog2Title}}</span>
           </div>
         </template>
         <el-form :model="form2" size="small" label-position="right" inline-message inline label-width="100px"
                  ref="formRef2" :rules="rules2">
-          <el-form-item label="秘钥来源" prop="keySource">
+          <el-form-item :label="langData.dialog2SecretSource" prop="keySource">
             <el-radio-group v-model="form2.keySource" size="small">
               <el-radio-button label="default" value="缺省默认"/>
               <el-radio-button label="custom" value="自定义"/>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="自定义秘钥：" prop="customKey" v-if="form2.keySource=='custom'">
+          <el-form-item :label="langData.dialog3CustomSecret" prop="customKey" v-if="form2.keySource=='custom'">
             <el-input v-model="form2.customKey" style="width: 220px"/>
           </el-form-item>
-          <el-form-item label="解密内容：" prop="encodeData">
+          <el-form-item :label="langData.dialog2EncryptContent" prop="encodeData">
             <el-input v-model="form2.decodeData" type="textarea" rows="5" style="width: 220px"/>
           </el-form-item>
-          <el-form-item label="解密结果：" prop="encodeResult">
+          <el-form-item :label="langData.dialog2EncryptResult" prop="encodeResult">
             <el-input v-model="form2.decodeResult" type="textarea" rows="5" style="width: 220px" readonly/>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="springConfigEncode2(formRef2)">提交</el-button>
-            <el-button type="info" size="small" @click="resetSpringConfigEncode2">重置</el-button>
+            <el-button type="primary" size="small" @click="springConfigEncode2(formRef2)">{{langData.dialog2BtnSubmit}}</el-button>
+            <el-button type="info" size="small" @click="resetSpringConfigEncode2">{{langData.dialog2BtnReset}}</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -411,16 +415,16 @@ const _ = (window as any).ResizeObserver;
       <el-card style="max-width: 400px;">
         <template #header>
           <div class="card-header">
-            <span>AES秘钥随机生成</span>
+            <span>{{langData.dialog3Title}}</span>
           </div>
         </template>
         <el-form size="small" label-position="right" inline-message inline label-width="100px">
-          <el-form-item label="自定义秘钥：" prop="aesRandomKey">
+          <el-form-item :label="langData.dialog3CustomSecret" prop="aesRandomKey">
             <el-input v-model="aesRandomKey" type="textarea" rows="5" style="width: 220px"/>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="aesRandomKeyCreate()">生成</el-button>
-            <el-button type="info" size="small" @click="resetAESKey">重置</el-button>
+            <el-button type="primary" size="small" @click="aesRandomKeyCreate()">{{langData.dialog3BtnSubmit}}</el-button>
+            <el-button type="info" size="small" @click="resetAESKey">{{langData.dialog3BtnReset}}</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -428,23 +432,23 @@ const _ = (window as any).ResizeObserver;
       <el-card style="max-width: 400px;">
         <template #header>
           <div class="card-header">
-            <span>AES加密</span>
+            <span>{{langData.dialog4Title}}</span>
           </div>
         </template>
         <el-form :model="form3" size="small" label-position="right" inline-message inline label-width="100px"
                  ref="formRef3" :rules="rules3">
-          <el-form-item label="秘钥：" prop="encryptKey">
+          <el-form-item :label="langData.dialog4Secret" prop="encryptKey">
             <el-input v-model="form3.encryptKey" type="text" style="width: 220px"/>
           </el-form-item>
-          <el-form-item label="加密内容：" prop="encodeData">
+          <el-form-item :label="langData.dialog4EncryptContent" prop="encodeData">
             <el-input v-model="form3.encodeData" type="textarea" rows="5" style="width: 220px"/>
           </el-form-item>
-          <el-form-item label="加密结果：" prop="encodeResult">
+          <el-form-item :label="langData.dialog4EncryptResult" prop="encodeResult">
             <el-input v-model="form3.encodeResult" type="textarea" rows="5" style="width: 220px" readonly/>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="aesEncode(formRef3)">提交</el-button>
-            <el-button type="info" size="small" @click="resetAESEncode">重置</el-button>
+            <el-button type="primary" size="small" @click="aesEncode(formRef3)">{{langData.dialog4BtnSubmit}}</el-button>
+            <el-button type="info" size="small" @click="resetAESEncode">{{langData.dialog4BtnReset}}</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -452,23 +456,23 @@ const _ = (window as any).ResizeObserver;
       <el-card style="max-width: 400px;">
         <template #header>
           <div class="card-header">
-            <span>AES解密</span>
+            <span>{{langData.dialog5Title}}</span>
           </div>
         </template>
         <el-form :model="form4" size="small" label-position="right" inline-message inline label-width="100px"
                  ref="formRef4" :rules="rules4">
-          <el-form-item label="秘钥：" prop="decryptKey">
+          <el-form-item :label="langData.dialog5Secret" prop="decryptKey">
             <el-input v-model="form4.decryptKey" type="text" style="width: 220px"/>
           </el-form-item>
-          <el-form-item label="加密内容：" prop="encodeData">
+          <el-form-item :label="langData.dialog5EncryptContent" prop="encodeData">
             <el-input v-model="form4.decodeData" type="textarea" rows="5" style="width: 220px"/>
           </el-form-item>
-          <el-form-item label="加密结果：" prop="encodeResult">
+          <el-form-item :label="langData.dialog5EncryptResult" prop="encodeResult">
             <el-input v-model="form4.decodeResult" type="textarea" rows="5" style="width: 220px" readonly/>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="aesDecode(formRef4)">提交</el-button>
-            <el-button type="info" size="small" @click="resetAESDecode">重置</el-button>
+            <el-button type="primary" size="small" @click="aesDecode(formRef4)">{{langData.dialog5BtnSubmit}}</el-button>
+            <el-button type="info" size="small" @click="resetAESDecode">{{langData.dialog5BtnReset}}</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -477,19 +481,19 @@ const _ = (window as any).ResizeObserver;
       <el-card style="max-width: 1000px;">
         <template #header>
           <div class="card-header">
-            <span>RSA秘钥对生成</span>
+            <span>{{langData.dialog6Title}}</span>
           </div>
         </template>
         <el-form size="small" label-position="right" inline-message inline label-width="100px">
-          <el-form-item label="私钥：" prop="privateKey">
+          <el-form-item :label="langData.dialog6PrivateKey" prop="privateKey">
             <el-input v-model="form5.privateKey" type="textarea" rows="9" style="width: 800px" readonly/>
           </el-form-item>
-          <el-form-item label="公钥：" prop="publicKey">
+          <el-form-item :label="langData.dialog6PublicKey" prop="publicKey">
             <el-input v-model="form5.publicKey" type="textarea" rows="5" style="width: 800px" readonly/>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="rsaKeyPairCreate()">生成</el-button>
-            <el-button type="info" size="small" @click="resetRsaKeyPair">重置</el-button>
+            <el-button type="primary" size="small" @click="rsaKeyPairCreate()">{{langData.dialog6BtnSubmit}}</el-button>
+            <el-button type="info" size="small" @click="resetRsaKeyPair">{{langData.dialog6BtnReset}}</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -497,23 +501,23 @@ const _ = (window as any).ResizeObserver;
       <el-card style="max-width: 1000px;">
         <template #header>
           <div class="card-header">
-            <span>RSA公钥加密</span>
+            <span>{{langData.dialog7Title}}</span>
           </div>
         </template>
         <el-form :model="form6" size="small" label-position="right" inline-message inline label-width="100px"
                  ref="formRef6" :rules="rules6">
-          <el-form-item label="公钥：" prop="publicKey">
+          <el-form-item :label="langData.dialog7PublicKey" prop="publicKey">
             <el-input v-model="form6.publicKey" type="textarea" rows="9" style="width: 800px"/>
           </el-form-item>
-          <el-form-item label="加密内容：" prop="encodeData">
+          <el-form-item :label="langData.dialog7EncryptContent" prop="encodeData">
             <el-input v-model="form6.encodeData" type="textarea" rows="5" style="width: 800px"/>
           </el-form-item>
-          <el-form-item label="加密结果：" prop="encodeResult">
+          <el-form-item :label="langData.dialog7EncryptResult" prop="encodeResult">
             <el-input v-model="form6.encodeResult" type="textarea" rows="5" style="width: 800px" readonly/>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="rsaEncode(formRef6)">提交</el-button>
-            <el-button type="info" size="small" @click="resetRsaEncode">重置</el-button>
+            <el-button type="primary" size="small" @click="rsaEncode(formRef6)">{{ langData.dialog7BtnSubmit }}</el-button>
+            <el-button type="info" size="small" @click="resetRsaEncode">{{ langData.dialog7BtnReset }}</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -521,23 +525,23 @@ const _ = (window as any).ResizeObserver;
       <el-card style="max-width: 1000px;">
         <template #header>
           <div class="card-header">
-            <span>RSA私钥解密</span>
+            <span>{{langData.dialog8Title}}</span>
           </div>
         </template>
         <el-form :model="form7" size="small" label-position="right" inline-message inline label-width="100px"
                  ref="formRef7" :rules="rules7">
-          <el-form-item label="私钥：" prop="privateKey">
+          <el-form-item :label="langData.dialog8PrivateKey" prop="privateKey">
             <el-input v-model="form7.privateKey" type="textarea" rows="9" style="width: 800px"/>
           </el-form-item>
-          <el-form-item label="解密内容：" prop="decodeData">
+          <el-form-item :label="langData.dialog8EncryptContent" prop="decodeData">
             <el-input v-model="form7.decodeData" type="textarea" rows="5" style="width: 800px"/>
           </el-form-item>
-          <el-form-item label="加密结果：" prop="decodeResult">
+          <el-form-item :label="langData.dialog8EncryptResult" prop="decodeResult">
             <el-input v-model="form7.decodeResult" type="textarea" rows="5" style="width: 800px" readonly/>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="rsaDecode(formRef7)">提交</el-button>
-            <el-button type="info" size="small" @click="resetRsaDecode">重置</el-button>
+            <el-button type="primary" size="small" @click="rsaDecode(formRef7)">{{langData.dialog8BtnSubmit}}</el-button>
+            <el-button type="info" size="small" @click="resetRsaDecode">{{langData.dialog8BtnReset}}</el-button>
           </el-form-item>
         </el-form>
       </el-card>
