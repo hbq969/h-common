@@ -1,5 +1,6 @@
 package com.github.hbq969.code.common.encrypt.ext.advice;
 
+import cn.hutool.core.net.URLDecoder;
 import com.github.hbq969.code.common.config.EncryptProperties;
 import com.github.hbq969.code.common.encrypt.ext.config.Algorithm;
 import com.github.hbq969.code.common.encrypt.ext.config.Decrypt;
@@ -100,6 +101,7 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 
     private void decryptWithAES(HttpInputMessage inputMessage, EncryptProperties conf) throws IOException {
         String key = conf.getRestful().getAes().getKey();
+        String iv = conf.getRestful().getAes().getIv();
         String charset = conf.getRestful().getAes().getCharset();
         boolean showLog = conf.getRestful().getAes().isShowLog();
 
@@ -111,7 +113,11 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
         if (StringUtils.isBlank(charset)) {
             charset = "utf-8";
         }
-        String decryptBody = AESUtil.decrypt(content, key, Charset.forName(charset));
+        Charset c = Charset.forName(charset);
+        String decryptBody = AESUtil.decrypt(content, key, iv, c);
+//        if (StringUtils.isNotEmpty(decryptBody) && decryptBody.contains("%")) {
+//            decryptBody = URLDecoder.decode(decryptBody, c);
+//        }
         if (showLog) {
             log.info("接收请求, aes解密前：{}, 解密后：{}", content, decryptBody);
         }

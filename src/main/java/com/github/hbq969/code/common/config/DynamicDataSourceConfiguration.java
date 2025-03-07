@@ -69,7 +69,9 @@ public class DynamicDataSourceConfiguration {
             return dbKey;
         }).collect(Collectors.toSet());
         String dbs = GsonUtils.toJson(dbKeySet);
-        log.info("解析到多数据源: {}", dbs);
+        if (log.isDebugEnabled()) {
+            log.debug("解析到多数据源信息: {}", dbs);
+        }
         if (CollectionUtil.isEmpty(dbKeySet)) {
             throw new IllegalArgumentException("请配置动态多数据源");
         }
@@ -79,7 +81,9 @@ public class DynamicDataSourceConfiguration {
         DynamicDataSource dynamicDataSource = new DynamicDataSource(defaultLookupKey);
         dynamicDataSource.setTargetDataSources(dataSourceMap);
         Object defaultDatasource = dataSourceMap.get(defaultLookupKey);
-        log.info("指定的默认数据源: {}", defaultLookupKey);
+        if (log.isDebugEnabled()) {
+            log.debug("缺省数据源: {}", defaultLookupKey);
+        }
         if (!dbKeySet.contains(defaultLookupKey)) {
             throw new IllegalArgumentException(
                     MessageFormat.format("spring.datasource.dynamic.default-lookup-key需要从{0}中取", dbs));
@@ -103,8 +107,8 @@ public class DynamicDataSourceConfiguration {
         if (StrUtils.strEmpty(conTestQuery)) {
             conTestQuery = driverClassName.contains("oracle") ? "select 1 from dual" : "select 1";
         }
-        if (log.isDebugEnabled()) {
-            log.debug(
+        if (log.isTraceEnabled()) {
+            log.trace(
                     "构建动态数据源: {}, 驱动类: {}, url: {}, 连接总数: {}, 最小空闲: {}, 等待超时: {} ms, 测试sql: {}",
                     dbKey, driverClassName, jdbcUrl, maxPoolSize, minIdle, maxLifeTime, conTestQuery);
         }

@@ -72,9 +72,14 @@ public class EncryptProperties {
             private volatile boolean showLog = false;
 
             /**
-             * 缺省秘钥
+             * 秘钥
              */
             private volatile String key = AESUtil.KEY;
+
+            /**
+             * iv向量
+             */
+            private volatile String iv = AESUtil.IV;
         }
 
         @Data

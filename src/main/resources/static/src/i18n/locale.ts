@@ -21,6 +21,7 @@ export const locale = {
 
         dialog4Title: 'AES加密',
         dialog4Secret: '秘钥',
+        dialog4Iv: 'iv向量',
         dialog4EncryptContent: '加密内容',
         dialog4EncryptResult: '加密结果',
         dialog4BtnSubmit: '提交',
@@ -78,6 +79,7 @@ export const locale = {
 
         dialog4Title: 'AES encryption',
         dialog4Secret: 'Secret key',
+        dialog4Iv: 'IV Vector',
         dialog4EncryptContent: 'Encrypted content',
         dialog4EncryptResult: 'Encryption result',
         dialog4BtnSubmit: 'Submit',
@@ -135,6 +137,7 @@ export const locale = {
 
         dialog4タイトル: 'AES暗号化',
         dialog4Secret: '秘密鍵',
+        dialog4Iv: 'IVベクター',
         dialog4EncryptContent: '暗号化されたコンテンツ',
         dialog4EncryptResult: '暗号化結果',
         dialog4BtnSubmit: '送信',

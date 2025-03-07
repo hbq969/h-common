@@ -15,8 +15,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 @Slf4j
 public class DynamicMapperScan implements InitializingBean {
 
-  @Override
-  public void afterPropertiesSet() throws Exception {
-    log.info("初始化Mapper接口扫描器DynamicMapperScan.");
-  }
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (log.isDebugEnabled()) {
+            log.debug("初始化Mapper接口扫描器DynamicMapperScan。");
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.github.hbq969.code.common.encrypt.ext.advice;
 
+import cn.hutool.core.net.URLEncodeUtil;
 import com.github.hbq969.code.common.config.EncryptProperties;
 import com.github.hbq969.code.common.encrypt.ext.config.Algorithm;
 import com.github.hbq969.code.common.encrypt.ext.config.Encrypt;
@@ -53,6 +54,7 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
         Encrypt encrypt = returnType.getMethodAnnotation(Encrypt.class);
         if (encrypt.algorithm() == Algorithm.AES) {
             String key = conf.getRestful().getAes().getKey();
+            String iv = conf.getRestful().getAes().getIv();
             String charset = conf.getRestful().getAes().getCharset();
             try {
                 String content = JsonUtils.writeValueAsString(body);
@@ -62,9 +64,10 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
                 if (StringUtils.isBlank(charset)) {
                     charset = "utf-8";
                 }
-                String encryptBody = AESUtil.encrypt(content, key, Charset.forName(charset));
+                String encryptBody = AESUtil.encrypt(content, key, iv, Charset.forName(charset));
+//                encryptBody = URLEncodeUtil.encode(encryptBody);
                 if (conf.getRestful().getAes().isShowLog()) {
-                    log.info("请求响应, aes加密前: {}, 加密后: {}", content, encryptBody);
+                    log.info("请求响应, aes加密前: {}, 加密后 {}", content, key, iv, charset, encryptBody);
                 }
                 return encryptBody;
             } catch (Exception e) {

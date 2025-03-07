@@ -40,7 +40,7 @@ public class AESControl implements ICommonControl {
         log.info("使用aes加密: {}", info);
         try {
             return ReturnMessage.success(
-                    AESUtil.encrypt(info.getContent(), info.getKey(), Charset.forName(info.getCharset())));
+                    AESUtil.encrypt(info.getContent(), info.getKey(), info.getIv(), Charset.forName(info.getCharset())));
         } catch (Exception e) {
             log.error("使用aes加密异常", e);
             return ReturnMessage.fail("使用aes加密异常");
@@ -54,7 +54,7 @@ public class AESControl implements ICommonControl {
         log.info("使用aes解密: {}", info);
         try {
             return ReturnMessage.success(
-                    AESUtil.decrypt(info.getContent(), info.getKey(), Charset.forName(info.getCharset())));
+                    AESUtil.decrypt(info.getContent(), info.getKey(), info.getIv(), Charset.forName(info.getCharset())));
         } catch (Exception e) {
             log.error("使用aes解密异常", e);
             return ReturnMessage.fail("使用aes解密异常");

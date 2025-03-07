@@ -5,13 +5,15 @@ import com.github.hbq969.code.common.spring.advice.handler.RestfulHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.AnnotationUtils;
 
 @Slf4j
 public class LogRestfulHandler implements RestfulHandler {
     @Override
     public void before(ProceedingJoinPoint point) {
         MethodSignature ms = (MethodSignature) point.getSignature();
-        if (ArrayUtil.isNotEmpty(point.getArgs())) {
+        LogSet logSet = AnnotationUtils.findAnnotation(ms.getMethod(), LogSet.class);
+        if (logSet == null || logSet.printIn() && ArrayUtil.isNotEmpty(point.getArgs())) {
             StringBuilder sb = new StringBuilder(200);
             int len = point.getArgs().length;
             for (int i = 0; i < len; i++) {
@@ -26,7 +28,12 @@ public class LogRestfulHandler implements RestfulHandler {
     @Override
     public void after(ProceedingJoinPoint point, Object result) {
         MethodSignature ms = (MethodSignature) point.getSignature();
-        log.info("end call ... {}, 结果: {}", ms.getName(), result);
+        LogSet logSet = AnnotationUtils.findAnnotation(ms.getMethod(), LogSet.class);
+        if (logSet == null || logSet.printResult() && logSet.printResult()) {
+            log.info("end call ... {}, 结果: {}", ms.getName(), result);
+        } else {
+            log.info("end call ... {}", ms.getName());
+        }
     }
 
     @Override

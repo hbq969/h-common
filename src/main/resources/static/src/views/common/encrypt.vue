@@ -128,12 +128,14 @@ const resetAESKey = () => {
 
 const form3 = reactive({
   encryptKey: '',
+  iv: '',
   encodeData: '',
   encodeResult: ''
 })
 const formRef3 = ref<FormInstance>();
 const rules3 = reactive<FormRules>({
   encryptKey: [{required: true, message: langData.notNull, trigger: 'blur'}],
+  iv:  [{required: true, message: langData.notNull, trigger: 'blur'}],
   encodeData: [{required: true, message: langData.notNull, trigger: 'blur'}]
 })
 
@@ -146,6 +148,7 @@ const aesEncode = async (formEl: FormInstance | undefined) => {
         method: 'post',
         data: {
           key: form3.encryptKey,
+          iv: form3.iv,
           content: form3.encodeData
         }
       }).then((res: any) => {
@@ -165,18 +168,21 @@ const aesEncode = async (formEl: FormInstance | undefined) => {
 
 const resetAESEncode = () => {
   form3.encryptKey = ''
+  form3.iv=''
   form3.encodeData = ''
   form3.encodeResult = ''
 }
 
 const form4 = reactive({
   decryptKey: '',
+  iv: '',
   decodeData: '',
   decodeResult: ''
 })
 const formRef4 = ref<FormInstance>();
 const rules4 = reactive<FormRules>({
   decryptKey: [{required: true, message: langData.notNull, trigger: 'blur'}],
+  iv: [{required: true, message: langData.notNull, trigger: 'blur'}],
   decodeData: [{required: true, message: langData.notNull, trigger: 'blur'}]
 })
 
@@ -189,6 +195,7 @@ const aesDecode = async (formEl: FormInstance | undefined) => {
         method: 'post',
         data: {
           key: form4.decryptKey,
+          iv: form4.iv,
           content: form4.decodeData
         }
       }).then((res: any) => {
@@ -208,6 +215,7 @@ const aesDecode = async (formEl: FormInstance | undefined) => {
 
 const resetAESDecode = () => {
   form4.decryptKey = ''
+  form4.iv=''
   form4.decodeData = ''
   form4.decodeResult = ''
 }
@@ -440,6 +448,9 @@ const _ = (window as any).ResizeObserver;
           <el-form-item :label="langData.dialog4Secret" prop="encryptKey">
             <el-input v-model="form3.encryptKey" type="text" style="width: 220px"/>
           </el-form-item>
+          <el-form-item :label="langData.dialog4Iv" prop="iv">
+            <el-input v-model="form3.iv" type="text" style="width: 220px"/>
+          </el-form-item>
           <el-form-item :label="langData.dialog4EncryptContent" prop="encodeData">
             <el-input v-model="form3.encodeData" type="textarea" rows="5" style="width: 220px"/>
           </el-form-item>
@@ -464,7 +475,10 @@ const _ = (window as any).ResizeObserver;
           <el-form-item :label="langData.dialog5Secret" prop="decryptKey">
             <el-input v-model="form4.decryptKey" type="text" style="width: 220px"/>
           </el-form-item>
-          <el-form-item :label="langData.dialog5EncryptContent" prop="encodeData">
+          <el-form-item :label="langData.dialog4Iv" prop="iv">
+            <el-input v-model="form4.iv" type="text" style="width: 220px"/>
+          </el-form-item>
+          <el-form-item :label="langData.dialog5EncryptContent" prop="decodeData">
             <el-input v-model="form4.decodeData" type="textarea" rows="5" style="width: 220px"/>
           </el-form-item>
           <el-form-item :label="langData.dialog5EncryptResult" prop="encodeResult">

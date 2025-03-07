@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -51,21 +52,19 @@ public class I18nCtrl implements ICommonControl, ApplicationEventPublisherAware 
             log.info("设置国际化语言: {}", lang);
             LangInfo langInfo = new LangInfo(app, lang);
             log.info("发布语言变化事件: {}", GsonUtils.toJson(langInfo));
-            Map<String, LanguageChangeListener> beans = context.getBeanMapOfType(LanguageChangeListener.class);
-            if (MapUtils.isNotEmpty(beans)) {
-                List<LanguageChangeListener> listeners = beans.values().stream()
-                        .sorted(Comparator.comparingInt(LanguageChangeListener::listenerOrder))
-                        .collect(Collectors.toList());
-                for (LanguageChangeListener listener : listeners) {
-                    try {
-                        listener.onChange(langInfo);
-                    } catch (Exception e) {
-                        log.error(String.format("语言变化通知监听者 [%s] 异常", listener.listenerName()), e);
-                    }
-                }
-            }
+            eventPublisher.publishEvent(new LanguageEvent(langInfo));
         }
         return ReturnMessage.success("设置成功");
+    }
+
+    @ApiOperation("获取语言")
+    @RequestMapping(path = "/lang", method = RequestMethod.GET)
+    @ResponseBody
+    public ReturnMessage<String> getLang() {
+        String language = Locale.getDefault().getLanguage();
+        String country = Locale.getDefault().getCountry();
+        return ReturnMessage.success(StringUtils.isEmpty(country)
+                ? language : String.join("-", language, country));
     }
 
     @Override

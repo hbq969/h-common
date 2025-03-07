@@ -60,7 +60,9 @@ public class DynamicDataSourceBeanProcessor implements BeanPostProcessor {
         }
         // 类上找到注解
         else {
-            log.debug("{} 满足多数据源类级别的@DS增强", beanName);
+            if (log.isDebugEnabled()) {
+                log.debug("{} 满足多数据源类级别的@DS增强", beanName);
+            }
             // 判断是否已经被JDK动态代理，因为Proxy代理类是没法被继承子类化的
             if (AopUtils.isJdkDynamicProxy(target) || StringUtils.contains(clz.getName(), "$Proxy")) {
                 ClassLoader loader = clz.getClassLoader();

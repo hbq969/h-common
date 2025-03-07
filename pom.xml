@@ -102,6 +102,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
+                    <include>i18n/*</include>
                     <include>META-INF/*</include>
                     <include>static/hbq969-common/</include>
                 </includes>

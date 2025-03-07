@@ -2,15 +2,11 @@ package com.github.hbq969.code.common.utils;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Pair;
-import cn.hutool.json.JSON;
-import cn.hutool.json.JSONObject;
 import com.google.common.base.Joiner;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.io.FileUtils;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -69,7 +65,6 @@ public class YamlPropertiesFileConverter {
         String yamlString = yaml.dump(yamlMap);
 
         return yamlString;
-
     }
 
     private static Map<String, Object> convertMap(Properties map) {
@@ -93,8 +88,8 @@ public class YamlPropertiesFileConverter {
             String baseKey = key.substring(0, key.indexOf("["));
             int arrayIndex = Integer.parseInt(key.substring(key.indexOf("[") + 1, key.indexOf("]")));
 
-            Map<String, Object> subMap = (Map<String, Object>) result.computeIfAbsent(baseKey, k -> new HashMap<>());
-            List<Map<String, Object>> list = (List<Map<String, Object>>) subMap.computeIfAbsent("entries", k -> new ArrayList<>());
+            // 获取或创建数组
+            List<Map<String, Object>> list = (List<Map<String, Object>>) result.computeIfAbsent(baseKey, k -> new ArrayList<>());
 
             // 确保数组长度
             while (list.size() <= arrayIndex) {
@@ -106,7 +101,12 @@ public class YamlPropertiesFileConverter {
         } else {
             // 普通键值对
             if (index == keys.length - 1) {
-                result.put(key, value);
+                // 如果值是字符串且包含逗号，则拆分为列表
+                if (value instanceof String && ((String) value).contains(",")) {
+                    result.put(key, Arrays.asList(((String) value).split(",")));
+                } else {
+                    result.put(key, value);
+                }
             } else {
                 // 嵌套map
                 Map<String, Object> subMap = (Map<String, Object>) result.computeIfAbsent(key, k -> new HashMap<>());
@@ -116,32 +116,14 @@ public class YamlPropertiesFileConverter {
     }
 
     public static void main(String[] args) throws Exception {
-        List<Pair<String, Object>> pairs = yamlToProperties(FileUtil.readString("/Users/hbq/Downloads/dbc-config/application.yml", StandardCharsets.UTF_8));
+        List<Pair<String, Object>> pairs = yamlToProperties(FileUtil.readString("/Users/hbq/Codes/tmp/h-example/src/main/resources/application.yml", StandardCharsets.UTF_8));
         for (Pair<String, Object> pair : pairs) {
-//            System.out.println(pair.getKey() + ": " + pair.getValue());
+            System.out.println(pair.getKey() + ": " + pair.getValue());
         }
 
         String yamlString = propertiesToYaml(pairs);
         System.out.println();
         System.out.println();
         System.out.println(yamlString);
-
-        DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        Yaml yaml = new Yaml(options);
-        Map map = yaml.loadAs(FileUtils.openInputStream(new File("/Users/hbq/Codes/tmp/h-example/src/main/resources/application.yml")),Map.class);
-        System.out.println();
-//        System.out.println(GsonUtils.toJson(map));
-//
-        JSONObject json = new JSONObject(map);
-//       Object value= json.getByPath("spring.mvc.interceptors.resource-handler-registry.entries[0].handlers");
-//        System.out.println(value);
-//
-//        json.putByPath("spring.mvc.interceptors.resource-handler-registry.entries[0].handlers","bar");
-//        value= json.getByPath("spring.mvc.interceptors.resource-handler-registry.entries[0].handlers");
-//        System.out.println(value);
-//
-       String xx= yaml.dump(json);
-        System.out.println(xx);
     }
 }

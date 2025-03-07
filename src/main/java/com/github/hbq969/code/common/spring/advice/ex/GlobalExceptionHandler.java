@@ -23,7 +23,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public ReturnMessage<?> messageExceptionHandler(HttpMessageNotReadableException e) {
-        log.info("", e);
+        log.error("http序列化错误: ",e);
         ReturnMessage<?> result = new ReturnMessage<>();
         result.setState(ReturnState.ERROR);
         result.setErrorMessage("http序列化错误");

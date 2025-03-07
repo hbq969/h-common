@@ -10,6 +10,7 @@ import lombok.Data;
 public class AESInfo {
 
     private String key;
+    private String iv;
     private String charset = "utf-8";
     private String content;
 
