@@ -57,7 +57,7 @@ public class CacheImpl extends AbstractValueAdaptingCache implements DisposableB
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
     }
-    log.info("初始化ehcache spring接口缓存");
+    log.debug("初始化ehcache spring接口缓存");
   }
 
   @Override
@@ -68,7 +68,7 @@ public class CacheImpl extends AbstractValueAdaptingCache implements DisposableB
   @Override
   public void destroy() throws Exception {
     this.manager.shutdown();
-    log.info("ehcache spring接口缓存安全退出...");
+    log.debug("ehcache spring接口缓存安全退出...");
   }
 
   @Override
@@ -142,9 +142,10 @@ public class CacheImpl extends AbstractValueAdaptingCache implements DisposableB
     if (Objects.nonNull(element)) {
       ExpireValue v = (ExpireValue) element.getObjectValue();
       ExpireKey expire = v.getExpire();
-      log.info("缓存键[{}]过期, 放入时间: {}, 当前时间: {}, 过期配置: ({},{})",
-          expire.getKey(), FormatTime.YYYYMMDDHHMISS.withMills(expire.getCreateTimeMills())
-          , FormatTime.YYYYMMDDHHMISS.withMills(), expire.getExpire(), expire.getUnit());
+      if(log.isDebugEnabled())
+        log.debug("缓存键[{}]过期, 放入时间: {}, 当前时间: {}, 过期配置: ({},{})",
+                expire.getKey(), FormatTime.YYYYMMDDHHMISS.withMills(expire.getCreateTimeMills())
+                , FormatTime.YYYYMMDDHHMISS.withMills(), expire.getExpire(), expire.getUnit());
     }
   }
 

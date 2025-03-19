@@ -140,7 +140,8 @@ public class SpringContext {
             clzList.forEach(clz -> {
                 CompletableFuture f = CompletableFuture.runAsync(() -> {
                     Object obj = getBean(clz);
-                    log.info("{}, {} 等待初始化完成。", clz, obj);
+                    if(log.isDebugEnabled())
+                        log.debug("{}, {} 等待初始化完成。", clz, obj);
                 });
                 fs.add(f);
             });
@@ -189,7 +190,7 @@ public class SpringContext {
             ids.forEach(id -> {
                 CompletableFuture f = CompletableFuture.runAsync(() -> {
                     Object obj = context.getBean(id);
-                    log.info("{}, {} 等待初始化完成。", id, obj);
+                    log.debug("{}, {} 等待初始化完成。", id, obj);
                 });
                 fs.add(f);
             });

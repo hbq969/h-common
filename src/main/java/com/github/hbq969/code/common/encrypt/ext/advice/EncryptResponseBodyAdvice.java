@@ -1,6 +1,5 @@
 package com.github.hbq969.code.common.encrypt.ext.advice;
 
-import cn.hutool.core.net.URLEncodeUtil;
 import com.github.hbq969.code.common.config.EncryptProperties;
 import com.github.hbq969.code.common.encrypt.ext.config.Algorithm;
 import com.github.hbq969.code.common.encrypt.ext.config.Encrypt;
@@ -12,7 +11,6 @@ import com.github.hbq969.code.common.spring.context.SpringContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -65,9 +63,9 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
                     charset = "utf-8";
                 }
                 String encryptBody = AESUtil.encrypt(content, key, iv, Charset.forName(charset));
-//                encryptBody = URLEncodeUtil.encode(encryptBody);
                 if (conf.getRestful().getAes().isShowLog()) {
-                    log.info("请求响应, aes加密前: {}, 加密后 {}", content, key, iv, charset, encryptBody);
+                    if (log.isDebugEnabled())
+                        log.debug("请求响应, aes加密前: {}, 加密后: {}", content, encryptBody);
                 }
                 return encryptBody;
             } catch (Exception e) {
@@ -90,7 +88,8 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
                 byte[] encodedData = RSAUtil.encrypt(data, publicKey);
                 String result = Base64Util.encode(encodedData);
                 if (conf.getRestful().getRsa().isShowLog()) {
-                    log.info("请求响应, rsa加密前：{}，加密后：{}", content, result);
+                    if(log.isDebugEnabled())
+                        log.debug("请求响应, rsa加密前：{}，加密后：{}", content, result);
                 }
                 return result;
             } catch (Exception e) {

@@ -29,7 +29,6 @@ public class ConfigControl implements ICommonControl {
     @RequestMapping(path = "/encrypt", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> encrypt(@RequestBody EncryptInfo info) {
-        log.info("配置加密: {}", info);
         try {
             StringEncryptor enc = createEncrypt(info);
             return ReturnMessage.success(enc.encrypt(info.getData()));
@@ -43,7 +42,6 @@ public class ConfigControl implements ICommonControl {
     @RequestMapping(path = "/decrypt", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> decrypt(@RequestBody EncryptInfo info) {
-        log.info("Spring配置解密: {}", info);
         try {
             StringEncryptor enc = createEncrypt(info);
             return ReturnMessage.success(enc.decrypt(info.getData()));

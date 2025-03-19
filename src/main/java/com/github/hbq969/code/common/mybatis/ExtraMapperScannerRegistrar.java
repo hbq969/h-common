@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * @createTime : 14:41:02, 2023.03.30, 周四
  */
 @Slf4j
-public class WafMapperScannerRegistrar implements ImportBeanDefinitionRegistrar,
+public class ExtraMapperScannerRegistrar implements ImportBeanDefinitionRegistrar,
     ResourceLoaderAware, EnvironmentAware {
 
   public static final Pattern SEPARATOR_PATTERN = Pattern.compile("[,;]");
@@ -48,7 +48,7 @@ public class WafMapperScannerRegistrar implements ImportBeanDefinitionRegistrar,
       BeanDefinitionRegistry registry) {
 
     AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(
-        importingClassMetadata.getAnnotationAttributes(WafMapperScan.class.getName()));
+        importingClassMetadata.getAnnotationAttributes(ExtraMapperScan.class.getName()));
     ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);
 
     // this check is needed in Spring 3.1
@@ -121,8 +121,8 @@ public class WafMapperScannerRegistrar implements ImportBeanDefinitionRegistrar,
       }
 
       List<String> values = Splitter.on(SEPARATOR_PATTERN).trimResults().splitToList(value);
-      if (log.isInfoEnabled()) {
-        log.info("find placeholder value {} for key {}", values, pro);
+      if (log.isDebugEnabled()) {
+        log.debug("find placeholder value {} for key {}", values, pro);
       }
 
       return values;

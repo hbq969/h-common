@@ -1,9 +1,13 @@
 package com.github.hbq969.code.common.utils;
 
+import cn.hutool.core.util.ObjectUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -14,14 +18,15 @@ import java.util.regex.Pattern;
  * @description : 字符串工具类
  * @createTime : 14:50:19, 2023.03.31, 周五
  */
+@Slf4j
 public final class StrUtils {
 
     public static final String PREFIX_VARIABLE = "${";
 
     public static final String SUFFIX_VARIABLE = "}";
-    public static final char placeholderSuffix = '}';
-    public static final char placeholderPrefix = '{';
-    public static final char placeholderDollar = '$';
+    public static final char PLACE_HOLDER_SUFFIX = '}';
+    public static final char PLACE_HOLDER_PREFIX = '{';
+    public static final char PLACE_HOLDER_DOLLAR = '$';
     public static final char placeholderNum = '#';
 
     private static final char HexCharArr[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a',
@@ -181,7 +186,7 @@ public final class StrUtils {
      * @param map
      * @return
      */
-    public static String replacePlaceHolders(String replacement, Map map) {
+    public static String replacePlaceHolders(String replacement, Object map) {
         return replacePlaceHolders(replacement, map, "");
     }
 
@@ -192,7 +197,7 @@ public final class StrUtils {
      * @param map
      * @return
      */
-    public static String replacePlaceHoldersWithSymbol(String replacement, Map map, char symbol) {
+    public static String replacePlaceHoldersWithSymbol(String replacement, Object map, char symbol) {
         return replacePlaceHoldersWithSymbol(replacement, map, "", symbol);
     }
 
@@ -204,8 +209,8 @@ public final class StrUtils {
      * @param defaultValue
      * @return
      */
-    public static String replacePlaceHolders(String replacement, Map map, String defaultValue) {
-        return replacePlaceHoldersWithSymbol(replacement, map, defaultValue, placeholderDollar);
+    public static String replacePlaceHolders(String replacement, Object map, String defaultValue) {
+        return replacePlaceHoldersWithSymbol(replacement, map, defaultValue, PLACE_HOLDER_DOLLAR);
     }
 
     /**
@@ -216,7 +221,7 @@ public final class StrUtils {
      * @param defaultValue
      * @return
      */
-    public static String replacePlaceHoldersWithSymbol(String replacement, Map map,
+    public static String replacePlaceHoldersWithSymbol(String replacement, Object map,
                                                        String defaultValue, char symbol) {
         Assert.notNull(replacement, "被替换的字符串为空");
         char[] chars = replacement.toCharArray();
@@ -226,19 +231,31 @@ public final class StrUtils {
         int len = chars.length;
         boolean isVariable = false;
         char c;
+        Class<?> clz = map.getClass();
         for (int i = 0; i < len; i++) {
             c = chars[i];
             if (isPlaceHolderDollarCharacter(chars, len, c, i, symbol)) {
                 stack.push(c);
             }
-            if (isVariable && c == placeholderSuffix) {
+            if (isVariable && c == PLACE_HOLDER_SUFFIX) {
                 String name = variable.toString();
                 int x = name.indexOf(':');
                 if (x > 0) {
                     defaultValue = name.substring(x + 1);
                     name = name.substring(0, x);
                 }
-                holder.append(MapUtils.getString(map, name, defaultValue));
+                if (map instanceof Map) {
+                    holder.append(MapUtils.getString((Map) map, name, defaultValue));
+                } else {
+                    Object value;
+                    try {
+                        value = getValueFromObject(clz, map, name, defaultValue);
+                    } catch (NoSuchFieldException e) {
+                        log.warn("{}.{} 不存在，请检查。", clz.getName(), name);
+                        continue;
+                    }
+                    holder.append(value);
+                }
                 isVariable = false;
                 stack.pop();
                 variable.setLength(0);
@@ -248,16 +265,26 @@ public final class StrUtils {
                 variable.append(c);
             } else {
                 if (isPlaceHolderDollarCharacter(chars, len, c, i, symbol)) {
-                } else if (c == placeholderPrefix && i > 0 && chars[i - 1] == symbol) {
+                } else if (c == PLACE_HOLDER_PREFIX && i > 0 && chars[i - 1] == symbol) {
                 } else {
                     holder.append(c);
                 }
             }
-            if (!stack.isEmpty() && stack.peek() == symbol && c == placeholderPrefix) {
+            if (!stack.isEmpty() && stack.peek() == symbol && c == PLACE_HOLDER_PREFIX) {
                 isVariable = true;
             }
         }
         return holder.toString();
+    }
+
+    private static Object getValueFromObject(Class<?> clz, Object target, String fn, Object defaultValue) throws NoSuchFieldException {
+        Field f = clz.getDeclaredField(fn);
+        f.setAccessible(true);
+        Object value = ReflectionUtils.getField(f, target);
+        if (ObjectUtil.isEmpty(value)) {
+            value = defaultValue;
+        }
+        return value;
     }
 
     /**
@@ -316,7 +343,7 @@ public final class StrUtils {
 
     private static boolean isPlaceHolderDollarCharacter(char[] chars, int len, char c, int i,
                                                         char symbol) {
-        return c == symbol && i < len - 1 && chars[i + 1] == placeholderPrefix;
+        return c == symbol && i < len - 1 && chars[i + 1] == PLACE_HOLDER_PREFIX;
     }
 
     public static String emptyToDefaultStr(String str, String defaultStr) {

@@ -27,7 +27,7 @@ public class LogDealer implements Runnable {
     @Override
     public void run() {
         String tn = Thread.currentThread().getName();
-        log.info("{} 启动。", tn);
+        log.debug("{} 启动。", tn);
         LogData operLog;
         Count c = Count.unsafe();
         int batchSize = conf.getBatchSize();

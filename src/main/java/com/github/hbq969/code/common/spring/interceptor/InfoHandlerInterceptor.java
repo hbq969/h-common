@@ -20,7 +20,8 @@ public class InfoHandlerInterceptor extends AbstractHandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("[{}] {}, {}", request.getMethod(), request.getRequestURI(), StringUtils.isEmpty(request.getQueryString()) ? "" : request.getQueryString());
+        if (log.isDebugEnabled())
+            log.debug("[{}] {}, {}", request.getMethod(), request.getRequestURI(), StringUtils.isEmpty(request.getQueryString()) ? "" : request.getQueryString());
         return true;
     }
 }

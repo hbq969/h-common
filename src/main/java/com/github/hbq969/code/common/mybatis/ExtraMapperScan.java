@@ -14,8 +14,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @Documented
-@Import(WafMapperScannerRegistrar.class)
-public @interface WafMapperScan {
+@Import(ExtraMapperScannerRegistrar.class)
+public @interface ExtraMapperScan {
 
   /**
    * Alias for the {@link #basePackages()} attribute. Allows for more concise annotation declarations e.g.: {@code @EnableMyBatisMapperScanner("org.my.pkg")}

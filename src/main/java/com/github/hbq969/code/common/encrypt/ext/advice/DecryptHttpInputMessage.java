@@ -1,6 +1,5 @@
 package com.github.hbq969.code.common.encrypt.ext.advice;
 
-import cn.hutool.core.net.URLDecoder;
 import com.github.hbq969.code.common.config.EncryptProperties;
 import com.github.hbq969.code.common.encrypt.ext.config.Algorithm;
 import com.github.hbq969.code.common.encrypt.ext.config.Decrypt;
@@ -80,7 +79,8 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
             }
             decryptBody = json.toString();
             if (showLog) {
-                log.info("接收请求, rsa解密前：{}, 解密后：{}", content, decryptBody);
+                if(log.isDebugEnabled())
+                    log.debug("接收请求, rsa解密前：{}, 解密后：{}", content, decryptBody);
             }
         }
 
@@ -115,11 +115,9 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
         }
         Charset c = Charset.forName(charset);
         String decryptBody = AESUtil.decrypt(content, key, iv, c);
-//        if (StringUtils.isNotEmpty(decryptBody) && decryptBody.contains("%")) {
-//            decryptBody = URLDecoder.decode(decryptBody, c);
-//        }
         if (showLog) {
-            log.info("接收请求, aes解密前：{}, 解密后：{}", content, decryptBody);
+            if(log.isDebugEnabled())
+                log.debug("接收请求, aes解密前：{}, 解密后：{}", content, decryptBody);
         }
         this.body = new ByteArrayInputStream(decryptBody.getBytes());
     }

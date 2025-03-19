@@ -29,7 +29,8 @@ public class LogServiceFacade extends DefaultOptionalFacade<String, LogService> 
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        log.info("日志采集配置: {}", GsonUtils.toJson(conf));
+        if (log.isDebugEnabled())
+            log.debug("日志采集配置: {}", GsonUtils.toJson(conf));
         this.q = new ArrayBlockingQueue<>(conf.getQueueCapacity());
         this.cache = new ArrayList<>(conf.getBatchSize());
         dealers = new ArrayList<>(conf.getThreadNum());

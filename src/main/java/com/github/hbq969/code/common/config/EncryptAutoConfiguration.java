@@ -49,14 +49,25 @@ public class EncryptAutoConfiguration implements EnvironmentAware {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
         String pwd = environment.getProperty("jasypt.encryptor.password", "U(^3ia)*v2$");
+        String algorithm = environment.getProperty("jasypt.encryptor.algorithm", "PBEWITHHMACSHA512ANDAES_256");
+        String koi = environment.getProperty("jasypt.encryptor.key-obtention-iterations", "1000");
+        String poolSize = environment.getProperty("jasypt.encryptor.pool-size", "1");
+        String providerName = environment.getProperty("jasypt.encryptor.provider-name", "SunJCE");
+        String sgcn = environment.getProperty("jasypt.encryptor.salt-generator-class-name", "org.jasypt.salt.RandomSaltGenerator");
+        String sot = environment.getProperty("jasypt.encryptor.string-output-type", "base64");
+        String igcn = environment.getProperty("jasypt.encryptor.iv-generator-class-name", "org.jasypt.iv.RandomIvGenerator");
         config.setPassword(pwd);
-        config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
-        config.setKeyObtentionIterations("1000");
-        config.setPoolSize("1");
-        config.setProviderName("SunJCE");
-        config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
-        config.setIvGeneratorClassName("org.jasypt.iv.RandomIvGenerator");
-        config.setStringOutputType("base64");
+        config.setAlgorithm(algorithm);
+        config.setKeyObtentionIterations(koi);
+        config.setPoolSize(poolSize);
+        config.setProviderName(providerName);
+        config.setSaltGeneratorClassName(sgcn);
+        config.setStringOutputType(sot);
+        try {
+            config.setIvGeneratorClassName(igcn);
+        } catch (Error e) {
+            log.error("SimpleStringPBEConfig方法setIvGeneratorClassName不兼容，向下兼容处理");
+        }
         encryptor.setConfig(config);
         if (log.isDebugEnabled()) {
             log.debug("创建自定义的jasyptStringEncryptor。");

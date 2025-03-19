@@ -40,7 +40,7 @@ public class CacheImpl extends AbstractValueAdaptingCache implements DisposableB
         .maximumSize(maxCapacity)
         .initialCapacity(initCapacity)
         .build();
-    log.info("初始化caffeine spring接口缓存");
+    log.debug("初始化caffeine spring接口缓存");
   }
 
   public CacheImpl(SpringContext context) {
@@ -55,7 +55,7 @@ public class CacheImpl extends AbstractValueAdaptingCache implements DisposableB
   @Override
   public void destroy() throws Exception {
     nativeCache.cleanUp();
-    log.info("清理caffeine spring接口缓存...");
+    log.debug("清理caffeine spring接口缓存...");
   }
 
   @Override
@@ -130,9 +130,10 @@ public class CacheImpl extends AbstractValueAdaptingCache implements DisposableB
     this.nativeCache.invalidate(key);
     if (Objects.nonNull(v)) {
       ExpireKey expire = v.getExpire();
-      log.info("缓存键[{}]过期, 放入时间: {}, 当前时间: {}, 过期配置: ({},{})",
-          expire.getKey(), FormatTime.YYYYMMDDHHMISS.withMills(expire.getCreateTimeMills())
-          , FormatTime.YYYYMMDDHHMISS.withMills(), expire.getExpire(), expire.getUnit());
+      if(log.isDebugEnabled())
+        log.debug("缓存键[{}]过期, 放入时间: {}, 当前时间: {}, 过期配置: ({},{})",
+                expire.getKey(), FormatTime.YYYYMMDDHHMISS.withMills(expire.getCreateTimeMills())
+                , FormatTime.YYYYMMDDHHMISS.withMills(), expire.getExpire(), expire.getUnit());
     }
   }
 

@@ -41,7 +41,8 @@ public class ResourceUtils {
         String path;
         if (StringUtils.isEmpty(profile) || PROFILE_DEFAULT.equals(profile)) {
             path = String.join("", dir, file);
-            log.info("读取文件: {}", path);
+            if (log.isDebugEnabled())
+                log.debug("读取文件: {}", path);
             return ResourceUtils.class.getResourceAsStream(path);
         } else {
             String[] array = file.split("\\.");
@@ -52,10 +53,12 @@ public class ResourceUtils {
             InputStream in = ResourceUtils.class.getResourceAsStream(path);
             if (null == in) {
                 path = String.join("", dir, file);
-                log.info("读取文件: {}", path);
+                if (log.isDebugEnabled())
+                    log.debug("读取文件: {}", path);
                 return ResourceUtils.class.getResourceAsStream(path);
             } else {
-                log.info("读取文件: {}", path);
+                if (log.isDebugEnabled())
+                    log.debug("读取文件: {}", path);
                 return in;
             }
         }
@@ -126,7 +129,6 @@ public class ResourceUtils {
                 token = parser.nextToken();
             }
             parser.close();
-            log.info("{}", GsonUtils.toJson(props));
             return props;
         } catch (Exception e) {
             log.error("解析yml内容异常", e);

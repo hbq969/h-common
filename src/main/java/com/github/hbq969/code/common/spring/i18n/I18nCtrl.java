@@ -49,9 +49,9 @@ public class I18nCtrl implements ICommonControl, ApplicationEventPublisherAware 
             String[] parts = lang.split("[-_]");
             Locale locale = new Locale(parts[0], parts.length > 1 ? parts[1] : "");
             Locale.setDefault(locale);
-            log.info("设置国际化语言: {}", lang);
+            log.debug("设置国际化语言: {}", lang);
             LangInfo langInfo = new LangInfo(app, lang);
-            log.info("发布语言变化事件: {}", GsonUtils.toJson(langInfo));
+            log.debug("发布语言变化事件: {}", GsonUtils.toJson(langInfo));
             eventPublisher.publishEvent(new LanguageEvent(langInfo));
         }
         return ReturnMessage.success("设置成功");

@@ -203,8 +203,9 @@ public class LockRedisProvider implements LockProvider, OptionalFacadeAware<Stri
             if (StrUtils.strNotEmpty(pwd)) {
                 redisStandaloneConfiguration.setPassword(RedisPassword.of(pwd.toCharArray()));
             }
-            log.info("初始化单点redis, 命令读超时: {} 秒, reids节点ip: {}, redis节点端口: {}, 密码: {}",
-                    readTimeout, ip, port, StrUtils.desensitive(pwd, 1));
+            if (log.isDebugEnabled())
+                log.debug("初始化单点redis, 命令读超时: {} 秒, reids节点ip: {}, redis节点端口: {}, 密码: {}",
+                        readTimeout, ip, port, StrUtils.desensitive(pwd, 1));
             factory = initializeLettuceConnectionFactory(lettuceClientConfiguration,
                     redisStandaloneConfiguration);
 
@@ -236,8 +237,9 @@ public class LockRedisProvider implements LockProvider, OptionalFacadeAware<Stri
             if (StrUtils.strNotEmpty(pwd)) {
                 redisSentinelConfiguration.setPassword(RedisPassword.of(pwd.toCharArray()));
             }
-            log.info("初始化哨兵redis, 命令读超时: {} 秒, master: {}, 哨兵集群列表: {}, 密码: {}",
-                    readTimeout, master, GsonUtils.toJson(nodes), StrUtils.desensitive(pwd, 1));
+            if (log.isDebugEnabled())
+                log.debug("初始化哨兵redis, 命令读超时: {} 秒, master: {}, 哨兵集群列表: {}, 密码: {}",
+                        readTimeout, master, GsonUtils.toJson(nodes), StrUtils.desensitive(pwd, 1));
             factory = initializeLettuceConnectionFactory(lettuceClientConfiguration,
                     redisSentinelConfiguration);
 
@@ -276,8 +278,9 @@ public class LockRedisProvider implements LockProvider, OptionalFacadeAware<Stri
             if (StrUtils.strNotEmpty(pwd)) {
                 redisClusterConfiguration.setPassword(RedisPassword.of(pwd.toCharArray()));
             }
-            log.info("初始化集群redis, 命令读超时: {} 秒, 集群列表: {}, 密码: {}", readTimeout,
-                    GsonUtils.toJson(nodes), StrUtils.desensitive(pwd, 1));
+            if(log.isDebugEnabled())
+                log.debug("初始化集群redis, 命令读超时: {} 秒, 集群列表: {}, 密码: {}", readTimeout,
+                        GsonUtils.toJson(nodes), StrUtils.desensitive(pwd, 1));
             factory = initializeLettuceConnectionFactory(lettuceClientConfiguration,
                     redisClusterConfiguration);
 

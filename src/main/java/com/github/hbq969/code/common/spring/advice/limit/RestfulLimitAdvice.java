@@ -48,7 +48,8 @@ public class RestfulLimitAdvice {
       if (rate == null) {
         rate = RateLimiter.create(qps);
         rates.put(key, rate);
-        log.info("方法[{}]标记了限流策略, {}次/秒", key, qps);
+        if(log.isDebugEnabled())
+          log.debug("方法[{}]标记了限流策略, {}次/秒", key, qps);
       }
     }
     rate.acquire();

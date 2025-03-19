@@ -46,7 +46,8 @@ public class LogBeanProcessor implements BeanPostProcessor {
                     if (ip.isPresent()) {
                         Class<?> inter = ip.get();
                         ret = org.springframework.core.annotation.AnnotationUtils.findAnnotation(inter, Log.class);
-                        log.info("{} 的接口[{}]上找到注解Log，并且是启用的。", inter);
+                        if(log.isDebugEnabled())
+                            log.debug("{} 的接口[{}]上找到注解Log，并且是启用的。", inter);
                         InvocationHandler handler = new LogHandlerImpl(context, ret, target);
                         return Proxy.newProxyInstance(loader, new Class<?>[]{inter}, handler);
                     } else {
@@ -58,13 +59,15 @@ public class LogBeanProcessor implements BeanPostProcessor {
             // 类上存在注解
             else {
                 if (ret.enabled()) {
-                    log.info("在类[{}]上找到注解Log，并且是启用的。", clz);
+                    if(log.isDebugEnabled())
+                        log.debug("在类[{}]上找到注解Log，并且是启用的。", clz);
                     Enhancer enhancer = new Enhancer();
                     enhancer.setSuperclass(clz);
                     enhancer.setCallback(new LogCallbackImpl(context, ret, target));
                     return enhancer.create();
                 } else {
-                    log.info("在类[{}]上找到注解Log，但是没有启用。", clz);
+                    if(log.isDebugEnabled())
+                        log.debug("在类[{}]上找到注解Log，但是没有启用。", clz);
                     return target;
                 }
             }

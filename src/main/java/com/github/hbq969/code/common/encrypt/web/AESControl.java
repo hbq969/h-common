@@ -24,7 +24,6 @@ public class AESControl implements ICommonControl {
     @ResponseBody
     public ReturnMessage<String> getRandomKey(
             @RequestParam(name = "len", defaultValue = "16") Integer len) {
-        log.info("获取AES随机码");
         try {
             return ReturnMessage.success(AESUtil.randomKeyWithAES(len));
         } catch (Exception e) {
@@ -37,7 +36,6 @@ public class AESControl implements ICommonControl {
     @RequestMapping(path = "/encrypt", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> encrypt(@RequestBody AESInfo info) {
-        log.info("使用aes加密: {}", info);
         try {
             return ReturnMessage.success(
                     AESUtil.encrypt(info.getContent(), info.getKey(), info.getIv(), Charset.forName(info.getCharset())));
@@ -51,7 +49,6 @@ public class AESControl implements ICommonControl {
     @RequestMapping(path = "/decrypt", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> decrypt(@RequestBody AESInfo info) {
-        log.info("使用aes解密: {}", info);
         try {
             return ReturnMessage.success(
                     AESUtil.decrypt(info.getContent(), info.getKey(), info.getIv(), Charset.forName(info.getCharset())));

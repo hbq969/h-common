@@ -1,129 +1,135 @@
 package com.github.hbq969.code.common.utils;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.Pair;
-import com.google.common.base.Joiner;
+import cn.hutool.core.io.IoUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.github.hbq969.code.common.spring.yaml.TypePair;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
+import org.apache.commons.collections4.MapUtils;
+import org.springframework.boot.env.YamlPropertySourceLoader;
+import org.springframework.boot.origin.OriginTrackedValue;
+import org.springframework.core.env.PropertySource;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+@Slf4j
 public class YamlPropertiesFileConverter {
 
-    public static List<Pair<String, Object>> yamlToProperties(String yamlString) {
-        Yaml yaml = new Yaml();
-        Map<String, Object> yamlMap = yaml.load(yamlString);
-        List<Pair<String, Object>> pairs = new ArrayList<>();
-        flattenMap(yamlMap, "", pairs);
+    private static final Pattern ARRAY_PATTERN = Pattern.compile("\\[(\\d+)\\]$");
+    private static YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
+
+    public static List<TypePair> yamlToProperties(String yamlString) {
+        Map<String, Object> yamlMap = new HashMap<>();
+        List<PropertySource<?>> list = null;
+        try {
+            list = loader.load("utils", new ByteArrayResource(yamlString.getBytes()));
+            if (CollectionUtils.isNotEmpty(list)) {
+                yamlMap = (Map<String, Object>) list.get(0).getSource();
+            }
+        } catch (IOException e) {
+            log.error("解析yaml内容异常", e);
+        }
+        List<TypePair> pairs = new ArrayList<>();
+        TypePair pair;
+        String key;
+        if (MapUtils.isNotEmpty(yamlMap)) {
+            for (Map.Entry<String, Object> e : yamlMap.entrySet()) {
+                key = String.valueOf(e.getKey());
+                OriginTrackedValue otv = (OriginTrackedValue) e.getValue();
+                if (otv == null) {
+                    pair = new TypePair(key, null, String.class.getName());
+                } else {
+                    Object value = otv.getValue();
+                    Class<?> clz = value == null ? String.class : value.getClass();
+                    pair = new TypePair(key, value, clz.getName());
+                }
+                pairs.add(pair);
+            }
+        }
         return pairs;
     }
 
-    private static void flattenMap(Map<String, Object> map, String prefix, List<Pair<String, Object>> pairs) {
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String key = prefix.isEmpty() ? entry.getKey() : prefix + "." + entry.getKey();
-            Object value = entry.getValue();
+    public static String propertiesToYaml(List<TypePair> pairs) {
+        // 禁用所有自动引号生成
+        YAMLFactory yamlFactory = new YAMLFactory()
+                .disable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
+                .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
 
-            if (value instanceof Map) {
-                flattenMap((Map<String, Object>) value, key, pairs);
-            } else if (value instanceof List) {
-                List<?> list = (List<?>) value;
-                if (list.get(0) instanceof String) {
-                    pairs.add(new Pair<>(key, Joiner.on(',').join(list)));
-                } else {
-                    for (int i = 0; i < list.size(); i++) {
-                        Object item = list.get(i);
-                        if (item instanceof Map) {
-                            flattenMap((Map<String, Object>) item, key + "[" + i + "]", pairs);
-                        } else {
-                            pairs.add(new Pair<>(key, String.valueOf(item)));
-                        }
-                    }
-                }
-            } else {
-                pairs.add(new Pair<>(key, String.valueOf(value)));
+        ObjectMapper yamlMapper = new ObjectMapper(yamlFactory);
+        Map<String, Object> yamlMap = buildStrictStructure(pairs);
+
+        try {
+            return yamlMapper.writeValueAsString(yamlMap);
+        } catch (Exception e) {
+            throw new RuntimeException("YAML生成异常", e);
+        }
+    }
+
+    private static Map<String, Object> buildStrictStructure(List<TypePair> pairs) {
+        Map<String, Object> rootMap = new LinkedHashMap<>();
+
+        pairs.forEach(pair -> {
+            String[] keys = pair.getKey().split("\\.");
+            Object value = pair.getValue();
+
+            Map<String, Object> currentMap = rootMap;
+            for (int i = 0; i < keys.length - 1; i++) {
+                currentMap = handleNode(currentMap, keys[i]);
             }
-        }
+            assignStrictValue(currentMap, keys[keys.length - 1], value);
+        });
+
+        return rootMap;
     }
 
-    public static String propertiesToYaml(List<Pair<String, Object>> pairs) {
-        if (CollectionUtils.isEmpty(pairs)) {
-            return null;
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> handleNode(Map<String, Object> map, String key) {
+        Matcher m = ARRAY_PATTERN.matcher(key);
+        if (m.find()) {
+            String base = key.substring(0, m.start());
+            int idx = Integer.parseInt(m.group(1));
+
+            List<Map<String, Object>> list = (List<Map<String, Object>>)
+                    map.computeIfAbsent(base, k -> new ArrayList<>());
+
+            while (list.size() <= idx) list.add(new LinkedHashMap<>());
+            return list.get(idx);
         }
-        Properties properties = new Properties();
-        for (Pair<String, Object> pair : pairs) {
-            properties.setProperty(pair.getKey(), String.valueOf(pair.getValue()));
-        }
-
-        Map<String, Object> yamlMap = convertMap(properties);
-
-        // 将properties转换为Map
-        DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        Yaml yaml = new Yaml(options);
-        String yamlString = yaml.dump(yamlMap);
-
-        return yamlString;
+        return (Map<String, Object>) map.computeIfAbsent(key, k -> new LinkedHashMap<>());
     }
 
-    private static Map<String, Object> convertMap(Properties map) {
-        Map<String, Object> result = new HashMap<>();
-        for (Map.Entry entry : map.entrySet()) {
-            String[] keys = entry.getKey().toString().split("\\."); // 按照"."分割
-            putValue(result, keys, 0, entry.getValue());
-        }
-        return result;
-    }
+    private static void assignStrictValue(Map<String, Object> map, String key, Object value) {
+        Matcher m = ARRAY_PATTERN.matcher(key);
+        if (m.find()) {
+            String base = key.substring(0, m.start());
+            int idx = Integer.parseInt(m.group(1));
 
-    // 递归设置值
-    private static void putValue(Map<String, Object> result, String[] keys, int index, Object value) {
-        if (index == keys.length) {
-            return;
-        }
+            List<Object> list = (List<Object>)
+                    map.computeIfAbsent(base, k -> new ArrayList<>());
 
-        String key = keys[index];
-        if (key.contains("[")) {
-            // 处理数组，提取出基准键和索引
-            String baseKey = key.substring(0, key.indexOf("["));
-            int arrayIndex = Integer.parseInt(key.substring(key.indexOf("[") + 1, key.indexOf("]")));
-
-            // 获取或创建数组
-            List<Map<String, Object>> list = (List<Map<String, Object>>) result.computeIfAbsent(baseKey, k -> new ArrayList<>());
-
-            // 确保数组长度
-            while (list.size() <= arrayIndex) {
-                list.add(new HashMap<>());
-            }
-
-            // 递归继续处理
-            putValue(list.get(arrayIndex), Arrays.copyOfRange(keys, index + 1, keys.length), 0, value);
+            while (list.size() <= idx) list.add(null);
+            list.set(idx, value);
         } else {
-            // 普通键值对
-            if (index == keys.length - 1) {
-                // 如果值是字符串且包含逗号，则拆分为列表
-                if (value instanceof String && ((String) value).contains(",")) {
-                    result.put(key, Arrays.asList(((String) value).split(",")));
-                } else {
-                    result.put(key, value);
-                }
-            } else {
-                // 嵌套map
-                Map<String, Object> subMap = (Map<String, Object>) result.computeIfAbsent(key, k -> new HashMap<>());
-                putValue(subMap, Arrays.copyOfRange(keys, index + 1, keys.length), 0, value);
-            }
+            map.put(key, value);
         }
     }
 
     public static void main(String[] args) throws Exception {
-        List<Pair<String, Object>> pairs = yamlToProperties(FileUtil.readString("/Users/hbq/Codes/tmp/h-example/src/main/resources/application.yml", StandardCharsets.UTF_8));
-        for (Pair<String, Object> pair : pairs) {
-            System.out.println(pair.getKey() + ": " + pair.getValue());
+        List<TypePair> pairs = yamlToProperties(IoUtil.read(new ClassPathResource("application.yml").getInputStream(), StandardCharsets.UTF_8));
+        for (TypePair pair : pairs) {
+            System.out.println(pair.getKey() + "=" + pair.getValue() + ", " + pair.getType().getName());
         }
-
+        System.out.println();
+        System.out.println();
         String yamlString = propertiesToYaml(pairs);
-        System.out.println();
-        System.out.println();
         System.out.println(yamlString);
     }
 }

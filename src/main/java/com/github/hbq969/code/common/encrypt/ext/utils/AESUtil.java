@@ -114,11 +114,10 @@ public class AESUtil {
 
 
     public static void main(String[] args) {
-        String encode = encrypt("foo", KEY, IV, StandardCharsets.UTF_8);
+        String str="foo";
+        String encode = encrypt(str, "D2FC0454D40B4461", "C4417DC80C1445BE", StandardCharsets.UTF_8);
         System.out.println(encode);
-        String decode = decrypt(encode, KEY, IV, StandardCharsets.UTF_8);
+        String decode = decrypt("UtJd5PwzcQi0isTj9V0Ey6BHfQCppfF6bikV2W3oYZMFTLxFcWP50z9Y752ZX3+U", "D2FC0454D40B4461", "C4417DC80C1445BE", StandardCharsets.UTF_8);
         System.out.println(decode);
-        System.out.println(randomKeyWithAES(16));
-        System.out.println(randomKeyWithAES(16));
     }
 }

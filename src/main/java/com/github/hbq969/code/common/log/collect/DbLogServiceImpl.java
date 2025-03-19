@@ -85,7 +85,8 @@ public class DbLogServiceImpl implements OptionalFacadeAware<String, LogService>
                 });
                 return null;
             });
-            log.info("批量保存操作日志到数据库成功, {} 条。", list.size());
+            if(log.isDebugEnabled())
+                log.debug("批量保存操作日志到数据库成功, {} 条。", list.size());
         } catch (TransactionException te) {
             log.info("批量保存操作日志到数据库失败，进行回滚，并逐条保存");
             Count suc = Count.unsafe();
@@ -109,13 +110,15 @@ public class DbLogServiceImpl implements OptionalFacadeAware<String, LogService>
         TableInfo ti = provider.getTableInfo();
         try {
             String sql = provider.tableDefSql();
-            if (print) {
-                log.info(sql);
+            if (print && log.isDebugEnabled()) {
+                log.debug(sql);
             }
             jdbcTemplate.update(sql);
-            log.info("日志留存采集表 {} 创建成功。", ti.getTableName());
+            if(log.isDebugEnabled())
+                log.debug("日志留存采集表 {} 创建成功。", ti.getTableName());
         } catch (Exception e) {
-            log.info("日志留存采集表 {} 已存在。", ti.getTableName());
+            if(log.isTraceEnabled())
+                log.trace("日志留存采集表 {} 已存在。", ti.getTableName());
         }
     }
 

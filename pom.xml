@@ -38,6 +38,7 @@
         <cglib.version>3.3.0</cglib.version>
         <jackson.version>2.13.2</jackson.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
+        <commons-net.version>3.8.0</commons-net.version>
     </properties>
 
     <dependencies>
@@ -94,6 +95,11 @@
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>${validation-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>${commons-net.version}</version>
         </dependency>
     </dependencies>
 

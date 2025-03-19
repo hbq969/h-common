@@ -70,7 +70,7 @@ public class CacheImpl extends AbstractValueAdaptingCache implements DisposableB
     @Override
     public void destroy() throws Exception {
         this.nativeCache.clear();
-        log.info("清空spring接口缓存。");
+        log.debug("清空spring接口缓存。");
     }
 
     @Nullable
@@ -150,9 +150,10 @@ public class CacheImpl extends AbstractValueAdaptingCache implements DisposableB
         ExpireValue v = (ExpireValue) this.nativeCache.remove(key);
         if (v != null) {
             ExpireKey expire = v.getExpire();
-            log.info("缓存键[{}]过期, 放入时间: {}, 当前时间: {}, 过期配置: ({},{})",
-                    expire.getKey(), FormatTime.YYYYMMDDHHMISS.withMills(expire.getCreateTimeMills())
-                    , FormatTime.YYYYMMDDHHMISS.withMills(), expire.getExpire(), expire.getUnit());
+            if (log.isDebugEnabled())
+                log.debug("缓存键[{}]过期, 放入时间: {}, 当前时间: {}, 过期配置: ({},{})",
+                        expire.getKey(), FormatTime.YYYYMMDDHHMISS.withMills(expire.getCreateTimeMills())
+                        , FormatTime.YYYYMMDDHHMISS.withMills(), expire.getExpire(), expire.getUnit());
         }
     }
 

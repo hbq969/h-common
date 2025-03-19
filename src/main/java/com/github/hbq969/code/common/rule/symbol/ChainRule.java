@@ -48,7 +48,8 @@ public class ChainRule implements Rule {
                     lg.pop();
                     // 截取的规则内容
                     String rc = sb.toString();
-                    log.info("解析规则中的组: {}", rc);
+                    if(log.isTraceEnabled())
+                        log.trace("解析规则中的组: {}", rc);
                     if (rc.startsWith("(") && rc.endsWith(")")) {
                         toprule.addRule(new ChainRuleGroup(rc));
                         sb.setLength(0);

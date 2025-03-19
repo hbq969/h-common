@@ -19,9 +19,9 @@ public class LogRestfulHandler implements RestfulHandler {
             for (int i = 0; i < len; i++) {
                 sb.append(", ").append(ms.getParameterNames()[i]).append("=").append(point.getArgs()[i]);
             }
-            log.info("begin call ...  {}, <{}>", ms.getName(), sb.length() > 0 ? sb.substring(2) : "");
+            log.info("< {}.{}, [{}]", ms.getDeclaringType().getSimpleName(), ms.getName(), sb.length() > 0 ? sb.substring(2) : "");
         } else {
-            log.info("begin call ...  {}, <>", ms.getName());
+            log.info("< {}.{}, <>", ms.getDeclaringType().getSimpleName(), ms.getName());
         }
     }
 
@@ -30,15 +30,15 @@ public class LogRestfulHandler implements RestfulHandler {
         MethodSignature ms = (MethodSignature) point.getSignature();
         LogSet logSet = AnnotationUtils.findAnnotation(ms.getMethod(), LogSet.class);
         if (logSet == null || logSet.printResult() && logSet.printResult()) {
-            log.info("end call ... {}, 结果: {}", ms.getName(), result);
+            log.info("> {}.{}, 结果: {}", ms.getDeclaringType().getSimpleName(), ms.getName(), result);
         } else {
-            log.info("end call ... {}", ms.getName());
+            log.info("> {}.{}", ms.getDeclaringType().getSimpleName(), ms.getName());
         }
     }
 
     @Override
     public void exception(ProceedingJoinPoint point, Throwable e) {
         MethodSignature ms = (MethodSignature) point.getSignature();
-        log.error(String.format("call exception ... %s", ms.getName()), e);
+        log.error("<err> {}.{} {}", ms.getDeclaringType().getSimpleName(), ms.getName(), e);
     }
 }

@@ -16,7 +16,8 @@ public class EventListener implements CacheEventListener {
 
   @Override
   public void notifyElementRemoved(Ehcache cache, Element element) throws CacheException {
-    log.info("Ehcache删除KEY: {}", element.getObjectKey());
+    if(log.isDebugEnabled())
+      log.debug("Ehcache删除KEY: {}", element.getObjectKey());
   }
 
   @Override
@@ -31,12 +32,14 @@ public class EventListener implements CacheEventListener {
 
   @Override
   public void notifyElementExpired(Ehcache cache, Element element) {
-    log.info("Ehcache中KEY过期: {}", element.getObjectKey());
+    if(log.isDebugEnabled())
+      log.debug("Ehcache中KEY过期: {}", element.getObjectKey());
   }
 
   @Override
   public void notifyElementEvicted(Ehcache cache, Element element) {
-    log.info("Ehcache驱逐KEY: {}", element.getObjectKey());
+    if(log.isDebugEnabled())
+      log.debug("Ehcache驱逐KEY: {}", element.getObjectKey());
   }
 
   @Override

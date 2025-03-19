@@ -35,7 +35,6 @@ public class RSAControl implements ICommonControl {
     @RequestMapping(path = "/genKeyPair", method = RequestMethod.GET)
     @ResponseBody
     public ReturnMessage<Map> genKeyPair() {
-        log.info("获取密钥对");
         try {
             Map keyPair = RSAUtil.genKeyPair();
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.get(RSAUtil.PUBLIC_KEY);
@@ -53,7 +52,6 @@ public class RSAControl implements ICommonControl {
     @RequestMapping(path = "/sign", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> sign(@RequestBody RSASignInfo info) {
-        log.info("对加密的内容进行签名: {}", info);
         try {
             if (info.hasData()) {
                 return ReturnMessage.success(
@@ -71,7 +69,6 @@ public class RSAControl implements ICommonControl {
     @RequestMapping(path = "/encryptWithPublicKey", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> encryptWithPublicKey(@RequestBody RSAEncryptInfo info) {
-        log.info("使用公钥加密: {}", info);
         try {
             if (info.valid()) {
                 String content = String.valueOf(info.getObj());
@@ -92,7 +89,6 @@ public class RSAControl implements ICommonControl {
     @RequestMapping(path = "/decryptWithPrivateKey", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> decryptWithPrivateKey(@RequestBody RSADecryptInfo info) {
-        log.info("使用私钥解密: {}", info);
         try {
             String content = info.getEncode();
             if (info.valid()) {
@@ -106,7 +102,6 @@ public class RSAControl implements ICommonControl {
                         result.append(value);
                     }
                 }
-                log.info("++++++ {}",result);
                 return ReturnMessage.success(result.toString());
             } else {
                 return ReturnMessage.fail("解码失败");

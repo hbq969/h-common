@@ -1,6 +1,7 @@
 package com.github.hbq969.code.common.config;
 
 import com.github.hbq969.code.common.filter.SwaggerFilter;
+import com.github.hbq969.code.common.initial.ScriptInitialProcessor;
 import com.github.hbq969.code.common.restful.HealthControl;
 import com.github.hbq969.code.common.restful.version.VersionRegistrations;
 import com.github.hbq969.code.common.spring.advice.conf.AdviceProperties;
@@ -279,6 +280,11 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
     @Bean("common-restful-I18nCtrl")
     I18nCtrl i18nCtrl() {
         return new I18nCtrl();
+    }
+
+    @Bean("common-ScriptInitialProcessor")
+    ScriptInitialProcessor scriptInitialProcessor(){
+        return new ScriptInitialProcessor();
     }
 
     public static void main(String[] args) throws Exception {
