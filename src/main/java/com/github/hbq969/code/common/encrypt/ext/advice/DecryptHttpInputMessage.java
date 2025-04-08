@@ -1,5 +1,6 @@
 package com.github.hbq969.code.common.encrypt.ext.advice;
 
+import cn.hutool.core.map.MapUtil;
 import com.github.hbq969.code.common.config.EncryptProperties;
 import com.github.hbq969.code.common.encrypt.ext.config.Algorithm;
 import com.github.hbq969.code.common.encrypt.ext.config.Decrypt;
@@ -8,14 +9,18 @@ import com.github.hbq969.code.common.encrypt.ext.utils.AESUtil;
 import com.github.hbq969.code.common.encrypt.ext.utils.Base64Util;
 import com.github.hbq969.code.common.encrypt.ext.utils.JsonUtils;
 import com.github.hbq969.code.common.encrypt.ext.utils.RSAUtil;
+import com.github.hbq969.code.common.utils.GsonUtils;
+import com.github.hbq969.code.common.utils.MDCUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +44,71 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
             decryptWithRSA(inputMessage, conf, decrypt);
         }
 
+        if (decrypt.algorithm() == Algorithm.RAS) {
+            decryptWithRAS(inputMessage, conf, decrypt);
+        }
+
+    }
+
+    private void decryptWithRAS(HttpInputMessage inputMessage, EncryptProperties conf, Decrypt decrypt) throws Exception {
+        String privateKey = conf.getRestful().getRsa().getPrivateKey();
+        String charset = conf.getRestful().getRsa().getCharset();
+        boolean showLog = conf.getRestful().getRsa().isShowLog();
+        boolean timestampCheck = conf.getRestful().getRsa().isTimestampCheck();
+
+        if (StringUtils.isEmpty(privateKey)) {
+            throw new IllegalArgumentException("rsa私钥为空");
+        }
+        if (StringUtils.isBlank(charset)) {
+            charset = "utf-8";
+        }
+
+        this.headers = inputMessage.getHeaders();
+        String content = new BufferedReader(new InputStreamReader(inputMessage.getBody())).lines().collect(Collectors.joining(System.lineSeparator()));
+        Map map = GsonUtils.fromJson(content, Map.class);
+        if (MapUtil.isEmpty(map)) {
+            throw new UnsupportedOperationException("不支持的请求格式");
+        }
+        String key = MapUtil.getStr(map, "key");
+        String iv = MapUtil.getStr(map, "iv");
+        String body = MapUtil.getStr(map, "body");
+        if (showLog && log.isDebugEnabled()) {
+            log.debug("rsa加密的key: {}, iv: {}, body: {}", key, iv, body);
+        }
+        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(iv) || StringUtils.isEmpty(body)) {
+            throw new UnsupportedOperationException("不支持的请求格式，必须包含key, iv, body");
+        }
+        Charset c = Charset.forName(charset);
+        byte[] keyBuf = RSAUtil.decrypt(Base64Util.decode(key), privateKey);
+        byte[] ivBuf = RSAUtil.decrypt(Base64Util.decode(iv), privateKey);
+        key = new String(keyBuf, c);
+        iv = new String(ivBuf, c);
+        if (showLog && log.isDebugEnabled()) {
+            log.debug("rsa解密后的，key: {}, iv: {}", key, iv);
+        }
+        if (conf.getRestful().getAes().getWay() == EncryptProperties.Restful.AES.WAY.THREAD_LOCAL) {
+            MDCUtils.set("restful,aes,key", key);
+            MDCUtils.set("restful,aes,iv", iv);
+        }
+        String decryptBody = AESUtil.decrypt(body, key, iv, Charset.forName(charset));
+
+        if (showLog && log.isDebugEnabled()) {
+            log.debug("接收请求, aes解密前：{}, 解密后：{}", body, decryptBody);
+        }
+
+        // 开启时间戳检查
+        if (timestampCheck) {
+            // 容忍最小请求时间
+            long toleranceTime = System.currentTimeMillis() - decrypt.timeout();
+            long requestTime = JsonUtils.getNode(decryptBody, "timestamp").asLong();
+            // 如果请求时间小于最小容忍请求时间, 判定为超时
+            if (requestTime < toleranceTime) {
+                log.error("加密请求超时, 实际时间: {}, 请求发起时间: {}, 配置的超时时间: {}, 解密后的值：{}", toleranceTime, requestTime, decrypt.timeout(), decryptBody);
+                throw new EncryptRequestException("请求超时，可能被篡改");
+            }
+        }
+
+        this.body = new ByteArrayInputStream(decryptBody.getBytes());
     }
 
     private void decryptWithRSA(HttpInputMessage inputMessage, EncryptProperties conf, Decrypt decrypt) throws Exception {
@@ -55,8 +125,7 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
         }
 
         this.headers = inputMessage.getHeaders();
-        String content = new BufferedReader(new InputStreamReader(inputMessage.getBody()))
-                .lines().collect(Collectors.joining(System.lineSeparator()));
+        String content = new BufferedReader(new InputStreamReader(inputMessage.getBody())).lines().collect(Collectors.joining(System.lineSeparator()));
         String decryptBody;
         // 未加密内容
         if (content.startsWith("{")) {
@@ -79,8 +148,7 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
             }
             decryptBody = json.toString();
             if (showLog) {
-                if(log.isDebugEnabled())
-                    log.debug("接收请求, rsa解密前：{}, 解密后：{}", content, decryptBody);
+                if (log.isDebugEnabled()) log.debug("接收请求, rsa解密前：{}, 解密后：{}", content, decryptBody);
             }
         }
 
@@ -116,8 +184,7 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
         Charset c = Charset.forName(charset);
         String decryptBody = AESUtil.decrypt(content, key, iv, c);
         if (showLog) {
-            if(log.isDebugEnabled())
-                log.debug("接收请求, aes解密前：{}, 解密后：{}", content, decryptBody);
+            if (log.isDebugEnabled()) log.debug("接收请求, aes解密前：{}, 解密后：{}", content, decryptBody);
         }
         this.body = new ByteArrayInputStream(decryptBody.getBytes());
     }

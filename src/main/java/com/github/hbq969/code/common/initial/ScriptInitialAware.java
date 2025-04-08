@@ -1,6 +1,14 @@
 package com.github.hbq969.code.common.initial;
 
-public interface ScriptInitialAware {
+import com.github.hbq969.code.common.spring.i18n.LanguageEvent;
+import org.springframework.context.ApplicationListener;
+
+public interface ScriptInitialAware extends ApplicationListener<LanguageEvent> {
+    /**
+     * 定义脚本初始化适配器名称
+     *
+     * @return
+     */
     String nameOfScriptInitialAware();
 
     /**

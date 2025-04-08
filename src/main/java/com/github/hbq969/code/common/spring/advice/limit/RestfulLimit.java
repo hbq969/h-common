@@ -14,24 +14,31 @@ import java.util.concurrent.TimeUnit;
 @Documented
 public @interface RestfulLimit {
 
-  /**
-   * restful接口调用限制值
-   *
-   * @return
-   */
-  int value() default 50;
+    /**
+     * restful接口调用限制值
+     *
+     * @return
+     */
+    int value() default 50;
 
-  /**
-   * 采样时间值
-   *
-   * @return
-   */
-  long time() default 1;
+    /**
+     * 采样时间值
+     *
+     * @return
+     */
+    long time() default 1;
 
-  /**
-   * 采样时间单位
-   *
-   * @return
-   */
-  TimeUnit unit() default TimeUnit.SECONDS;
+    /**
+     * 采样时间单位
+     *
+     * @return
+     */
+    TimeUnit unit() default TimeUnit.SECONDS;
+
+    /**
+     * 是否针对同一ip做限制
+     *
+     * @return
+     */
+    boolean forSameIP() default false;
 }

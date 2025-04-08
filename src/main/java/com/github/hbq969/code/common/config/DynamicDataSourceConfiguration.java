@@ -5,6 +5,7 @@ import cn.hutool.core.util.ArrayUtil;
 import com.github.hbq969.code.common.datasource.DynamicDataSource;
 import com.github.hbq969.code.common.datasource.DynamicDataSourceAspect;
 import com.github.hbq969.code.common.datasource.DynamicDataSourceBeanProcessor;
+import com.github.hbq969.code.common.datasource.monitor.PoolMonitor;
 import com.github.hbq969.code.common.spring.context.SpringContext;
 import com.github.hbq969.code.common.utils.GsonUtils;
 import com.github.hbq969.code.common.utils.StrUtils;
@@ -184,5 +185,11 @@ public class DynamicDataSourceConfiguration {
     @Primary
     public TransactionTemplate transactionTemplate(DataSourceTransactionManager dataSourceTransactionManager) {
         return new TransactionTemplate(dataSourceTransactionManager);
+    }
+
+    @ConditionalOnExpression("#{ ${spring.datasource.dynamic.enabled:false} && ${spring.datasource.dynamic.monitor.enabled:false}}")
+    @Bean("common-dynamicdatasource-PoolMonitor")
+    PoolMonitor poolMonitor(@Qualifier("common-dynamicdatasource-DynamicDataSource") DataSource dataSource) {
+        return new PoolMonitor(dataSource);
     }
 }

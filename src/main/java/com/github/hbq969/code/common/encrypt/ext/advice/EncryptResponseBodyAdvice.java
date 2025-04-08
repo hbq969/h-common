@@ -8,8 +8,10 @@ import com.github.hbq969.code.common.encrypt.ext.utils.Base64Util;
 import com.github.hbq969.code.common.encrypt.ext.utils.JsonUtils;
 import com.github.hbq969.code.common.encrypt.ext.utils.RSAUtil;
 import com.github.hbq969.code.common.spring.context.SpringContext;
+import com.github.hbq969.code.common.utils.MDCUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -43,8 +45,7 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
         }
         String controllerPackage = returnType.getContainingClass().getName();
         boolean flg = conf.getRestful().supportPackage(controllerPackage);
-        return method.isAnnotationPresent(Encrypt.class)
-                && flg;
+        return method.isAnnotationPresent(Encrypt.class) && flg;
     }
 
     @Override
@@ -53,6 +54,13 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
         if (encrypt.algorithm() == Algorithm.AES) {
             String key = conf.getRestful().getAes().getKey();
             String iv = conf.getRestful().getAes().getIv();
+            if (conf.getRestful().getAes().getWay() == EncryptProperties.Restful.AES.WAY.THREAD_LOCAL) {
+                key = MDCUtils.rmAndGet("restful,aes,key");
+                iv = MDCUtils.rmAndGet("restful,aes,iv");
+                if (StringUtils.isEmpty(key) || StringUtils.isEmpty(iv)) {
+                    throw new UnsupportedOperationException("接收请求时未使用@Decrypt(algorithm=Algorithm.RAS)方式，线程上下文中无法获取key、iv，无法支持encrypt.restful.aes.way: THREAD_LOCAL策略");
+                }
+            }
             String charset = conf.getRestful().getAes().getCharset();
             try {
                 String content = JsonUtils.writeValueAsString(body);
@@ -64,8 +72,7 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
                 }
                 String encryptBody = AESUtil.encrypt(content, key, iv, Charset.forName(charset));
                 if (conf.getRestful().getAes().isShowLog()) {
-                    if (log.isDebugEnabled())
-                        log.debug("请求响应, aes加密前: {}, 加密后: {}", content, encryptBody);
+                    if (log.isDebugEnabled()) log.debug("请求响应, aes加密前: {}, 加密后: {}", content, encryptBody);
                 }
                 return encryptBody;
             } catch (Exception e) {
@@ -88,8 +95,7 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
                 byte[] encodedData = RSAUtil.encrypt(data, publicKey);
                 String result = Base64Util.encode(encodedData);
                 if (conf.getRestful().getRsa().isShowLog()) {
-                    if(log.isDebugEnabled())
-                        log.debug("请求响应, rsa加密前：{}，加密后：{}", content, result);
+                    if (log.isDebugEnabled()) log.debug("请求响应, rsa加密前：{}，加密后：{}", content, result);
                 }
                 return result;
             } catch (Exception e) {

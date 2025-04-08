@@ -190,6 +190,11 @@ public class SpringContextProperties {
             private boolean enabled = false;
 
             /**
+             * 监控调度周期
+             */
+            private Monitor monitor = new Monitor();
+
+            /**
              * 缺省使用的数据源KEY
              */
             private String defaultLookupKey = "default";
@@ -198,6 +203,18 @@ public class SpringContextProperties {
              * 动态多数据源扫描Mapper接口包路径
              */
             private String[] basePackages = {"com.github.hbq969"};
+
+            @Data
+            public static class Monitor {
+                /**
+                 * 是否打开监控
+                 */
+                private boolean enabled = false;
+                /**
+                 * 调度周期
+                 */
+                private String cron = "0 * * * * ?";
+            }
         }
     }
 }

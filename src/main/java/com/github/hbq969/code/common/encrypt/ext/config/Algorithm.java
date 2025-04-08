@@ -11,5 +11,9 @@ public enum Algorithm {
   /**
    * 非对称加密
    */
-  RSA
+  RSA,
+  /**
+   * 请求报文使用aes加密，aes的key和iv使用rsa加密
+   */
+  RAS
 }
