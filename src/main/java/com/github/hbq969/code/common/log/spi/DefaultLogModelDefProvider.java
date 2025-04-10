@@ -21,7 +21,7 @@ public class DefaultLogModelDefProvider extends AbstractLogModelDefProvider {
                 + "get_paras varchar(1024),\n"
                 + "post_body text,\n"
                 + "result text\n"
-                + ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
+                + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb3";
     }
 
     @Override

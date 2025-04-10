@@ -14,7 +14,6 @@ import com.github.hbq969.code.common.utils.MDCUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 
@@ -57,44 +56,40 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
         boolean timestampCheck = conf.getRestful().getRsa().isTimestampCheck();
 
         if (StringUtils.isEmpty(privateKey)) {
-            throw new IllegalArgumentException("rsa私钥为空");
+            throw new IllegalArgumentException("<请求>, 未配置rsa私钥");
         }
-        if (StringUtils.isBlank(charset)) {
-            charset = "utf-8";
-        }
-
         this.headers = inputMessage.getHeaders();
         String content = new BufferedReader(new InputStreamReader(inputMessage.getBody())).lines().collect(Collectors.joining(System.lineSeparator()));
         Map map = GsonUtils.fromJson(content, Map.class);
-        if (MapUtil.isEmpty(map)) {
-            throw new UnsupportedOperationException("不支持的请求格式");
-        }
+        if (MapUtil.isEmpty(map))
+            throw new UnsupportedOperationException("<请求>, 不支持的请求格式");
+
         String key = MapUtil.getStr(map, "key");
         String iv = MapUtil.getStr(map, "iv");
         String body = MapUtil.getStr(map, "body");
-        if (showLog && log.isDebugEnabled()) {
-            log.debug("rsa加密的key: {}, iv: {}, body: {}", key, iv, body);
-        }
-        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(iv) || StringUtils.isEmpty(body)) {
-            throw new UnsupportedOperationException("不支持的请求格式，必须包含key, iv, body");
-        }
+        if (showLog && log.isDebugEnabled())
+            log.debug("<请求>, rsa解密前, key: {}, iv: {}, body: {}", key, iv, body);
+
+        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(iv) || StringUtils.isEmpty(body))
+            throw new UnsupportedOperationException("<请求>, 不支持的请求格式，必须包含key, iv, body");
+
         Charset c = Charset.forName(charset);
         byte[] keyBuf = RSAUtil.decrypt(Base64Util.decode(key), privateKey);
         byte[] ivBuf = RSAUtil.decrypt(Base64Util.decode(iv), privateKey);
         key = new String(keyBuf, c);
         iv = new String(ivBuf, c);
-        if (showLog && log.isDebugEnabled()) {
-            log.debug("rsa解密后的，key: {}, iv: {}", key, iv);
-        }
-        if (conf.getRestful().getAes().getWay() == EncryptProperties.Restful.AES.WAY.THREAD_LOCAL) {
-            MDCUtils.set("restful,aes,key", key);
-            MDCUtils.set("restful,aes,iv", iv);
-        }
+        if (showLog && log.isDebugEnabled())
+            log.debug("<请求>, rsa解密后, key: {}, iv: {}", key, iv);
+
+        MDCUtils.set("restful,aes,key", key);
+        MDCUtils.set("restful,aes,iv", iv);
+        if (showLog && log.isDebugEnabled())
+            log.debug("<请求>, ras解密前: {}", body);
+
         String decryptBody = AESUtil.decrypt(body, key, iv, Charset.forName(charset));
 
-        if (showLog && log.isDebugEnabled()) {
-            log.debug("接收请求, aes解密前：{}, 解密后：{}", body, decryptBody);
-        }
+        if (showLog && log.isDebugEnabled())
+            log.debug("<请求>, ras解密后: {}", decryptBody);
 
         // 开启时间戳检查
         if (timestampCheck) {
@@ -118,21 +113,22 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
         boolean timestampCheck = conf.getRestful().getRsa().isTimestampCheck();
 
         if (StringUtils.isEmpty(privateKey)) {
-            throw new IllegalArgumentException("rsa私钥为空");
-        }
-        if (StringUtils.isBlank(charset)) {
-            charset = "utf-8";
+            throw new IllegalArgumentException("<请求>, 不支持的请求格式");
         }
 
         this.headers = inputMessage.getHeaders();
         String content = new BufferedReader(new InputStreamReader(inputMessage.getBody())).lines().collect(Collectors.joining(System.lineSeparator()));
+
+        if (showLog && log.isDebugEnabled())
+            log.debug("<请求>, rsa解密前: {}", content);
+
         String decryptBody;
         // 未加密内容
         if (content.startsWith("{")) {
             // 必须加密
             if (decrypt.required()) {
-                log.error("不支持的解密内容: {}", content);
-                throw new EncryptRequestException("不支持的解密内容");
+                log.error("不支持的rsa解密内容: {}", content);
+                throw new EncryptRequestException("<请求>, 不支持rsa解密内容");
             }
             decryptBody = content;
         } else {
@@ -147,9 +143,8 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
                 }
             }
             decryptBody = json.toString();
-            if (showLog) {
-                if (log.isDebugEnabled()) log.debug("接收请求, rsa解密前：{}, 解密后：{}", content, decryptBody);
-            }
+            if (showLog && log.isDebugEnabled())
+                log.debug("<请求>, rsa解密后: {}", decryptBody);
         }
 
         // 开启时间戳检查
@@ -173,19 +168,21 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
         String charset = conf.getRestful().getAes().getCharset();
         boolean showLog = conf.getRestful().getAes().isShowLog();
 
-        if (StringUtils.isBlank(key)) {
-            throw new IllegalArgumentException("aes加密私钥为空");
+        if (StringUtils.isBlank(key) || StringUtils.isEmpty(iv)) {
+            throw new IllegalArgumentException("<请求>,  aes私钥、iv未配置");
         }
         this.headers = inputMessage.getHeaders();
         String content = IOUtils.toString(inputMessage.getBody(), Charset.forName(charset));
-        if (StringUtils.isBlank(charset)) {
-            charset = "utf-8";
-        }
+
+        if (showLog && log.isDebugEnabled())
+            log.debug("<请求>, aes解密前: {}", content);
+
         Charset c = Charset.forName(charset);
         String decryptBody = AESUtil.decrypt(content, key, iv, c);
-        if (showLog) {
-            if (log.isDebugEnabled()) log.debug("接收请求, aes解密前：{}, 解密后：{}", content, decryptBody);
-        }
+
+        if (showLog && log.isDebugEnabled())
+            log.debug("<请求>, aes解密后: {}", decryptBody);
+
         this.body = new ByteArrayInputStream(decryptBody.getBytes());
     }
 

@@ -54,29 +54,22 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
         if (encrypt.algorithm() == Algorithm.AES) {
             String key = conf.getRestful().getAes().getKey();
             String iv = conf.getRestful().getAes().getIv();
-            if (conf.getRestful().getAes().getWay() == EncryptProperties.Restful.AES.WAY.THREAD_LOCAL) {
-                key = MDCUtils.rmAndGet("restful,aes,key");
-                iv = MDCUtils.rmAndGet("restful,aes,iv");
-                if (StringUtils.isEmpty(key) || StringUtils.isEmpty(iv)) {
-                    throw new UnsupportedOperationException("接收请求时未使用@Decrypt(algorithm=Algorithm.RAS)方式，线程上下文中无法获取key、iv，无法支持encrypt.restful.aes.way: THREAD_LOCAL策略");
-                }
+            if (StringUtils.isEmpty(key) || StringUtils.isEmpty(iv)) {
+                throw new UnsupportedOperationException("无法处理请求响应加密逻辑，未配置encrypt.restful.aes.key、iv，请检查");
             }
             String charset = conf.getRestful().getAes().getCharset();
             try {
                 String content = JsonUtils.writeValueAsString(body);
-                if (StringUtils.isBlank(key)) {
-                    throw new IllegalArgumentException("aes加密的密钥不能为空");
-                }
-                if (StringUtils.isBlank(charset)) {
-                    charset = "utf-8";
+                if (conf.getRestful().getAes().isShowLog() && log.isDebugEnabled()) {
+                    log.debug("<响应>, aes加密前: {}", content);
                 }
                 String encryptBody = AESUtil.encrypt(content, key, iv, Charset.forName(charset));
-                if (conf.getRestful().getAes().isShowLog()) {
-                    if (log.isDebugEnabled()) log.debug("请求响应, aes加密前: {}, 加密后: {}", content, encryptBody);
+                if (conf.getRestful().getAes().isShowLog() && log.isDebugEnabled()) {
+                    log.debug("<响应>, aes加密后: {}", encryptBody);
                 }
                 return encryptBody;
             } catch (Exception e) {
-                log.error("加密数据异常", e);
+                log.error("<响应>, 加密数据异常", e);
             }
         }
 
@@ -100,6 +93,28 @@ public class EncryptResponseBodyAdvice implements ControllerAdviceRemark, Respon
                 return result;
             } catch (Exception e) {
                 log.error("加密数据异常", e);
+            }
+        }
+
+        if (encrypt.algorithm() == Algorithm.RAS) {
+            String key = MDCUtils.rmAndGet("restful,aes,key");
+            String iv = MDCUtils.rmAndGet("restful,aes,iv");
+            if (StringUtils.isEmpty(key) || StringUtils.isEmpty(iv)) {
+                throw new UnsupportedOperationException("无法处理请求响应加密逻辑，@Decrypt(algorithm=RAS)加密模式下请求未传入key、iv，请检查");
+            }
+            String charset = conf.getRestful().getAes().getCharset();
+            try {
+                String content = JsonUtils.writeValueAsString(body);
+                if (conf.getRestful().getAes().isShowLog() && log.isDebugEnabled()) {
+                    log.debug("<响应>, ras加密前: {}", content);
+                }
+                String encryptBody = AESUtil.encrypt(content, key, iv, Charset.forName(charset));
+                if (conf.getRestful().getAes().isShowLog() && log.isDebugEnabled()) {
+                    log.debug("<响应>, ras加密后: {}", encryptBody);
+                }
+                return encryptBody;
+            } catch (Exception e) {
+                log.error("<响应>, 加密数据异常", e);
             }
         }
         return body;

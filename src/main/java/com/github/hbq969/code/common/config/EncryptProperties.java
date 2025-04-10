@@ -80,22 +80,6 @@ public class EncryptProperties {
              * iv向量
              */
             private volatile String iv = AESUtil.IV;
-
-            /**
-             * 秘钥获取方式
-             */
-            private WAY way = WAY.SERVER_CONFIG;
-
-            public  enum WAY {
-                /**
-                 * 服务端配置方式
-                 */
-                SERVER_CONFIG,
-                /**
-                 * 调用方生成AES秘钥方式
-                 */
-                THREAD_LOCAL
-            }
         }
 
         @Data
