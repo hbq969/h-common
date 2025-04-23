@@ -1,5 +1,6 @@
 package com.github.hbq969.code.common.utils;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,6 +18,28 @@ public enum TimeUnitHandler {
             }
             return this;
         }
+
+        @Override
+        public void asyncAwaitAndRun(Runnable r, long time) {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    TimeUnit.NANOSECONDS.sleep(time);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                r.run();
+            });
+        }
+
+        @Override
+        public void syncAwaitAndRun(Runnable r, long time) {
+            try {
+                TimeUnit.NANOSECONDS.sleep(time);
+            } catch (InterruptedException e) {
+                return;
+            }
+            r.run();
+        }
     },
 
     /**
@@ -30,6 +53,28 @@ public enum TimeUnitHandler {
             } catch (InterruptedException e) {
             }
             return this;
+        }
+
+        @Override
+        public void asyncAwaitAndRun(Runnable r, long time) {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    TimeUnit.MICROSECONDS.sleep(time);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                r.run();
+            });
+        }
+
+        @Override
+        public void syncAwaitAndRun(Runnable r, long time) {
+            try {
+                TimeUnit.MICROSECONDS.sleep(time);
+            } catch (InterruptedException e) {
+                return;
+            }
+            r.run();
         }
     },
 
@@ -45,6 +90,28 @@ public enum TimeUnitHandler {
             }
             return this;
         }
+
+        @Override
+        public void asyncAwaitAndRun(Runnable r, long time) {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(time);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                r.run();
+            });
+        }
+
+        @Override
+        public void syncAwaitAndRun(Runnable r, long time) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(time);
+            } catch (InterruptedException e) {
+                return;
+            }
+            r.run();
+        }
     },
 
     /**
@@ -58,6 +125,28 @@ public enum TimeUnitHandler {
             } catch (InterruptedException e) {
             }
             return this;
+        }
+
+        @Override
+        public void asyncAwaitAndRun(Runnable r, long time) {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(time);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                r.run();
+            });
+        }
+
+        @Override
+        public void syncAwaitAndRun(Runnable r, long time) {
+            try {
+                TimeUnit.SECONDS.sleep(time);
+            } catch (InterruptedException e) {
+                return;
+            }
+            r.run();
         }
     },
 
@@ -73,6 +162,28 @@ public enum TimeUnitHandler {
             }
             return this;
         }
+
+        @Override
+        public void asyncAwaitAndRun(Runnable r, long time) {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    TimeUnit.MINUTES.sleep(time);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                r.run();
+            });
+        }
+
+        @Override
+        public void syncAwaitAndRun(Runnable r, long time) {
+            try {
+                TimeUnit.MINUTES.sleep(time);
+            } catch (InterruptedException e) {
+                return;
+            }
+            r.run();
+        }
     },
 
     /**
@@ -86,6 +197,28 @@ public enum TimeUnitHandler {
             } catch (InterruptedException e) {
             }
             return this;
+        }
+
+        @Override
+        public void asyncAwaitAndRun(Runnable r, long time) {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    TimeUnit.HOURS.sleep(time);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                r.run();
+            });
+        }
+
+        @Override
+        public void syncAwaitAndRun(Runnable r, long time) {
+            try {
+                TimeUnit.HOURS.sleep(time);
+            } catch (InterruptedException e) {
+                return;
+            }
+            r.run();
         }
     },
 
@@ -101,6 +234,28 @@ public enum TimeUnitHandler {
             }
             return this;
         }
+
+        @Override
+        public void asyncAwaitAndRun(Runnable r, long time) {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    TimeUnit.DAYS.sleep(time);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                r.run();
+            });
+        }
+
+        @Override
+        public void syncAwaitAndRun(Runnable r, long time) {
+            try {
+                TimeUnit.DAYS.sleep(time);
+            } catch (InterruptedException e) {
+                return;
+            }
+            r.run();
+        }
     };
 
     public TimeUnitHandler sleep(long t) {
@@ -109,5 +264,13 @@ public enum TimeUnitHandler {
 
     public void handle(Runnable r) {
         r.run();
+    }
+
+    public void syncAwaitAndRun(Runnable r,long time){
+        throw new AbstractMethodError();
+    }
+
+    public void asyncAwaitAndRun(Runnable r,long time){
+        throw new AbstractMethodError();
     }
 }
