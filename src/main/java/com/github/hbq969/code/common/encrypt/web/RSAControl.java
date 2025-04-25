@@ -1,6 +1,5 @@
 package com.github.hbq969.code.common.encrypt.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.hbq969.code.common.encrypt.ext.model.RSADecryptInfo;
 import com.github.hbq969.code.common.encrypt.ext.model.RSAEncryptInfo;
 import com.github.hbq969.code.common.encrypt.ext.model.RSASignInfo;
@@ -14,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +30,18 @@ import java.util.Map;
 @Slf4j
 @Api(description = "接口rsa非对称加解密", tags = "维护使用-RSA加解密")
 public class RSAControl implements ICommonControl {
+
+    @Value("${encrypt.restful.rsa.public-key:}")
+    private String publicKey;
+
+    @ApiOperation("获取配置的rsa公钥")
+    @RequestMapping(path = "/publicKey", method = RequestMethod.GET)
+    @ResponseBody
+    public ReturnMessage<?> getRsaPublicKey() {
+        if (StringUtils.isEmpty(publicKey))
+            throw new IllegalArgumentException("未配置rsa公钥");
+        return ReturnMessage.success(publicKey);
+    }
 
     @ApiOperation("获取密钥对")
     @RequestMapping(path = "/genKeyPair", method = RequestMethod.GET)
