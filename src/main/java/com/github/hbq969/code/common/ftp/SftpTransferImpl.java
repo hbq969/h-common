@@ -11,7 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
@@ -24,7 +26,11 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
 
     private AtomicLong cnt = new AtomicLong(0);
 
+    private volatile int maxRetry;
+
     private int retryWaitTimeoutSec;
+
+    private volatile boolean disconnected = false;
 
     public SftpTransferImpl(List<FtpConfig> ftpConfigs, int retryWaitTimeoutSec) {
         this.retryWaitTimeoutSec = retryWaitTimeoutSec;
@@ -47,6 +53,7 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
 
         }
         this.size = sftps.size();
+        this.maxRetry = this.size;
         if (log.isDebugEnabled()) {
             log.debug("初始化sftp成功, {} 个", this.size);
         }
@@ -64,6 +71,12 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
 
     @Override
     public synchronized void connect() {
+        if (disconnected)
+            return;
+        if (this.maxRetry == 0) {
+            log.info("达到最大重连次数: {}", this.size);
+            return;
+        }
         int idx = (int) (cnt.get() % this.size);
         ChannelSftpProxy proxy = this.sftps.get(idx);
         try {
@@ -71,19 +84,25 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
                 log.debug("尝试sftp连接[{}]: {}", idx, proxy.getConfig());
             }
             proxy.connect();
+            this.maxRetry = this.size;
         } catch (JSchException e) {
             log.error(String.format("sftp[%d]连接异常: %s, 等待%d秒后尝试连接其他地址。", idx, proxy.getConfig(), retryWaitTimeoutSec), e);
+            if (this.size == 1) {
+                return;
+            }
             try {
                 TimeUnit.SECONDS.sleep(retryWaitTimeoutSec);
             } catch (InterruptedException ex) {
             }
             cnt.incrementAndGet();
             connect();
+            this.maxRetry--;
         }
     }
 
     @Override
     public void disconnect() {
+        this.disconnected = true;
         for (ChannelSftpProxy sftp : this.sftps) {
             try {
                 sftp.disconnect();
@@ -96,7 +115,9 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
     @Override
     public String pwd() throws FileTransferException {
         try {
-            return getClient().getTarget().pwd();
+            return Optional.ofNullable(getClient().getTarget())
+                    .orElseThrow(() -> new SftpException(-1, "sftp未初始化成功")).
+                    pwd();
         } catch (SftpException e) {
             throw new FileTransferException(e);
         }
@@ -108,7 +129,9 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
             if (log.isDebugEnabled()) {
                 log.debug("cd {}", path);
             }
-            getClient().getTarget().cd(path);
+            Optional.ofNullable(getClient().getTarget())
+                    .orElseThrow(() -> new SftpException(-1, "sftp未初始化成功"))
+                    .cd(path);
         } catch (SftpException e) {
             throw new FileTransferException(e);
         }
@@ -120,7 +143,9 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
             if (log.isDebugEnabled()) {
                 log.debug("rm {}", path);
             }
-            getClient().getTarget().rm(path);
+            Optional.ofNullable(getClient().getTarget())
+                    .orElseThrow(() -> new SftpException(-1, "sftp未初始化成功"))
+                    .rm(path);
         } catch (SftpException e) {
             throw new FileTransferException(e);
         }
@@ -132,7 +157,9 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
             if (log.isDebugEnabled()) {
                 log.debug("rename oldPath: {}, newPath: {}", oldPath, newPath);
             }
-            getClient().getTarget().rename(oldPath, newPath);
+            Optional.ofNullable(getClient().getTarget())
+                    .orElseThrow(() -> new SftpException(-1, "sftp未初始化成功")).
+                    rename(oldPath, newPath);
         } catch (SftpException e) {
             throw new FileTransferException(e);
         }
@@ -144,7 +171,9 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
             if (log.isDebugEnabled()) {
                 log.debug("mkdir : {}", path);
             }
-            getClient().getTarget().mkdir(path);
+            Optional.ofNullable(getClient().getTarget())
+                    .orElseThrow(() -> new SftpException(-1, "sftp未初始化成功"))
+                    .mkdir(path);
         } catch (SftpException e) {
             throw new FileTransferException(e);
         }
@@ -156,7 +185,9 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
             if (log.isDebugEnabled()) {
                 log.debug("rmdir : {}", path);
             }
-            getClient().getTarget().rmdir(path);
+            Optional.ofNullable(getClient().getTarget())
+                    .orElseThrow(() -> new SftpException(-1, "sftp未初始化成功"))
+                    .rmdir(path);
         } catch (SftpException e) {
             throw new FileTransferException(e);
         }
@@ -177,7 +208,9 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
             log.debug("upload, localFile: {}, remoteFile: {}", localFile.getAbsolutePath(), destFile);
         }
         try {
-            getClient().getTarget().mkdir(destDir);
+            Optional.ofNullable(getClient().getTarget())
+                    .orElseThrow(() -> new SftpException(-1, "sftp未初始化成功"))
+                    .mkdir(destDir);
             if (log.isDebugEnabled()) {
                 log.debug("mkdir {} success.", destDir);
             }
@@ -185,7 +218,9 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
             log.debug("{} exists", destDir);
         }
         try {
-            getClient().getTarget().put(localFile.getAbsolutePath(), destFile);
+            Optional.ofNullable(getClient().getTarget())
+                    .orElseThrow(() -> new SftpException(-1, "sftp未初始化成功"))
+                    .put(localFile.getAbsolutePath(), destFile);
         } catch (SftpException e) {
             throw new FileTransferException(e);
         }
@@ -214,7 +249,9 @@ public class SftpTransferImpl implements FileTransfer<ChannelSftpProxy> {
             log.debug("mkdir {} exists.", localFile.getParent());
         }
         try {
-            getClient().getTarget().get(remoteFile, localFile.getAbsolutePath());
+            Optional.ofNullable(getClient().getTarget())
+                    .orElseThrow(() -> new SftpException(-1, "sftp未初始化成功"))
+                    .get(remoteFile, localFile.getAbsolutePath());
         } catch (SftpException e) {
             throw new FileTransferException(e);
         }
