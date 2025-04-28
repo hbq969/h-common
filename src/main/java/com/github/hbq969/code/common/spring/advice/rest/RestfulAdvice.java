@@ -88,9 +88,7 @@ public class RestfulAdvice implements InitializingBean {
             if (errMsg == null) {
                 return ReturnMessage.fail("后端接口异常");
             }
-            return Validator.hasChinese(errMsg) ?
-                    ReturnMessage.fail(errMsg) :
-                    ReturnMessage.fail("后端接口异常");
+            return ReturnMessage.fail(errMsg);
         }
     }
 }
