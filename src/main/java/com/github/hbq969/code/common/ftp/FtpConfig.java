@@ -1,7 +1,6 @@
 package com.github.hbq969.code.common.ftp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.hbq969.code.common.utils.GsonUtils;
 import lombok.Data;
 
 import java.util.Properties;
@@ -26,6 +25,6 @@ public class FtpConfig {
 
     @Override
     public String toString() {
-        return GsonUtils.toJson(this);
+        return this.user + "@" + this.host + ":" + this.port + "?connectTimeoutMills=" + this.connectTimeoutMills;
     }
 }
