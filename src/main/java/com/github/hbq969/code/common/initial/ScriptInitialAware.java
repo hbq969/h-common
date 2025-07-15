@@ -3,6 +3,8 @@ package com.github.hbq969.code.common.initial;
 import com.github.hbq969.code.common.spring.i18n.LanguageEvent;
 import org.springframework.context.ApplicationListener;
 
+import java.util.concurrent.TimeUnit;
+
 public interface ScriptInitialAware extends ApplicationListener<LanguageEvent> {
     /**
      * 定义脚本初始化适配器名称
@@ -25,8 +27,15 @@ public interface ScriptInitialAware extends ApplicationListener<LanguageEvent> {
      */
     void tableCreate();
 
+    default void tableCreateDone(long timeout, TimeUnit unit) {
+    }
+
+
     /**
      * 初始化脚本内容
      */
     void scriptInitial();
+
+    default void scriptInitialDone(long timeout, TimeUnit unit) {
+    }
 }
