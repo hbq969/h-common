@@ -10,13 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class CookieUtils {
     public static String getCookieValue(HttpServletRequest request, String key) {
+        Cookie cookie = getCookie(request, key);
+        return cookie == null ? null : cookie.getValue();
+    }
+
+    public static Cookie getCookie(HttpServletRequest request, String key) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return null;
         }
         for (Cookie cookie : cookies) {
             if (StringUtils.equals(key, cookie.getName())) {
-                return cookie.getValue();
+                return cookie;
             }
         }
         return null;
