@@ -30,6 +30,10 @@ public interface ScriptInitialAware extends ApplicationListener<LanguageEvent> {
     default void tableCreateDone(long timeout, TimeUnit unit) {
     }
 
+    default void asyncTableCreateDone(long timeout, TimeUnit unit, Runnable r) {
+
+    }
+
 
     /**
      * 初始化脚本内容
@@ -37,5 +41,8 @@ public interface ScriptInitialAware extends ApplicationListener<LanguageEvent> {
     void scriptInitial();
 
     default void scriptInitialDone(long timeout, TimeUnit unit) {
+    }
+
+    default void asyncScriptInitialDone(long timeout, TimeUnit unit, Runnable r) {
     }
 }

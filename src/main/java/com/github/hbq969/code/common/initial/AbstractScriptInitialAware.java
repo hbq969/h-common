@@ -5,6 +5,7 @@ import com.github.hbq969.code.common.initial.event.TableCreateDoneEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -50,6 +51,14 @@ public abstract class AbstractScriptInitialAware implements ScriptInitialAware, 
     }
 
     @Override
+    public void asyncTableCreateDone(long timeout, TimeUnit unit, Runnable r) {
+        CompletableFuture.runAsync(() -> {
+            tableCreateDone(timeout, unit);
+            r.run();
+        });
+    }
+
+    @Override
     public void scriptInitial() {
         try {
             scriptInitial0();
@@ -71,5 +80,13 @@ public abstract class AbstractScriptInitialAware implements ScriptInitialAware, 
                 scriptInitialDoneLatch.await();
         } catch (InterruptedException e) {
         }
+    }
+
+    @Override
+    public void asyncScriptInitialDone(long timeout, TimeUnit unit, Runnable r) {
+        CompletableFuture.runAsync(() -> {
+            scriptInitialDone(timeout, unit);
+            r.run();
+        });
     }
 }

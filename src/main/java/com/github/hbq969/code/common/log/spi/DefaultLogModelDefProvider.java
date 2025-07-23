@@ -1,5 +1,6 @@
 package com.github.hbq969.code.common.log.spi;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.hbq969.code.common.config.LogProperties;
 import com.github.hbq969.code.common.utils.TableInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,13 @@ public class DefaultLogModelDefProvider extends AbstractLogModelDefProvider {
     @Override
     public TableInfo getTableInfo() {
         TableInfo ti = new TableInfo();
-        ti.setTableName(conf.getTableName());
+        if (StrUtil.isNotEmpty(conf.getTablePrefix()) && StrUtil.isNotEmpty(conf.getTableSuffix())) {
+            ti.setTablePrefix(conf.getTablePrefix());
+            ti.setTableSuffix(conf.getTableSuffix());
+        } else if (StrUtil.isNotEmpty(conf.getTableName()))
+            ti.setTableName(conf.getTableName());
+        else
+            throw new UnsupportedOperationException("operlog.tableName 或 [operlog.tablePrefix、operlog.tableSuffix] 至少需要配置一个");
         return ti;
     }
 

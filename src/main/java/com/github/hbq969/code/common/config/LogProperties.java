@@ -22,6 +22,16 @@ public class LogProperties {
     private String tableName = "log_hbq969";
 
     /**
+     * 日志存储默认表前缀，在policy为mysql时有效
+     */
+    private String tablePrefix;
+
+    /**
+     * 日志存储默认表后缀，在policy为mysql时有效
+     */
+    private String tableSuffix;
+
+    /**
      * 是否使用缺省的采集实现
      */
     private boolean useDefaultCollectPolicy = false;
