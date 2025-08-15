@@ -6,8 +6,10 @@ import com.github.hbq969.code.common.log.model.PointModel;
 import com.github.hbq969.code.common.restful.ReturnMessage;
 import com.github.hbq969.code.common.restful.ReturnState;
 import com.github.hbq969.code.common.utils.GsonUtils;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Parameter;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -27,15 +28,15 @@ import java.util.Objects;
 public final class OperlogUtils {
 
     public static String getMethodDesc(PointModel point) {
-        ApiOperation ao = AnnotationUtils.findAnnotation(point.getMethod(), ApiOperation.class);
+        Operation ao = AnnotationUtils.findAnnotation(point.getMethod(), Operation.class);
         String md = null;
         if (null != ao) {
-            md = ao.value();
+            md = ao.summary();
         }
         if (StringUtils.isEmpty(md)) {
-            ApiModelProperty amp = AnnotationUtils.findAnnotation(point.getMethod(), ApiModelProperty.class);
+            Schema amp = AnnotationUtils.findAnnotation(point.getMethod(), Schema.class);
             if (null != amp) {
-                md = amp.value();
+                md = amp.description();
             }
         }
         return StringUtils.isEmpty(md) ? StringUtils.EMPTY : md;

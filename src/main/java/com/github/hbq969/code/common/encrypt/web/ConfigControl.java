@@ -3,8 +3,8 @@ package com.github.hbq969.code.common.encrypt.web;
 import com.github.hbq969.code.common.encrypt.model.EncryptInfo;
 import com.github.hbq969.code.common.restful.ICommonControl;
 import com.github.hbq969.code.common.restful.ReturnMessage;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jasypt.encryption.StringEncryptor;
@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @RequestMapping(path = "/hbq969-common/encrypt/config")
 @Slf4j
-@Api(description = "spring配置属性加解密", tags = "维护使用-spring配置属性加解密接口")
+@Tag(description = "spring配置属性加解密", name = "维护使用-spring配置属性加解密接口")
 public class ConfigControl implements ICommonControl {
 
-    @ApiOperation("Spring配置加密")
+    @Operation(summary = "Spring配置加密")
     @RequestMapping(path = "/encrypt", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> encrypt(@RequestBody EncryptInfo info) {
@@ -38,7 +38,7 @@ public class ConfigControl implements ICommonControl {
         }
     }
 
-    @ApiOperation("Spring配置解密")
+    @Operation(summary = "Spring配置解密")
     @RequestMapping(path = "/decrypt", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> decrypt(@RequestBody EncryptInfo info) {

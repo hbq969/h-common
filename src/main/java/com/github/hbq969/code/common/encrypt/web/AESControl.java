@@ -4,22 +4,22 @@ import com.github.hbq969.code.common.encrypt.ext.model.AESInfo;
 import com.github.hbq969.code.common.encrypt.ext.utils.AESUtil;
 import com.github.hbq969.code.common.restful.ICommonControl;
 import com.github.hbq969.code.common.restful.ReturnMessage;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.nio.charset.Charset;
 
 /**
  * @author hbq969@gmail.com
  */
-@Api(description = "接口aes对称加解密", tags = "维护使用-AES加解密")
+@Tag(description = "接口aes对称加解密", name = "维护使用-AES加解密")
 @RequestMapping(path = "/hbq969-common/encrypt/restful/aes")
 @Slf4j
 public class AESControl implements ICommonControl {
 
-    @ApiOperation("获取AES随机码")
+    @Operation(summary = "获取AES随机码")
     @RequestMapping(path = "/getRandomKey", method = RequestMethod.GET)
     @ResponseBody
     public ReturnMessage<String> getRandomKey(
@@ -32,7 +32,7 @@ public class AESControl implements ICommonControl {
         }
     }
 
-    @ApiOperation("使用aes加密")
+    @Operation(summary = "使用aes加密")
     @RequestMapping(path = "/encrypt", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> encrypt(@RequestBody AESInfo info) {
@@ -45,7 +45,7 @@ public class AESControl implements ICommonControl {
         }
     }
 
-    @ApiOperation("使用aes解密")
+    @Operation(summary = "使用aes解密")
     @RequestMapping(path = "/decrypt", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> decrypt(@RequestBody AESInfo info) {

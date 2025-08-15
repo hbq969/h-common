@@ -2,6 +2,7 @@ package com.github.hbq969.code.common.spring.advice.limit;
 
 import com.github.hbq969.code.common.utils.RequestUtils;
 import com.google.common.util.concurrent.RateLimiter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,7 +13,6 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;

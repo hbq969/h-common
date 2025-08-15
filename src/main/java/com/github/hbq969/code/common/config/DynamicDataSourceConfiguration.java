@@ -6,7 +6,7 @@ import com.github.hbq969.code.common.datasource.DynamicDataSource;
 import com.github.hbq969.code.common.datasource.DynamicDataSourceAspect;
 import com.github.hbq969.code.common.datasource.DynamicDataSourceBeanProcessor;
 import com.github.hbq969.code.common.datasource.monitor.PoolMonitor;
-import com.github.hbq969.code.common.spring.context.SpringContext;
+import com.github.hbq969.code.common.spring.context.SpringEnvImpl;
 import com.github.hbq969.code.common.utils.GsonUtils;
 import com.github.hbq969.code.common.utils.StrUtils;
 import com.zaxxer.hikari.HikariDataSource;
@@ -16,10 +16,13 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
@@ -40,9 +43,16 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
-public class DynamicDataSourceConfiguration {
+public class DynamicDataSourceConfiguration implements ApplicationContextAware {
+
+    private ApplicationContext context;
 
     public static final String KEY_SPRING_DATASOURCE = "spring.datasource.";
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
+    }
 
     @ConditionalOnExpression("${spring.datasource.dynamic.enabled:false}")
     @Bean("common-dynamicdatasource-DynamicDataSourceBeanProcessor")
@@ -59,8 +69,8 @@ public class DynamicDataSourceConfiguration {
     @ConditionalOnExpression("${spring.datasource.dynamic.enabled:false}")
     @Bean("common-dynamicdatasource-DynamicDataSource")
     @Primary
-    DataSource dynamicDataSource(SpringContext context, SpringContextProperties properties) {
-        Set<String> pKeys = context.getEnvironmentPropertyKeys();
+    DataSource dynamicDataSource() {
+        Set<String> pKeys = context.getBean(SpringEnvImpl.class).getEnvironmentPropertyKeys();
         Set<String> dbKeySet = pKeys.stream().filter(k -> {
             boolean r = (k.startsWith("spring.datasource.") && k.endsWith(".jdbc-url"));
             return r;
@@ -77,8 +87,8 @@ public class DynamicDataSourceConfiguration {
             throw new IllegalArgumentException("请配置动态多数据源");
         }
         Map<Object, Object> dataSourceMap = new HashMap<>(dbKeySet.size());
-        dbKeySet.forEach(dbKey -> dataSourceMap.put(dbKey, createBasicDataSource(context, dbKey)));
-        String defaultLookupKey = properties.getDatasource().getDynamic().getDefaultLookupKey();
+        dbKeySet.forEach(dbKey -> dataSourceMap.put(dbKey, createBasicDataSource(dbKey)));
+        String defaultLookupKey = context.getBean(SpringContextProperties.class).getDatasource().getDynamic().getDefaultLookupKey();
         DynamicDataSource dynamicDataSource = new DynamicDataSource(defaultLookupKey);
         dynamicDataSource.setTargetDataSources(dataSourceMap);
         Object defaultDatasource = dataSourceMap.get(defaultLookupKey);
@@ -93,17 +103,17 @@ public class DynamicDataSourceConfiguration {
         return dynamicDataSource;
     }
 
-    private HikariDataSource createBasicDataSource(SpringContext context, String dbKey) {
-        String jdbcUrl = context.getProperty(KEY_SPRING_DATASOURCE + dbKey + ".jdbc-url");
-        String driverClassName = context.getProperty(
+    private HikariDataSource createBasicDataSource(String dbKey) {
+        String jdbcUrl = context.getEnvironment().getProperty(KEY_SPRING_DATASOURCE + dbKey + ".jdbc-url");
+        String driverClassName = context.getEnvironment().getProperty(
                 KEY_SPRING_DATASOURCE + dbKey + ".driver-class-name");
-        String user = context.getProperty(KEY_SPRING_DATASOURCE + dbKey + ".username");
-        String pwd = context.getProperty(KEY_SPRING_DATASOURCE + dbKey + ".password");
-        int maxPoolSize = context.getIntValue(KEY_SPRING_DATASOURCE + dbKey + ".maximum-pool-size", 50);
-        int minIdle = context.getIntValue(KEY_SPRING_DATASOURCE + dbKey + ".minimum-idle", 5);
-        long maxLifeTime = context.getLongValue(KEY_SPRING_DATASOURCE + dbKey + ".max-lifetime",
-                300000);
-        String conTestQuery = context.getProperty(
+        String user = context.getEnvironment().getProperty(KEY_SPRING_DATASOURCE + dbKey + ".username");
+        String pwd = context.getEnvironment().getProperty(KEY_SPRING_DATASOURCE + dbKey + ".password");
+        int maxPoolSize = Integer.valueOf(context.getEnvironment().getProperty(KEY_SPRING_DATASOURCE + dbKey + ".maximum-pool-size", "50"));
+        int minIdle = Integer.valueOf(context.getEnvironment().getProperty(KEY_SPRING_DATASOURCE + dbKey + ".minimum-idle", "5"));
+        long maxLifeTime = Long.valueOf(context.getEnvironment().getProperty(KEY_SPRING_DATASOURCE + dbKey + ".max-lifetime",
+                "300000"));
+        String conTestQuery = context.getEnvironment().getProperty(
                 KEY_SPRING_DATASOURCE + dbKey + ".connection-test-query");
         if (StrUtils.strEmpty(conTestQuery)) {
             conTestQuery = driverClassName.contains("oracle") ? "select 1 from dual" : "select 1";

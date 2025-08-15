@@ -12,6 +12,8 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import java.lang.reflect.Proxy;
 import java.util.Objects;
@@ -23,10 +25,14 @@ import java.util.Optional;
  * @createTime : 17:53:48, 2023.03.28, 周二
  */
 @Slf4j
-public class DynamicDataSourceBeanProcessor implements BeanPostProcessor {
+public class DynamicDataSourceBeanProcessor implements BeanPostProcessor, ApplicationContextAware {
 
-    @Autowired
-    private SpringContext context;
+    private ApplicationContext context;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
+    }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName)

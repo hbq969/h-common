@@ -1,12 +1,12 @@
 package com.github.hbq969.code.common.spring.interceptor;
 
 import com.github.hbq969.code.common.utils.UuidUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author : hbq969@gmail.com

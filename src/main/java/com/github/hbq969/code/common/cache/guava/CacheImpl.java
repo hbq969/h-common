@@ -1,5 +1,6 @@
 package com.github.hbq969.code.common.cache.guava;
 
+import cn.hutool.core.lang.Assert;
 import com.github.hbq969.code.common.cache.CacheCleanUp;
 import com.github.hbq969.code.common.cache.ExpireKey;
 import com.github.hbq969.code.common.cache.ExpireValue;
@@ -11,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.cache.support.AbstractValueAdaptingCache;
 import org.springframework.cache.support.SimpleValueWrapper;
-import org.springframework.util.Assert;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;

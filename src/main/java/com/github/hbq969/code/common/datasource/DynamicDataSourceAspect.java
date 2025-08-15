@@ -11,7 +11,10 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
@@ -26,10 +29,14 @@ import java.util.Optional;
  */
 @Aspect
 @Slf4j
-public class DynamicDataSourceAspect {
+public class DynamicDataSourceAspect implements ApplicationContextAware {
 
-    @Autowired
-    private SpringContext context;
+    private ApplicationContext context;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context=applicationContext;
+    }
 
     @Pointcut("@annotation(DS)")
     public void dataSourcePointCut() {
@@ -53,7 +60,7 @@ public class DynamicDataSourceAspect {
     }
 
     // DS为类的注解
-    public static void setContext(SpringContext context, DS ds, Object[] args, Class<?> targetClass,
+    public static void setContext(ApplicationContext context, DS ds, Object[] args, Class<?> targetClass,
                                   Method m) {
         ContextPolicy ctx = getContextPolicy(ds, args, targetClass, m);
         if (Objects.nonNull(ctx)) {
@@ -66,10 +73,10 @@ public class DynamicDataSourceAspect {
         }
     }
 
-    private static void springContextBind(SpringContext context, ContextPolicy ctx) {
+    private static void springContextBind(ApplicationContext context, ContextPolicy ctx) {
         if (ctx instanceof AbstractLookupKeyPolicy) {
             AbstractLookupKeyPolicy akp = AbstractLookupKeyPolicy.class.cast(ctx);
-            akp.setContext(context);
+            akp.setContext(context.getBean(SpringContext.class));
         }
     }
 

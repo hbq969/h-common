@@ -1,5 +1,6 @@
 package com.github.hbq969.code.common.cache.caffeine;
 
+import cn.hutool.core.lang.Assert;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.hbq969.code.common.cache.CacheCleanUp;
@@ -11,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.cache.support.AbstractValueAdaptingCache;
 import org.springframework.cache.support.SimpleValueWrapper;
-import org.springframework.util.Assert;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;

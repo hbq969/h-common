@@ -1,14 +1,14 @@
 package com.github.hbq969.code.common.filter;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.github.hbq969.code.common.spring.context.SpringContext;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationContext;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -21,12 +21,12 @@ public class SwaggerFilter implements Filter {
 
     private String apiSafeHeaderName;
     private String apiSafeHeaderValue;
-    private SpringContext sc;
+    private ApplicationContext sc;
     private boolean loginEnabled = false;
 
-    public SwaggerFilter(SpringContext sc, String apiSafeHeaderName, String apiSafeHeaderValue) {
+    public SwaggerFilter(ApplicationContext sc, String apiSafeHeaderName, String apiSafeHeaderValue) {
         this.sc = sc;
-        this.loginEnabled = sc.getBoolValue("spring.mvc.interceptors.login.enabled", false);
+        this.loginEnabled = Boolean.valueOf(sc.getEnvironment().getProperty("spring.mvc.interceptors.login.enabled", "false"));
         this.apiSafeHeaderName = apiSafeHeaderName;
         this.apiSafeHeaderValue = apiSafeHeaderValue;
     }
@@ -36,14 +36,14 @@ public class SwaggerFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String uri = request.getRequestURI();
-        if (!StringUtils.endsWith(uri, "/v2/api-docs")) {
+        if (!StringUtils.endsWith(uri, "/v3/api-docs")) {
             filterChain.doFilter(request, response);
             return;
         }
         if (loginEnabled) {
             HttpSession session = request.getSession();
             if (null == session) {
-                log.warn("会话为空，禁止访问/v2/api-docs");
+                log.warn("会话为空，禁止访问/v3/api-docs");
                 response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
                 return;
             }
@@ -51,13 +51,13 @@ public class SwaggerFilter implements Filter {
             if (ObjectUtil.isNotEmpty(user)) {
                 filterChain.doFilter(servletRequest, servletResponse);
             } else {
-                log.warn("会话失效或注销，禁止访问/v2/api-docs");
+                log.warn("会话失效或注销，禁止访问/v3/api-docs");
                 response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
             }
         } else {
             String actualHeaderValue = request.getHeader(apiSafeHeaderName);
             if (!StringUtils.equals(apiSafeHeaderValue, actualHeaderValue)) {
-                log.warn("禁止访问/v2/api-docs");
+                log.warn("禁止访问/v3/api-docs");
                 response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
             } else {
                 filterChain.doFilter(servletRequest, servletResponse);

@@ -6,6 +6,8 @@ import com.github.hbq969.code.common.log.utils.OperlogUtils;
 import com.github.hbq969.code.common.spring.context.UserInfo;
 import com.github.hbq969.code.common.utils.FormatTime;
 import com.github.hbq969.code.common.utils.GsonUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,8 +16,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Slf4j
 public class DefaultLogCollect implements LogCollect {

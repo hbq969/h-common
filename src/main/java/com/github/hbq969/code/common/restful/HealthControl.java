@@ -1,7 +1,7 @@
 package com.github.hbq969.code.common.restful;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @RequestMapping(path = "/common")
 @Slf4j
-@Api(description = "健康检查", tags = "维护使用-健康检查接口")
+@Tag(description = "健康检查", name = "维护使用-健康检查接口")
 public class HealthControl implements ICommonControl {
 
-    @ApiOperation("健康检查")
+    @Operation(summary = "健康检查")
     @RequestMapping(path = "/health", method = RequestMethod.GET)
     public String health() {
         if (log.isDebugEnabled()) {

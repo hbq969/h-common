@@ -4,8 +4,8 @@ import com.github.hbq969.code.common.restful.ICommonControl;
 import com.github.hbq969.code.common.restful.ReturnMessage;
 import com.github.hbq969.code.common.spring.context.SpringContext;
 import com.github.hbq969.code.common.utils.GsonUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-@Api(description = "国际化管理接口", tags = "维护使用-国际化")
+@Tag(description = "国际化管理接口", name = "维护使用-国际化")
 @RequestMapping(path = "/hbq969-common/i18n")
 @Slf4j
 public class I18nCtrl implements ICommonControl, ApplicationEventPublisherAware {
@@ -40,7 +40,7 @@ public class I18nCtrl implements ICommonControl, ApplicationEventPublisherAware 
     private ApplicationEventPublisher eventPublisher;
 
 
-    @ApiOperation("设置语言")
+    @Operation(summary = "设置语言")
     @RequestMapping(path = "/lang", method = RequestMethod.PUT)
     @ResponseBody
     public ReturnMessage<String> langSet(@RequestBody Map map) {
@@ -57,7 +57,7 @@ public class I18nCtrl implements ICommonControl, ApplicationEventPublisherAware 
         return ReturnMessage.success("设置成功");
     }
 
-    @ApiOperation("获取语言")
+    @Operation(summary = "获取语言")
     @RequestMapping(path = "/lang", method = RequestMethod.GET)
     @ResponseBody
     public ReturnMessage<String> getLang() {

@@ -1,6 +1,7 @@
 package com.github.hbq969.code.common.utils;
 
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public class RequestUtils {
     public static String getClientIp(HttpServletRequest request) {

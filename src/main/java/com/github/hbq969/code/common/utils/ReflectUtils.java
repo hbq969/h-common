@@ -1,6 +1,6 @@
 package com.github.hbq969.code.common.utils;
 
-import org.springframework.util.Assert;
+import cn.hutool.core.lang.Assert;
 import org.springframework.util.ClassUtils;
 
 /**

@@ -9,8 +9,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePropertiesPersister;
 import org.springframework.lang.Nullable;
+import org.springframework.util.DefaultPropertiesPersister;
 import org.springframework.util.PropertiesPersister;
 import org.springframework.util.StringUtils;
 
@@ -36,7 +36,7 @@ public class ClassPathReloadableResourceBundleMessageSource extends AbstractReso
 
     private boolean concurrentRefresh = true;
 
-    private PropertiesPersister propertiesPersister = ResourcePropertiesPersister.INSTANCE;
+    private PropertiesPersister propertiesPersister = new DefaultPropertiesPersister();
 
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
@@ -85,11 +85,11 @@ public class ClassPathReloadableResourceBundleMessageSource extends AbstractReso
      * Set the PropertiesPersister to use for parsing properties files.
      * <p>The default is ResourcePropertiesPersister.
      *
-     * @see ResourcePropertiesPersister#INSTANCE
+     * @see DefaultPropertiesPersister
      */
     public void setPropertiesPersister(@Nullable PropertiesPersister propertiesPersister) {
         this.propertiesPersister =
-                (propertiesPersister != null ? propertiesPersister : ResourcePropertiesPersister.INSTANCE);
+                (propertiesPersister != null ? propertiesPersister : new DefaultPropertiesPersister());
     }
 
     /**

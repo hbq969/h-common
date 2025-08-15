@@ -8,8 +8,8 @@ import com.github.hbq969.code.common.encrypt.ext.utils.RSAUtil;
 import com.github.hbq969.code.common.restful.ICommonControl;
 import com.github.hbq969.code.common.restful.ReturnMessage;
 import com.google.common.collect.ImmutableMap;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -28,13 +28,13 @@ import java.util.Map;
  */
 @RequestMapping(path = "/hbq969-common/encrypt/restful/rsa")
 @Slf4j
-@Api(description = "接口rsa非对称加解密", tags = "维护使用-RSA加解密")
+@Tag(description = "接口rsa非对称加解密", name = "维护使用-RSA加解密")
 public class RSAControl implements ICommonControl {
 
     @Value("${encrypt.restful.rsa.public-key:}")
     private String publicKey;
 
-    @ApiOperation("获取配置的rsa公钥")
+    @Operation(summary = "获取配置的rsa公钥")
     @RequestMapping(path = "/publicKey", method = RequestMethod.GET)
     @ResponseBody
     public ReturnMessage<?> getRsaPublicKey() {
@@ -43,7 +43,7 @@ public class RSAControl implements ICommonControl {
         return ReturnMessage.success(publicKey);
     }
 
-    @ApiOperation("获取密钥对")
+    @Operation(summary = "获取密钥对")
     @RequestMapping(path = "/genKeyPair", method = RequestMethod.GET)
     @ResponseBody
     public ReturnMessage<Map> genKeyPair() {
@@ -60,7 +60,7 @@ public class RSAControl implements ICommonControl {
         }
     }
 
-    @ApiOperation("对加密的内容进行签名")
+    @Operation(summary = "对加密的内容进行签名")
     @RequestMapping(path = "/sign", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> sign(@RequestBody RSASignInfo info) {
@@ -77,7 +77,7 @@ public class RSAControl implements ICommonControl {
         }
     }
 
-    @ApiOperation("使用公钥加密")
+    @Operation(summary = "使用公钥加密")
     @RequestMapping(path = "/encryptWithPublicKey", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> encryptWithPublicKey(@RequestBody RSAEncryptInfo info) {
@@ -97,7 +97,7 @@ public class RSAControl implements ICommonControl {
         }
     }
 
-    @ApiOperation("使用私钥解密")
+    @Operation(summary = "使用私钥解密")
     @RequestMapping(path = "/decryptWithPrivateKey", method = RequestMethod.POST)
     @ResponseBody
     public ReturnMessage<String> decryptWithPrivateKey(@RequestBody RSADecryptInfo info) {

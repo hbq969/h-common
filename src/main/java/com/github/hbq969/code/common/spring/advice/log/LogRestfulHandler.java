@@ -30,7 +30,10 @@ public class LogRestfulHandler implements RestfulHandler {
         MethodSignature ms = (MethodSignature) point.getSignature();
         LogSet logSet = AnnotationUtils.findAnnotation(ms.getMethod(), LogSet.class);
         if (logSet == null || logSet.printResult() && logSet.printResult()) {
-            log.info("> {}.{}, 结果: {}", ms.getDeclaringType().getSimpleName(), ms.getName(), result);
+            if (result instanceof byte[])
+                log.info("> {}.{}", ms.getDeclaringType().getSimpleName(), ms.getName());
+            else
+                log.info("> {}.{}, 结果: {}", ms.getDeclaringType().getSimpleName(), ms.getName(), result);
         } else {
             log.info("> {}.{}", ms.getDeclaringType().getSimpleName(), ms.getName());
         }

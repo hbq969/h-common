@@ -20,13 +20,13 @@
     <parent>
         <groupId>com.github.hbq969</groupId>
         <artifactId>h-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>3.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
     <groupId>com.github.hbq969</groupId>
     <artifactId>h-common</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
     <name>h-common</name>
     <description>Spring Boot Archetype</description>
 
@@ -109,7 +109,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>i18n/*</include>
-                    <include>META-INF/*</include>
+                    <include>META-INF/**/*</include>
                     <include>static/hbq969-common/</include>
                 </includes>
             </resource>

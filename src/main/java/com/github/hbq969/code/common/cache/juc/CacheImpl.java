@@ -1,5 +1,6 @@
 package com.github.hbq969.code.common.cache.juc;
 
+import cn.hutool.core.lang.Assert;
 import com.github.hbq969.code.common.cache.CacheCleanUp;
 import com.github.hbq969.code.common.cache.ExpireKey;
 import com.github.hbq969.code.common.cache.ExpireValue;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.cache.support.AbstractValueAdaptingCache;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;

@@ -8,12 +8,12 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+//import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication(exclude = {KafkaAutoConfiguration.class})
 @EnableCaching
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableSwagger2
+//@EnableSwagger2
 @EnableWebMvc
 @EnableScheduling
 @EnableKnife4j
