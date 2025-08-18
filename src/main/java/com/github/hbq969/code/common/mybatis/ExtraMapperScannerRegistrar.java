@@ -32,101 +32,101 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class ExtraMapperScannerRegistrar implements ImportBeanDefinitionRegistrar,
-    ResourceLoaderAware, EnvironmentAware {
+        ResourceLoaderAware, EnvironmentAware {
 
-  public static final Pattern SEPARATOR_PATTERN = Pattern.compile("[,;]");
+    public static final Pattern SEPARATOR_PATTERN = Pattern.compile("[,;]");
 
-  private ResourceLoader resourceLoader;
+    private ResourceLoader resourceLoader;
 
-  private Environment environment;
+    private Environment environment;
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-      BeanDefinitionRegistry registry) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
+                                        BeanDefinitionRegistry registry) {
 
-    AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(
-        importingClassMetadata.getAnnotationAttributes(ExtraMapperScan.class.getName()));
-    ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);
+        AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(
+                importingClassMetadata.getAnnotationAttributes(ExtraMapperScan.class.getName()));
+        ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry, environment);
 
-    // this check is needed in Spring 3.1
-    if (resourceLoader != null) {
-      scanner.setResourceLoader(resourceLoader);
+        // this check is needed in Spring 3.1
+        if (resourceLoader != null) {
+            scanner.setResourceLoader(resourceLoader);
+        }
+
+        Class<? extends Annotation> annotationClass = annoAttrs.getClass("annotationClass");
+        if (!Annotation.class.equals(annotationClass)) {
+            scanner.setAnnotationClass(annotationClass);
+        }
+
+        Class<?> markerInterface = annoAttrs.getClass("markerInterface");
+        if (!Class.class.equals(markerInterface)) {
+            scanner.setMarkerInterface(markerInterface);
+        }
+
+        Class<? extends BeanNameGenerator> generatorClass = annoAttrs.getClass("nameGenerator");
+        if (!BeanNameGenerator.class.equals(generatorClass)) {
+            scanner.setBeanNameGenerator(BeanUtils.instantiateClass(generatorClass));
+        }
+
+        Class<? extends MapperFactoryBean> mapperFactoryBeanClass = annoAttrs.getClass("factoryBean");
+        if (!MapperFactoryBean.class.equals(mapperFactoryBeanClass)) {
+            scanner.setMapperFactoryBean(BeanUtils.instantiateClass(mapperFactoryBeanClass));
+        }
+
+        scanner.setSqlSessionTemplateBeanName(annoAttrs.getString("sqlSessionTemplateRef"));
+        scanner.setSqlSessionFactoryBeanName(annoAttrs.getString("sqlSessionFactoryRef"));
+
+        List<String> basePackages = new ArrayList<String>();
+        for (String pkg : annoAttrs.getStringArray("value")) {
+            if (StringUtils.hasText(pkg)) {
+                parsePlaceHolder(pkg).forEach(p -> basePackages.add(p));
+            }
+        }
+        for (String pkg : annoAttrs.getStringArray("basePackages")) {
+            if (StringUtils.hasText(pkg)) {
+                parsePlaceHolder(pkg).forEach(p -> basePackages.add(p));
+            }
+        }
+        for (Class<?> clazz : annoAttrs.getClassArray("basePackageClasses")) {
+            basePackages.add(ClassUtils.getPackageName(clazz));
+        }
+        scanner.setAnnotationClass(Mapper.class);
+        scanner.registerFilters();
+        scanner.doScan(StringUtils.toStringArray(basePackages));
     }
 
-    Class<? extends Annotation> annotationClass = annoAttrs.getClass("annotationClass");
-    if (!Annotation.class.equals(annotationClass)) {
-      scanner.setAnnotationClass(annotationClass);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
     }
 
-    Class<?> markerInterface = annoAttrs.getClass("markerInterface");
-    if (!Class.class.equals(markerInterface)) {
-      scanner.setMarkerInterface(markerInterface);
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 
-    Class<? extends BeanNameGenerator> generatorClass = annoAttrs.getClass("nameGenerator");
-    if (!BeanNameGenerator.class.equals(generatorClass)) {
-      scanner.setBeanNameGenerator(BeanUtils.instantiateClass(generatorClass));
+    private List<String> parsePlaceHolder(String pro) {
+        if (pro != null && pro.contains(
+                PropertySourcesPlaceholderConfigurer.DEFAULT_PLACEHOLDER_PREFIX)) {
+            String value = environment.getProperty(pro.substring(2, pro.length() - 1));
+
+            if (null == value) {
+                throw new IllegalArgumentException("property " + pro + " can not find!!!");
+            }
+
+            List<String> values = Splitter.on(SEPARATOR_PATTERN).trimResults().splitToList(value);
+            if (log.isDebugEnabled()) {
+                log.debug("find placeholder value {} for key {}", values, pro);
+            }
+
+            return values;
+        }
+        return Lists.newArrayList(pro);
     }
-
-    Class<? extends MapperFactoryBean> mapperFactoryBeanClass = annoAttrs.getClass("factoryBean");
-    if (!MapperFactoryBean.class.equals(mapperFactoryBeanClass)) {
-      scanner.setMapperFactoryBean(BeanUtils.instantiateClass(mapperFactoryBeanClass));
-    }
-
-    scanner.setSqlSessionTemplateBeanName(annoAttrs.getString("sqlSessionTemplateRef"));
-    scanner.setSqlSessionFactoryBeanName(annoAttrs.getString("sqlSessionFactoryRef"));
-
-    List<String> basePackages = new ArrayList<String>();
-    for (String pkg : annoAttrs.getStringArray("value")) {
-      if (StringUtils.hasText(pkg)) {
-        parsePlaceHolder(pkg).forEach(p -> basePackages.add(p));
-      }
-    }
-    for (String pkg : annoAttrs.getStringArray("basePackages")) {
-      if (StringUtils.hasText(pkg)) {
-        parsePlaceHolder(pkg).forEach(p -> basePackages.add(p));
-      }
-    }
-    for (Class<?> clazz : annoAttrs.getClassArray("basePackageClasses")) {
-      basePackages.add(ClassUtils.getPackageName(clazz));
-    }
-    scanner.setAnnotationClass(Mapper.class);
-    scanner.registerFilters();
-    scanner.doScan(StringUtils.toStringArray(basePackages));
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void setResourceLoader(ResourceLoader resourceLoader) {
-    this.resourceLoader = resourceLoader;
-  }
-
-  @Override
-  public void setEnvironment(Environment environment) {
-    this.environment = environment;
-  }
-
-  private List<String> parsePlaceHolder(String pro) {
-    if (pro != null && pro.contains(
-        PropertySourcesPlaceholderConfigurer.DEFAULT_PLACEHOLDER_PREFIX)) {
-      String value = environment.getProperty(pro.substring(2, pro.length() - 1));
-
-      if (null == value) {
-        throw new IllegalArgumentException("property " + pro + " can not find!!!");
-      }
-
-      List<String> values = Splitter.on(SEPARATOR_PATTERN).trimResults().splitToList(value);
-      if (log.isDebugEnabled()) {
-        log.debug("find placeholder value {} for key {}", values, pro);
-      }
-
-      return values;
-    }
-    return Lists.newArrayList(pro);
-  }
 }
