@@ -41,7 +41,7 @@ public class SwaggerFilter implements Filter {
             return;
         }
         if (loginEnabled) {
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(false);
             if (null == session) {
                 log.warn("会话为空，禁止访问/v2/api-docs");
                 response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
