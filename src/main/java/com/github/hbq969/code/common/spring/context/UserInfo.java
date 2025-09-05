@@ -34,7 +34,7 @@ public class UserInfo implements Serializable {
     public static <T extends UserInfo> T of(Class<T> c) {
         ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attrs.getRequest();
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         if (session == null) {
             throw new RuntimeException("无会话信息，请先登录");
         }

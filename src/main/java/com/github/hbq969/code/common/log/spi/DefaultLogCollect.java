@@ -30,7 +30,7 @@ public class DefaultLogCollect implements LogCollect {
         ServletRequestAttributes holder = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         Assert.notNull(holder, "无法获取http请求上下文,请检查是否在非io线程中执行此代码");
         HttpServletRequest request = holder.getRequest();
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         if (session == null) {
             data.setUser(StringUtils.EMPTY);
         } else {
