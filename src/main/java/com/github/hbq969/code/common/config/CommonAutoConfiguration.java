@@ -16,8 +16,6 @@ import com.github.hbq969.code.common.spring.i18n.I18nCtrl;
 import com.github.hbq969.code.common.spring.interceptor.*;
 import com.github.hbq969.code.common.utils.GsonUtils;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -81,23 +79,16 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
     @Bean("common-OpenAPI")
     public OpenAPI customOpenAPI(SwaggerProperties conf) {
         return new OpenAPI()
-                .info(new Info()
-                        .title(conf.getApiInfo().getTitle())
-                        .description(conf.getApiInfo().getDescription())
-                        .version(conf.getApiInfo().getVersion())
-                        .license(new License()
-                                .name(conf.getApiInfo().getLicense())
-                                .url(conf.getApiInfo().getLicenseUrl())
-                        )
-                );
+                .info(conf.getApiInfo())
+                .servers(conf.getServers());
     }
 
     @Bean("common-GroupedOpenApi")
     public GroupedOpenApi customGroupedOpenApi(SwaggerProperties conf) {
         return GroupedOpenApi.builder()
-                .group("common-docket")
+                .group(conf.getGroup())
                 .packagesToScan(conf.getBasePackage())
-                .pathsToMatch("/**")  // 或者你要匹配的路径
+                .pathsToMatch("/**")
                 .build();
     }
 
