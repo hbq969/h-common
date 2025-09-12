@@ -13,8 +13,8 @@ export function notify(title: string, message: string,
                        type: EpPropMergeType<StringConstructor,
                            "success" | "warning" | "info" | "error", unknown>): void {
   ElNotification({
-    title: '操作',
-    message: '操作成功',
+    title: title,
+    message: message,
     type: type,
     position: "bottom-right"
   })
