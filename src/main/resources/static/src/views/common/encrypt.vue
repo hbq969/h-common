@@ -20,11 +20,11 @@ onMounted(() => {
     if (res.data.state == 'OK') {
       publicKey.value = res.data.body
     } else {
-      notify(langData.notifyTitle, res.data.errorMessage, 'warning')
+      msg(res.data.errorMessage, 'warning')
     }
   }).catch((err: Error) => {
     console.log('', err)
-    notify(langData.notifyTitle, langData.axiosRequestErr, 'error')
+    msg(err.response.data.errorMessage, 'error')
   })
 })
 
@@ -55,12 +55,11 @@ const springConfigEncode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form.encodeResult = res.data.body
         } else {
-          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
-          msg(content, "warning")
+          msg(res.data.errorMessage, 'warning')
         }
       }).catch((err: Error) => {
         console.log('', err)
-        msg(langData.requestErr, 'error')
+        msg(err.response.data.errorMessage, 'error')
       })
     }
   })
@@ -102,12 +101,11 @@ const springConfigEncode2 = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form2.decodeResult = res.data.body
         } else {
-          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
-          msg(content, "warning")
+          msg(res.data.errorMessage, 'warning')
         }
       }).catch((err: Error) => {
         console.log('', err)
-        msg(langData.requestErr, 'error')
+        msg(err.response.data.errorMessage, 'error')
       })
     }
   })
@@ -129,12 +127,11 @@ const aesRandomKeyCreate = () => {
     if (res.data.state == 'OK') {
       aesRandomKey.value = res.data.body
     } else {
-      let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
-      msg(content, "warning")
+      msg(res.data.errorMessage, 'warning')
     }
   }).catch((err: Error) => {
     console.log('', err)
-    msg(langData.requestErr, 'error')
+    msg(err.response.data.errorMessage, 'error')
   })
 }
 
@@ -147,11 +144,11 @@ const aesRandomKey1 = async () => {
     if (res.data.state == 'OK') {
       form3.encryptKey = res.data.body
     } else {
-      notify(langData.notifyTitle, res.data.errorMessage, 'warning')
+      msg(res.data.errorMessage, 'warning')
     }
   } catch (e) {
     console.log(e)
-    notify(langData.notifyTitle, langData.axiosRequestErr, 'error')
+    msg(err.response.data.errorMessage, 'error')
   }
 }
 
@@ -164,11 +161,11 @@ const aesRandomKey2 = async () => {
     if (res.data.state == 'OK') {
       form3.iv = res.data.body
     } else {
-      notify(langData.notifyTitle, res.data.errorMessage, 'warning')
+      msg(res.data.errorMessage, 'warning')
     }
   } catch (e) {
     console.log(e)
-    notify(langData.notifyTitle, langData.axiosRequestErr, 'error')
+    msg(err.response.data.errorMessage, 'error')
   }
 }
 
@@ -206,12 +203,11 @@ const aesEncode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form3.encodeResult = res.data.body
         } else {
-          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
-          msg(content, "warning")
+          msg(res.data.errorMessage, 'warning')
         }
       }).catch((err: Error) => {
         console.log('', err)
-        msg(langData.requestErr, 'error')
+        msg(err.response.data.errorMessage, 'error')
       })
     }
   })
@@ -253,12 +249,11 @@ const aesDecode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form4.decodeResult = res.data.body
         } else {
-          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
-          msg(content, "warning")
+          msg(res.data.errorMessage, 'warning')
         }
       }).catch((err: Error) => {
         console.log('', err)
-        msg(langData.requestErr, 'error')
+        msg(err.response.data.errorMessage, 'error')
       })
     }
   })
@@ -285,12 +280,11 @@ const rsaKeyPairCreate = () => {
       form5.privateKey = res.data.body.RSAPrivateKey
       form5.publicKey = res.data.body.RSAPublicKey
     } else {
-      let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
-      msg(content, "warning")
+      msg(res.data.errorMessage, 'warning')
     }
   }).catch((err: Error) => {
     console.log('', err)
-    msg(langData.requestErr, 'error')
+    msg(err.response.data.errorMessage, 'error')
   })
 }
 
@@ -326,12 +320,11 @@ const rsaEncode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form6.encodeResult = res.data.body
         } else {
-          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
-          msg(content, "warning")
+          msg(res.data.errorMessage, 'warning')
         }
       }).catch((err: Error) => {
         console.log('', err)
-        msg(langData.requestErr, 'error')
+        msg(err.response.data.errorMessage, 'error')
       })
     }
   })
@@ -371,12 +364,11 @@ const rsaDecode = async (formEl: FormInstance | undefined) => {
         if (res.data.state == 'OK') {
           form7.decodeResult = res.data.body
         } else {
-          let content = res.config.baseURL + res.config.url + ': ' + res.data.errorMessage;
-          msg(content, "warning")
+          msg(res.data.errorMessage, 'warning')
         }
       }).catch((err: Error) => {
         console.log('', err)
-        msg(langData.requestErr, 'error')
+        msg(err.response.data.errorMessage, 'error')
       })
     }
   })
@@ -448,11 +440,11 @@ const form8Encrypt = async (formEl: FormInstance | undefined) => {
           form8.result = JSON.stringify(map)
           form8.base64Result = btoa(form8.result)
         } else {
-          notify(langData.notifyTitle, res.data.errorMessage, 'warning')
+          msg(res.data.errorMessage, 'warning')
         }
       }).catch((err: Error) => {
         console.log('', err)
-        notify(langData.notifyTitle, langData.axiosRequestErr, 'error')
+        msg(err.response.data.errorMessage, 'error')
       })
     }
   })
@@ -485,11 +477,11 @@ const form8Dencrypt = async (formEl: FormInstance | undefined) => {
           form8.iv = res.data.body.iv
           form8.body = res.data.body.body
         } else {
-          notify(langData.notifyTitle, res.data.errorMessage, 'warning')
+          msg(res.data.errorMessage, 'warning')
         }
       }).catch((err: Error) => {
         console.log('', err)
-        notify(langData.notifyTitle, langData.axiosRequestErr, 'error')
+        msg(err.response.data.errorMessage, 'error')
       })
     }
   })
@@ -515,12 +507,12 @@ const aesRandomKey3 = async () => {
     if (res.data.state == 'OK') {
       form8.key = res.data.body
     } else {
-      notify(langData.notifyTitle, res.data.errorMessage, 'warning')
+      msg(res.data.errorMessage, 'warning')
     }
     if (res.data.state == 'OK') {
       form8.key = res.data.body
     } else {
-      notify(langData.notifyTitle, res.data.errorMessage, 'warning')
+      msg(res.data.errorMessage, 'warning')
     }
     let res2 = await axios({
       url: '/encrypt/restful/rsa/encryptWithPublicKey',
@@ -537,7 +529,7 @@ const aesRandomKey3 = async () => {
     }
   } catch (e) {
     console.log(e)
-    notify(langData.notifyTitle, langData.axiosRequestErr, 'error')
+    msg(err.response.data.errorMessage, 'error')
   }
 }
 
@@ -550,7 +542,7 @@ const aesRandomKey4 = async () => {
     if (res.data.state == 'OK') {
       form8.iv = res.data.body
     } else {
-      notify(langData.notifyTitle, res.data.errorMessage, 'warning')
+      msg(res.data.errorMessage, 'warning')
     }
     let res2 = await axios({
       url: '/encrypt/restful/rsa/encryptWithPublicKey',
@@ -567,7 +559,7 @@ const aesRandomKey4 = async () => {
     }
   } catch (e) {
     console.log(e)
-    notify(langData.notifyTitle, langData.axiosRequestErr, 'error')
+    msg(err.response.data.errorMessage, 'error')
   }
 }
 
