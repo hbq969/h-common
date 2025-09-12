@@ -54,8 +54,18 @@ export const locale = {
         dialog8BtnSubmit: '提交',
         dialog8BtnReset: '重置',
 
-        notNull:'不能为空',
-        requestErr: '请求异常'
+        notNull: '不能为空',
+        requestErr: '请求异常',
+
+        notifyTitle: "提示",
+        axiosRequestErr: "请求异常",
+        dialog9Title: 'RAS加密样例',
+        rsaEncryptKey: "RSA加密的秘钥",
+        rsaEncryptIv: 'RSA加密的iv',
+        body: '请求体',
+        bodyExample: '请求示例报文',
+        aesEncrypt: '加密',
+        aesDecrypt: '解密'
     },
     'en-US': {
         dialog1Title: 'Spring configuration encryption',
@@ -112,8 +122,17 @@ export const locale = {
         dialog8BtnSubmit: 'Submit',
         dialog8BtnReset: 'Reset',
 
-        notNull:'Not Null',
-        requestErr: 'Request Err'
+        notNull: 'Not Null',
+        requestErr: 'Request Err',
+        notifyTitle: "Reminder",
+        axiosRequestErr: "Request Exception",
+        dialog9Title: 'RAS Encryption Example',
+        rsaEncryptKey: "RSA Encryption Key",
+        rsaEncryptIv: "RSA Encryption IV",
+        body: 'Request Body',
+        bodyExample: 'Request Example Message',
+        aesEncrypt: 'Encryption',
+        aesDecrypt: 'Decryption'
     },
     'ja-JP': {
         dialog1タイトル: 'Spring構成の暗号化',
@@ -170,7 +189,16 @@ export const locale = {
         dialog8BtnSubmit: '送信',
         dialog8BtnReset: 'リセット',
 
-        notNull:'空にすることはできません',
-        requestErr: '例外を要求する'
+        notNull: '空にすることはできません',
+        requestErr: '例外を要求する',
+        通知タイトル: 'リマインダー',
+        axiosRequestErr: 'リクエスト例外',
+        dialog9Title: 'RAS暗号化の例',
+        rsaEncryptKey: 'RSA暗号化キー',
+        rsaEncryptIv: 'RSA暗号化IV',
+        body: 'リクエストボディ」',
+        bodyExample: 'リクエストメッセージの例」',
+        aesEncrypt: '暗号化」',
+        aesDecrypt: '復号化'
     }
 }
