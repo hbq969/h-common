@@ -10,7 +10,8 @@ public class I18nUtils {
     public static String getMessage(SpringContext context, String code, Object[] args) {
         MessageSource messageSource = context.getBean(MessageSource.class);
         Assert.notNull(messageSource, "Not inject MessageSource");
-        return messageSource.getMessage(code, args, Locale.getDefault());
+        String lang = context.getProperty("spring.mvc.interceptors.login.sm-initial-script.language", "zh-CN");
+        return messageSource.getMessage(code, args, Locale.forLanguageTag(lang));
     }
 
     public static String getMessage(SpringContext context, String code) {
