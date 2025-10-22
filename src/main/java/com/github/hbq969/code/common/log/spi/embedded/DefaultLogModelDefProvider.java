@@ -1,7 +1,10 @@
-package com.github.hbq969.code.common.log.spi;
+package com.github.hbq969.code.common.log.spi.embedded;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.hbq969.code.common.config.LogProperties;
+import com.github.hbq969.code.common.log.spi.AbstractLogModelDefProvider;
+import com.github.hbq969.code.common.log.spi.DefaultLogData;
+import com.github.hbq969.code.common.log.spi.LogData;
 import com.github.hbq969.code.common.utils.TableInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,7 +25,7 @@ public class DefaultLogModelDefProvider extends AbstractLogModelDefProvider {
                 + "get_paras varchar(1024),\n"
                 + "post_body text,\n"
                 + "result text\n"
-                + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb3";
+                + ")";
     }
 
     @Override
