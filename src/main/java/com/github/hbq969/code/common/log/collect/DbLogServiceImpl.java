@@ -63,7 +63,7 @@ public class DbLogServiceImpl implements OptionalFacadeAware<String, LogService>
 
     @Override
     public Set<String> getKeys() {
-        return Sets.newHashSet("mysql","oracle");
+        return Sets.newHashSet("embedded", "mysql", "oracle", "postgresql");
     }
 
     @Override
@@ -85,7 +85,7 @@ public class DbLogServiceImpl implements OptionalFacadeAware<String, LogService>
                 });
                 return null;
             });
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
                 log.debug("批量保存操作日志到数据库成功, {} 条。", list.size());
         } catch (TransactionException te) {
             log.info("批量保存操作日志到数据库失败，进行回滚，并逐条保存");
@@ -114,10 +114,10 @@ public class DbLogServiceImpl implements OptionalFacadeAware<String, LogService>
                 log.debug(sql);
             }
             jdbcTemplate.update(sql);
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
                 log.debug("日志留存采集表 {} 创建成功。", ti.getTableName());
         } catch (Exception e) {
-            if(log.isTraceEnabled())
+            if (log.isTraceEnabled())
                 log.trace("日志留存采集表 {} 已存在。", ti.getTableName());
         }
     }
