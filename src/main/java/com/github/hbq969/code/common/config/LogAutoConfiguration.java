@@ -54,6 +54,12 @@ public class LogAutoConfiguration {
         return new com.github.hbq969.code.common.log.spi.oracle.DefaultLogModelDefProvider();
     }
 
+    @ConditionalOnExpression("#{ ${operlog.enabled:false} && ${operlog.use-default-collect-policy:false} && ('${operlog.policy}'.equals('embedded') || '${operlog.policy}'.equals('postgresql'))}")
+    @Bean("common-embedded-DefaultLogModelDefProvider")
+    com.github.hbq969.code.common.log.spi.embedded.DefaultLogModelDefProvider defaultEmbeddedLogModelDefProvider() {
+        return new com.github.hbq969.code.common.log.spi.embedded.DefaultLogModelDefProvider();
+    }
+
     @ConditionalOnExpression("#{ ${operlog.enabled:false} && ${operlog.use-default-collect-policy:false}}")
     @Bean("common-DefaultLogCollect")
     DefaultLogCollect defaultLogCollect() {
