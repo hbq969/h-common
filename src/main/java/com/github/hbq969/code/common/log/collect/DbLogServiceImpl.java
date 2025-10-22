@@ -63,7 +63,7 @@ public class DbLogServiceImpl implements OptionalFacadeAware<String, LogService>
 
     @Override
     public Set<String> getKeys() {
-        return Sets.newHashSet("mysql","oracle");
+        return Sets.newHashSet("embedded", "mysql", "oracle", "postgresql");
     }
 
     @Override
