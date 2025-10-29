@@ -16,6 +16,15 @@ public final class ThrowUtils {
         }
     }
 
+    public static void call(String tn, Runnable r) {
+        try {
+            r.run();
+            log.debug("创建表 {} 成功", tn);
+        } catch (Exception e) {
+            log.info("表 {} 已存在", tn);
+        }
+    }
+
     public static <V> V call(Callable<V> c, Consumer<Throwable> s) {
         try {
             return c.call();

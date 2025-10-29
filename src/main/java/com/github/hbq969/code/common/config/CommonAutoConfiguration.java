@@ -112,7 +112,7 @@ public class CommonAutoConfiguration implements ApplicationContextAware, Environ
         return new AdviceProperties();
     }
 
-    @ConditionalOnExpression("${advice.log.enabled:true}")
+//    @ConditionalOnExpression("${advice.log.enabled:true}")
     @Bean("common-RestfulAdvice")
     RestfulAdvice restfulAdvice() {
         return new RestfulAdvice();
