@@ -1,14 +1,19 @@
 package com.github.hbq969.code.common.spring.advice.log;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.github.hbq969.code.common.spring.advice.conf.AdviceProperties;
 import com.github.hbq969.code.common.spring.advice.handler.RestfulHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 
 @Slf4j
 public class LogRestfulHandler implements RestfulHandler {
+    @Autowired
+    private AdviceProperties conf;
+
     @Override
     public void before(ProceedingJoinPoint point) {
         MethodSignature ms = (MethodSignature) point.getSignature();
@@ -40,5 +45,10 @@ public class LogRestfulHandler implements RestfulHandler {
     public void exception(ProceedingJoinPoint point, Throwable e) {
         MethodSignature ms = (MethodSignature) point.getSignature();
         log.error("<err> {}.{} {}", ms.getDeclaringType().getSimpleName(), ms.getName(), e);
+    }
+
+    @Override
+    public boolean enabled() {
+        return conf.getLog().isEnabled();
     }
 }

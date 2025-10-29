@@ -17,4 +17,8 @@ public interface RestfulHandler {
     default int order() {
         return 0;
     }
+
+    default boolean enabled(){
+        return true;
+    }
 }

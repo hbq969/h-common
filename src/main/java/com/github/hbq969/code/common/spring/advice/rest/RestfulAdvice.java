@@ -42,6 +42,7 @@ public class RestfulAdvice implements InitializingBean {
         Map<String, RestfulHandler> map = context.getBeanMapOfType(RestfulHandler.class);
         if (MapUtils.isNotEmpty(map)) {
             handlers = map.values().stream()
+                    .filter(RestfulHandler::enabled)
                     .sorted(Comparator.comparing(RestfulHandler::order))
                     .collect(Collectors.toList());
         }

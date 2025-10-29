@@ -12,11 +12,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class AdviceProperties {
 
-    private Log log;
+    private Log log=new Log();
 
-    private Ex ex;
+    private Ex ex=new Ex();
 
-    private RestfulLimit restfulLimit;
+    private RestfulLimit restfulLimit=new RestfulLimit();
 
     @Data
     public static class Log {
