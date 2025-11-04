@@ -18,8 +18,8 @@ public class InfoRequestInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate rt) {
         if (log.isDebugEnabled()) {
-            log.debug("[{}] [{}], headers: {}, variables: {}, queries: {}, content-length: {}",
-                    rt.method(), rt.path(), gson.toJson(rt.headers()),
+            log.debug("[{}] [{}{}], headers: {}, variables: {}, queries: {}, content-length: {}",
+                    rt.method(), rt.feignTarget().url(), rt.path(), gson.toJson(rt.headers()),
                     gson.toJson(rt.getRequestVariables()), gson.toJson(rt.queries()),
                     rt.requestBody().length());
         }
