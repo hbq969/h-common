@@ -1,7 +1,6 @@
 package com.github.hbq969.code.common.config;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ArrayUtil;
 import com.github.hbq969.code.common.datasource.DynamicDataSource;
 import com.github.hbq969.code.common.datasource.DynamicDataSourceAspect;
 import com.github.hbq969.code.common.datasource.DynamicDataSourceBeanProcessor;
@@ -11,26 +10,19 @@ import com.github.hbq969.code.common.utils.GsonUtils;
 import com.github.hbq969.code.common.utils.StrUtils;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -123,68 +115,6 @@ public class DynamicDataSourceConfiguration {
         ds.setMaxLifetime(maxLifeTime);
         ds.setConnectionTestQuery(conTestQuery);
         return ds;
-    }
-
-    @ConditionalOnExpression("${spring.datasource.dynamic.enabled:false}")
-    @ConditionalOnMissingBean
-    @Primary
-    public SqlSessionFactory sqlSessionFactory(
-            @Qualifier("common-dynamicdatasource-DynamicDataSource") DataSource dataSource,
-            MybatisProperties properties) throws Exception {
-        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-        bean.setDataSource(dataSource);
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        List<Resource> rl = new ArrayList<>();
-        Arrays.asList(properties.getMapperLocations()).forEach(ml -> {
-            try {
-                Resource[] tr = resolver.getResources(ml);
-                if (ArrayUtils.isNotEmpty(tr)) {
-                    rl.addAll(Arrays.asList(tr));
-                }
-            } catch (Exception e) {
-                log.warn("未扫描到路径下[{}]下的资源文件", ml);
-            }
-        });
-        if (!rl.isEmpty()) {
-            bean.setMapperLocations(rl.stream().toArray(Resource[]::new));
-        }
-        if (StrUtils.strNotEmpty(properties.getConfigLocation())) {
-            bean.setConfigLocation(resolver.getResource(properties.getConfigLocation()));
-        }
-        if (ArrayUtil.isNotEmpty(properties.getTypeAliasesPackage())) {
-            bean.setTypeAliasesPackage(properties.getTypeAliasesPackage());
-        }
-        return bean.getObject();
-    }
-
-    @ConditionalOnExpression("${spring.datasource.dynamic.enabled:false}")
-    @ConditionalOnMissingBean
-    @Primary
-    public DataSourceTransactionManager dataSourceTransactionManager(
-            @Qualifier("common-dynamicdatasource-DynamicDataSource") DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
-
-    @ConditionalOnExpression("${spring.datasource.dynamic.enabled:false}")
-    @ConditionalOnMissingBean
-    @Primary
-    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
-        return new SqlSessionTemplate(sqlSessionFactory);
-    }
-
-    @ConditionalOnExpression("${spring.datasource.dynamic.enabled:false}")
-    @ConditionalOnMissingBean
-    @Primary
-    public JdbcTemplate jdbcTemplate(
-            @Qualifier("common-dynamicdatasource-DynamicDataSource") DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
-    }
-
-    @ConditionalOnExpression("${spring.datasource.dynamic.enabled:false}")
-    @ConditionalOnMissingBean
-    @Primary
-    public TransactionTemplate transactionTemplate(DataSourceTransactionManager dataSourceTransactionManager) {
-        return new TransactionTemplate(dataSourceTransactionManager);
     }
 
     @ConditionalOnExpression("#{ ${spring.datasource.dynamic.enabled:false} && ${spring.datasource.dynamic.monitor.enabled:false}}")
