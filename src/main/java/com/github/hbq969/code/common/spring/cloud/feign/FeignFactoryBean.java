@@ -91,7 +91,7 @@ public class FeignFactoryBean<T> implements FactoryBean<T>, InitializingBean {
     }
 
     protected Decoder decoder() {
-        return new JacksonDecoder();
+        return new LogJacksonDecoder(canDecodeLog());
     }
 
     protected ErrorDecoder errorDecoder() {
@@ -110,5 +110,14 @@ public class FeignFactoryBean<T> implements FactoryBean<T>, InitializingBean {
 
     protected void apply(Builder builder) {
 
+    }
+
+    /**
+     * 注意：只在发序列化是LogJacksonDecoder时生效
+     *
+     * @return
+     */
+    protected boolean canDecodeLog() {
+        return true;
     }
 }
