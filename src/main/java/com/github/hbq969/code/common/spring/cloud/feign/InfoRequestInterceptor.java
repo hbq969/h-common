@@ -1,5 +1,6 @@
 package com.github.hbq969.code.common.spring.cloud.feign;
 
+import cn.hutool.core.util.StrUtil;
 import com.google.gson.Gson;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -18,10 +19,16 @@ public class InfoRequestInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate rt) {
         if (log.isDebugEnabled()) {
-            log.debug("[{}] [{}{}], headers: {}, variables: {}, queries: {}, content-length: {}",
-                    rt.method(), rt.feignTarget().url(), rt.path(), gson.toJson(rt.headers()),
-                    gson.toJson(rt.getRequestVariables()), gson.toJson(rt.queries()),
-                    rt.requestBody().length());
+            if (StrUtil.startWith(rt.path(), "http"))
+                log.debug("[{}] [{}], headers: {}, variables: {}, queries: {}, content-length: {}",
+                        rt.method(), rt.path(), gson.toJson(rt.headers()),
+                        gson.toJson(rt.getRequestVariables()), gson.toJson(rt.queries()),
+                        rt.requestBody().length());
+            else
+                log.debug("[{}] [{}{}], headers: {}, variables: {}, queries: {}, content-length: {}",
+                        rt.method(), rt.feignTarget().url(), rt.path(), gson.toJson(rt.headers()),
+                        gson.toJson(rt.getRequestVariables()), gson.toJson(rt.queries()),
+                        rt.requestBody().length());
         }
     }
 }
