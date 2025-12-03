@@ -30,40 +30,41 @@ public class DefaultLogCollect implements LogCollect {
     @Override
     public LogData collect(PointModel point) {
         Operation op = AnnotationUtils.findAnnotation(point.getMethod(), Operation.class);
-        DefaultLogData data = collectByCustom(point);
-        // 非restful接口方法，如果实现了自定义逻辑，才会采集，restful接口还是会走默认的采集逻辑
-        if (op == null && data != null)
-            return data;
-        data = new DefaultLogData();
-        String rid = MDC.get("requestId");
-        data.setId(rid == null ? UUID.fastUUID().toString(true) : rid);
-
-        ServletRequestAttributes holder = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        Assert.notNull(holder, "无法获取http请求上下文,请检查是否在非io线程中执行此代码");
-        HttpServletRequest request = holder.getRequest();
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            data.setUser(StringUtils.EMPTY);
+        DefaultLogData data;
+        if (op == null) {
+            data = collectByCustom(point);
         } else {
-            Object user = session.getAttribute("h-sm-user");
-            if (null == user) {
+            data = new DefaultLogData();
+            String rid = MDC.get("requestId");
+            data.setId(rid == null ? UUID.fastUUID().toString(true) : rid);
+
+            ServletRequestAttributes holder = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            Assert.notNull(holder, "无法获取http请求上下文,请检查是否在非io线程中执行此代码");
+            HttpServletRequest request = holder.getRequest();
+            HttpSession session = request.getSession(false);
+            if (session == null) {
                 data.setUser(StringUtils.EMPTY);
             } else {
-                if (user instanceof UserInfo) {
-                    UserInfo ui = (UserInfo) user;
-                    data.setUser(ui.getUserName());
-                } else {
+                Object user = session.getAttribute("h-sm-user");
+                if (null == user) {
                     data.setUser(StringUtils.EMPTY);
+                } else {
+                    if (user instanceof UserInfo) {
+                        UserInfo ui = (UserInfo) user;
+                        data.setUser(ui.getUserName());
+                    } else {
+                        data.setUser(StringUtils.EMPTY);
+                    }
                 }
             }
+            data.setTime(FormatTime.nowSecs());
+            data.setUrl(request.getRequestURI());
+            data.setMethodName(request.getMethod());
+            data.setMethodDesc(OperlogUtils.getMethodDesc(point));
+            data.setParameters(request.getQueryString());
+            data.setBody(OperlogUtils.getPostBody(point));
+            data.setResult(GsonUtils.toJson(point.getResult()));
         }
-        data.setTime(FormatTime.nowSecs());
-        data.setUrl(request.getRequestURI());
-        data.setMethodName(request.getMethod());
-        data.setMethodDesc(OperlogUtils.getMethodDesc(point));
-        data.setParameters(request.getQueryString());
-        data.setBody(OperlogUtils.getPostBody(point));
-        data.setResult(GsonUtils.toJson(point.getResult()));
         return data;
     }
 

@@ -55,4 +55,22 @@ public class LogProperties {
      * 日志处理线程数
      */
     private int threadNum = 1;
+
+    /**
+     * 日志清理配置
+     */
+    private Clean clean = new Clean();
+
+    @Data
+    public static class Clean {
+        private boolean enabled = false;
+        /**
+         * 清理日志周期配置，默认每天的凌晨1点
+         */
+        private String cron = "0 0 1 * * ?";
+        /**
+         * 需要清理多个月前的操作日志
+         */
+        private int monthNumForHistory = 12;
+    }
 }
