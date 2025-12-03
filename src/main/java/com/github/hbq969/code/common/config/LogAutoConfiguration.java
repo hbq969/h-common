@@ -4,6 +4,7 @@ import com.github.hbq969.code.common.log.aop.LogBeanProcessor;
 import com.github.hbq969.code.common.log.aop.OperlogAspect;
 import com.github.hbq969.code.common.log.collect.LogServiceFacade;
 import com.github.hbq969.code.common.log.collect.DbLogServiceImpl;
+import com.github.hbq969.code.common.log.spi.DefaultLogClear;
 import com.github.hbq969.code.common.log.spi.DefaultLogCollect;
 import com.github.hbq969.code.common.log.spi.DefaultLogModelDefProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,12 @@ public class LogAutoConfiguration {
     @Bean("common-LogBeanProcessor")
     LogBeanProcessor logBeanProcessor() {
         return new LogBeanProcessor();
+    }
+
+    @ConditionalOnExpression("#{ ${operlog.enabled:false} && ${operlog.clean.enabled:false}}")
+    @Bean("common-DefaultLogClear")
+    DefaultLogClear defaultLogClear(){
+        return new DefaultLogClear();
     }
 
     @ConditionalOnProperty(prefix = "operlog", name = "enabled", havingValue = "true")
