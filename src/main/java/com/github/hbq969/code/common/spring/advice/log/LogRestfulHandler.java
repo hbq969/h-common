@@ -24,9 +24,9 @@ public class LogRestfulHandler implements RestfulHandler {
             for (int i = 0; i < len; i++) {
                 sb.append(", ").append(ms.getParameterNames()[i]).append("=").append(point.getArgs()[i]);
             }
-            log.info("< {}.{}, [{}]", ms.getDeclaringType().getSimpleName(), ms.getName(), sb.length() > 0 ? sb.substring(2) : "");
+            log.debug("< {}.{}, [{}]", ms.getDeclaringType().getSimpleName(), ms.getName(), sb.length() > 0 ? sb.substring(2) : "");
         } else {
-            log.info("< {}.{}, <>", ms.getDeclaringType().getSimpleName(), ms.getName());
+            log.debug("< {}.{}, <>", ms.getDeclaringType().getSimpleName(), ms.getName());
         }
     }
 
@@ -38,9 +38,9 @@ public class LogRestfulHandler implements RestfulHandler {
             if (result instanceof byte[])
                 log.info("> {}.{}", ms.getDeclaringType().getSimpleName(), ms.getName());
             else
-                log.info("> {}.{}, 结果: {}", ms.getDeclaringType().getSimpleName(), ms.getName(), result);
+                log.debug("> {}.{}, 结果: {}", ms.getDeclaringType().getSimpleName(), ms.getName(), result);
         } else {
-            log.info("> {}.{}", ms.getDeclaringType().getSimpleName(), ms.getName());
+            log.debug("> {}.{}", ms.getDeclaringType().getSimpleName(), ms.getName());
         }
     }
 
