@@ -142,11 +142,11 @@ public class FeignFactoryBean<T> implements FactoryBean<T>, InitializingBean {
      * @return
      */
     protected Retryer feignRetry() {
-        return new Retryer.Default(1000, 5000, 3);
+        return new Retryer.Default(5000, 15000, 2);
     }
 
     protected Request.Options options() {
-        return new Request.Options(1000, 60000, true);
+        return new Request.Options(5000, 60000, true);
     }
 
     protected Contract contract() {
